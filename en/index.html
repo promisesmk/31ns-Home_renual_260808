@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- SEO Primary Meta Tags -->
-  <title>31NS-Tech Product Development LAB | Total Hardware Engineering Solution</title>
-  <meta name="title" content="31NS-Tech Product Development LAB | Total Hardware Engineering Solution" />
+  <title>31NS-Tech Product Development LAB | Total Engineering Solution</title>
+  <meta name="title" content="31NS-Tech Product Development LAB | Total Engineering Solution" />
   <meta name="description" content="RF, BLE, NFC, Mixed-Signal Circuit Design, Sensor Boards, PCB Layout, Antenna Matching, and Certification Support — 31NS-Tech Product Development LAB" />
   <meta name="keywords" content="RF Design, BLE Circuit, NFC, Antenna Tuning, Mixed-Signal, PCB Design, KC Certification, FCC Certification, Hardware Development, 31NS" />
   <meta name="author" content="31NS-Tech Product Development LAB" />
@@ -18,7 +17,11 @@
   <link rel="alternate" hreflang="en" href="https://31ns.kr/en/" />
   <link rel="alternate" hreflang="x-default" href="https://31ns.kr/" />
 
-  <!-- Open Graph -->
+  <!-- Naver & Google Site Verification Placeholders -->
+  <!-- <meta name="naver-site-verification" content="YOUR_NAVER_VERIFICATION_CODE" /> -->
+  <!-- <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" /> -->
+
+  <!-- Open Graph / Kakao / Naver Preview -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://31ns.kr/en/" />
   <meta property="og:site_name" content="31NS-Tech Product Development LAB" />
@@ -35,7 +38,7 @@
   <meta name="twitter:description" content="Over 20 years of proven expertise in RF, BLE, NFC & Mixed-Signal Circuit Design." />
   <meta name="twitter:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
 
-  <!-- JSON-LD Structured Data -->
+  <!-- JSON-LD Structured Data (Google & Naver Algorithm Rich Snippets) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -60,182 +63,786 @@
   }
   </script>
 
+  <!-- Fonts & Icons (Montserrat for clean high-end legibility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Custom SpinX Ultra-Luxe Style -->
   <link rel="stylesheet" href="/src/styles/main.css" />
 </head>
-<body>
-  <!-- Ambient Cyber Background -->
-  <div class="bg-grid"></div>
-  <div class="bg-radial-glow"></div>
+<body class="spinx-luxury-body">
 
-  <!-- Global Header Navigation -->
-  <header class="navbar">
-    <a href="/en/" class="brand-logo">
-      <img src="/assets/Logo 31NS-Tech.jpg" alt="31NS-Tech Logo" />
-      <span class="brand-title">31NS-LAB</span>
-    </a>
+  <!-- Custom Magnetic Cursor (Centered Alignment) -->
+  <div class="custom-cursor-dot" id="cursor-dot"></div>
+  <div class="custom-cursor-follower" id="cursor-follower"></div>
 
-    <nav aria-label="Main Navigation">
-      <ul class="nav-links">
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#services" class="nav-link active">Services</a></li>
-        <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
-        <li><a href="#blog" class="nav-link">Blog</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
-      </ul>
-    </nav>
+  <!-- Ambient Dark Background Elements -->
+  <div class="bg-grid-overlay"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
 
-    <!-- Language Switcher -->
-    <div class="lang-switch">
-      <a href="/" class="lang-btn" style="text-decoration:none;">KO</a>
-      <button class="lang-btn active">EN</button>
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER (Product Development Lab + 2s Transition + Mobile Hamburger)
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="luxury-header" id="site-header">
+    <div class="header-inner">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="brand-logo magnetic-hover">
+        <div class="logo-box-full">
+          <img src="/assets/Logo 31NS-Tech.jpg" alt="31NS-Tech Logo" class="brand-img" />
+        </div>
+        <div class="logo-text-inline">
+          <span class="brand-title-single">31NS-TECH</span>
+          <span class="brand-sub-tag">PRODUCT DEVELOPMENT LAB</span>
+        </div>
+      </a>
+
+      <!-- Navigation Menu -->
+      <nav class="luxury-nav" id="nav-container">
+        <ul class="nav-links-list">
+          <li><a href="#hero" class="nav-item active magnetic-hover" data-i18n="navHome">Home</a></li>
+          <li><a href="#philosophy" class="nav-item magnetic-hover" data-i18n="navPhilosophy">Philosophy</a></li>
+          <li><a href="#capabilities" class="nav-item magnetic-hover" data-i18n="navCapabilities">Capabilities</a></li>
+          <li><a href="#portfolio" class="nav-item magnetic-hover" data-i18n="navPortfolio">Portfolio</a></li>
+          <li><a href="#blog" class="nav-item magnetic-hover" data-i18n="navBlog">Tech Blog</a></li>
+          <li><a href="#rf-faq" class="nav-item magnetic-hover" data-i18n="navFaq">RF Q&A</a></li>
+          <li><a href="#contact" class="nav-item magnetic-hover" data-i18n="navContact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Action CTA & Language Toggle -->
+      <div class="header-right-actions">
+        <a href="#contact" class="btn-spinx-cta magnetic-hover">
+          <span data-i18n="btnInquireNav">Inquiry</span>
+          <div class="btn-arrow-circle"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <!-- KO / EN Language Toggle Switch -->
+        <div class="header-lang-switch">
+          <button class="lang-btn" id="btn-lang-ko" data-lang-btn="ko">KO</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn active" id="btn-lang-en" data-lang-btn="en">EN</button>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Open Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
     </div>
   </header>
 
-  <!-- Main Hero Section -->
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════════ -->
   <main>
-    <section class="hero-container">
-      <div class="hero-text-content">
-        <div class="badge-tag">
-          <span class="pulse-dot"></span>
-          <span>31NS-Tech Product Development LAB</span>
-        </div>
+
+    <!-- HERO SECTION (Fluid Animated Cyan-Blue-Purple Metallic Gradient) -->
+    <section class="hero-luxury-section" id="hero">
+      <div class="container">
         
-        <h1 class="hero-title">
-          From Circuit Design to Mass Production <span>Proven RF Expertise</span>
+        <div class="hero-kicker-tag">
+          <span class="tag-badge" data-i18n="heroKicker">TOTAL ENGINEERING SOLUTION</span>
+          <span class="tag-text">RF · BLE · NFC · Mixed-Signal</span>
+          <span class="tag-status">2026 ACTIVE LAB</span>
+        </div>
+
+        <h1 class="hero-headline" data-i18n="heroHeadline">
+          <span class="silver-metallic-gradient">From Circuit Design to Mass Production</span> —<br />
+          <span class="silver-metallic-gradient">Proven Expertise</span><br />
+          for Successful Product Development
         </h1>
-        
-        <p class="hero-description">
-          Leveraging over 20 years of specialized experience in RF, BLE, NFC, and Mixed-Signal circuit engineering to accelerate product development and maximize mass-production reliability.
+
+        <p class="hero-lead-text" data-i18n="heroSubtext">
+          <strong class="highlight-text">RF · BLE · NFC · Mixed-Signal Circuit Engineering</strong><br />
+          Built on 20+ years of hands-on RF and Mixed-Signal experience, we are the engineering partner that accelerates your development timeline and maximizes mass-production success rates.
         </p>
 
-        <div class="cta-group">
-          <a href="#contact" class="btn-primary">Request Consultation</a>
-          <a href="#services" class="btn-secondary">Engineering Services</a>
+        <div class="hero-buttons-row">
+          <a href="#contact" class="btn-lime-hero magnetic-hover">
+            <span data-i18n="btnHeroPrimary">Request Consultation</span>
+            <i class="fas fa-arrow-right arrow-move"></i>
+          </a>
+          <a href="#capabilities" class="btn-glass-hero magnetic-hover">
+            <span data-i18n="btnHeroSecondary">View Tech Services</span>
+            <i class="fas fa-microchip"></i>
+          </a>
         </div>
-      </div>
 
-      <!-- 3D Smartphone Viewport Container -->
-      <div class="canvas-3d-wrapper" id="phone-3d-wrapper">
-        <canvas id="phone-3d-canvas"></canvas>
-        <div class="canvas-hint">
-          <span>❖</span>
-          <span>Move mouse to experience 3D Device Parallax Tilt</span>
+        <!-- 4 Key Stat Metrics Bar -->
+        <div class="stat-metrics-bar">
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">20<span class="plus-sign">+</span></div>
+            <div class="metric-title" data-i18n="stat1Title">Years of Experience</div>
+            <div class="metric-desc" data-i18n="stat1Desc">RF & HW Engineering Career</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">Dual</div>
+            <div class="metric-title" data-i18n="stat2Title">Core Specialization</div>
+            <div class="metric-desc" data-i18n="stat2Desc">NFC & Mixed-Signal Circuits</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">100<span class="plus-sign">%</span></div>
+            <div class="metric-title" data-i18n="stat3Title">Certification Support</div>
+            <div class="metric-desc" data-i18n="stat3Desc">KC / FCC / CE Regulatory Support</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">Turn-Key</div>
+            <div class="metric-title" data-i18n="stat4Title">Design to Production</div>
+            <div class="metric-desc" data-i18n="stat4Desc">E2E One-Stop Mass Production</div>
+          </div>
         </div>
+
+        <!-- Real Lab Video HUD Surveillance Stream Showcase -->
+        <div class="hud-feeds-wrapper">
+          <div class="hud-window-topbar">
+            <div class="window-controls">
+              <span class="win-btn red"></span>
+              <span class="win-btn yellow"></span>
+              <span class="win-btn green"></span>
+              <span class="win-title">31NS-LAB // LIVE REALTIME ENGINEERING MONITORING</span>
+            </div>
+            <div class="win-status">
+              <span class="live-dot-pulse"></span> LIVE CAM ACTIVE
+            </div>
+          </div>
+
+          <div class="video-hud-grid">
+            <div class="video-hud-card">
+              <div class="card-hud-bar">
+                <span class="hud-badge">FEED 01 // RF PCB ARTWORK CIRCUIT</span>
+                <div class="hud-signal">
+                  <div class="signal-bar b1"></div>
+                  <div class="signal-bar b2"></div>
+                  <div class="signal-bar b3"></div>
+                  <span>50Ω VNA MATCHED</span>
+                </div>
+              </div>
+              <div class="video-frame-box">
+                <div class="hud-corner top-left"></div>
+                <div class="hud-corner top-right"></div>
+                <div class="hud-corner bottom-left"></div>
+                <div class="hud-corner bottom-right"></div>
+                <video src="/assets/board_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <div class="hud-data-overlay">
+                  <div class="overlay-row-top">NORDIC nRF52840 BLE 5.3 BOARD ARTWORK</div>
+                  <div class="overlay-row-bottom">VNA S11 RETURN LOSS: -24.5dB | FREQ: 2.45GHz</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-hud-card">
+              <div class="card-hud-bar">
+                <span class="hud-badge">FEED 02 // REALTIME OSCILLOSCOPE MONITORING</span>
+                <div class="hud-signal">
+                  <div class="signal-bar b1"></div>
+                  <div class="signal-bar b2"></div>
+                  <div class="signal-bar b3"></div>
+                  <span>100Msps ADC ToF</span>
+                </div>
+              </div>
+              <div class="video-frame-box">
+                <div class="hud-corner top-left"></div>
+                <div class="hud-corner top-right"></div>
+                <div class="hud-corner bottom-left"></div>
+                <div class="hud-corner bottom-right"></div>
+                <video src="/assets/monitor_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <div class="hud-data-overlay">
+                  <div class="overlay-row-top">AFE SENSOR SIGNAL FFT ANALYSIS</div>
+                  <div class="overlay-row-bottom">NOISE FLOOR: -110dBm | EMI SHIELDING STABLE</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Core Competencies Section -->
-    <section id="services" class="section-container">
-      <div class="section-header">
-        <div class="section-subtitle">CORE COMPETENCY</div>
-        <h2 class="section-title">Differentiated Hardware Expertise</h2>
-      </div>
+    <!-- INFINITE MARQUEE TICKER BAR -->
+    <div class="infinite-ticker-bar">
+      <div class="ticker-track">
+        <span class="ticker-item">RF 2.4GHz CIRCUIT DESIGN</span>
+        <span class="ticker-item stroke">NORDIC nRF52 BLE 5.3</span>
+        <span class="ticker-item">125kHz + 13.56MHz DUAL NFC</span>
+        <span class="ticker-item stroke">MIXED-SIGNAL AFE SENSOR</span>
+        <span class="ticker-item">INDUSTRIAL MOTOR DRIVE</span>
+        <span class="ticker-item stroke">VNA S11 IMPEDANCE MATCHING</span>
+        <span class="ticker-item">KC / FCC / CE CERTIFICATION</span>
+        <span class="ticker-item stroke">DEV VIBE PROMPT ENG.</span>
 
-      <div class="cards-grid">
-        <article class="tech-card">
-          <div class="card-icon">📡</div>
-          <h3 class="card-title">RF & Wireless Optimization</h3>
-          <p class="card-desc">
-            Maximize wireless communication performance through 2.4GHz RF, BLE, NFC circuit design, impedance matching, and VNA-based antenna tuning.
-          </p>
-          <div class="card-tags">
-            <span class="tag">2.4GHz RF</span>
-            <span class="tag">BLE/NFC</span>
-            <span class="tag">Antenna Tuning</span>
-            <span class="tag">EMI/EMC</span>
-          </div>
-        </article>
-
-        <article class="tech-card">
-          <div class="card-icon">⚡</div>
-          <h3 class="card-title">Mixed-Signal & AFE</h3>
-          <p class="card-desc">
-            Design high-noise resistant Analog Front-End (AFE) and precision sensor interfaces to achieve top-tier measurement reliability.
-          </p>
-          <div class="card-tags">
-            <span class="tag">AFE Design</span>
-            <span class="tag">Sensor Interface</span>
-            <span class="tag">ADC/DAC Optimization</span>
-          </div>
-        </article>
-
-        <article class="tech-card">
-          <div class="card-icon">🛡️</div>
-          <h3 class="card-title">Mass Production & Certification</h3>
-          <p class="card-desc">
-            Full support for DFM design, BOM optimization, manufacturing line troubleshooting, and mandatory KC, FCC, CE certifications.
-          </p>
-          <div class="card-tags">
-            <span class="tag">DFM Design</span>
-            <span class="tag">BOM Cost</span>
-            <span class="tag">KC/FCC/CE Support</span>
-          </div>
-        </article>
-
-        <article class="tech-card">
-          <div class="card-icon">💻</div>
-          <h3 class="card-title">Dev Vibe Coding & AI Research</h3>
-          <p class="card-desc">
-            Research and application development utilizing natural language prompt engineering for intelligent hardware web & app integration.
-          </p>
-          <div class="card-tags">
-            <span class="tag">Prompt Eng.</span>
-            <span class="tag">Web/App Integration</span>
-            <span class="tag">Hardware AI</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- Lab Mission & Video Showcase -->
-    <section id="about" class="section-container">
-      <div class="tech-card" style="background: rgba(13, 18, 30, 0.85); border-color: var(--accent-cyan);">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-          <div>
-            <div class="section-subtitle">// LAB_MISSION.LOG</div>
-            <h2 class="section-title" style="font-size: 2rem; margin-bottom: 20px;">
-              High-Reliability Hardware Verified in Extreme Environments
-            </h2>
-            <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 24px;">
-              31NS-Tech Product Development LAB delivers engineering outcomes proven in real-world production fields, built upon two decades of deep RF and hardware expertise.
-            </p>
-            <a href="#contact" class="btn-primary">Schedule Consultation</a>
-          </div>
-          <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-glass);">
-            <video src="/assets/monitor_feed.mp4" autoplay loop muted playsinline style="width: 100%; display: block; opacity: 0.85;"></video>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Global Footer -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-info">
-        <h4>31NS-Tech Product Development LAB</h4>
-        <p>
-          Providing practical total hardware engineering solutions from circuit design to mass production and KC/FCC/CE certification support.
-        </p>
-      </div>
-      <div>
-        <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Quick Links</h4>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px;">
-          <li><a href="#about" style="color: var(--text-muted); text-decoration: none;">About</a></li>
-          <li><a href="#services" style="color: var(--text-muted); text-decoration: none;">Services</a></li>
-          <li><a href="#portfolio" style="color: var(--text-muted); text-decoration: none;">Portfolio</a></li>
-          <li><a href="#contact" style="color: var(--text-muted); text-decoration: none;">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Contact</h4>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Gwangmyeong-si, Gyeonggi-do</p>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">nskim@31ns.kr</p>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">promisesmk@gmail.com</p>
+        <!-- Duplicated for Seamless Infinite Loop -->
+        <span class="ticker-item">RF 2.4GHz CIRCUIT DESIGN</span>
+        <span class="ticker-item stroke">NORDIC nRF52 BLE 5.3</span>
+        <span class="ticker-item">125kHz + 13.56MHz DUAL NFC</span>
+        <span class="ticker-item stroke">MIXED-SIGNAL AFE SENSOR</span>
+        <span class="ticker-item">INDUSTRIAL MOTOR DRIVE</span>
+        <span class="ticker-item stroke">VNA S11 IMPEDANCE MATCHING</span>
+        <span class="ticker-item">KC / FCC / CE CERTIFICATION</span>
+        <span class="ticker-item stroke">DEV VIBE PROMPT ENG.</span>
       </div>
     </div>
-    <div class="footer-bottom">
-      © 2026 31NS-Tech Product Development LAB. All rights reserved.
+
+    <!-- ENGINEERING PHILOSOPHY SECTION -->
+    <section class="section-block philosophy-section" id="philosophy">
+      <div class="section-watermark">PHILOSOPHY</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// CORE PHILOSOPHY</span>
+          <span class="section-num-tag">01 / 06</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="philoTitle">Engineering Philosophy</h2>
+        <p class="section-lead-desc" data-i18n="philoSub">Solving complex hardware challenges with 20+ years of practical experience.</p>
+
+        <div class="terminal-card-wrapper">
+          <div class="term-card-header">
+            <div class="term-left">
+              <i class="fas fa-terminal text-lime"></i>
+              <span>31NS_ENGINEERING_LOG.sys</span>
+            </div>
+            <div class="term-right">
+              <span class="live-dot-pulse"></span>
+              <span>PARADIGM STABLE</span>
+            </div>
+          </div>
+          <div class="term-card-content">
+            <p class="log-entry text-muted">[SYSTEM INIT 2026-08-08] Loading 31NS Core Philosophy...</p>
+            <p class="log-entry text-body" data-i18n="philoBody">
+              31NS-Tech Product Development LAB leverages 20+ years of RF and Mixed-Signal expertise to shorten your development cycles and maximize mass-production success rates as your dedicated engineering partner.
+            </p>
+            <p class="log-entry text-highlight" data-i18n="philoQuote">
+              &gt; Delivering high-reliability hardware solutions validated under extreme conditions is our core philosophy.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE CAPABILITIES SECTION (6 Luxe Cards Grid) -->
+    <section class="section-block capabilities-section" id="capabilities">
+      <div class="section-watermark">SOLUTIONS</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// CORE COMPETENCY</span>
+          <span class="section-num-tag">02 / 06</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="capaTitle">Core Capabilities</h2>
+        <p class="section-lead-desc" data-i18n="capaSub">RF/Wireless, Dual NFC, Industrial Motor Control, AFE Sensor Boards, Certification & Dev Vibe</p>
+
+        <div class="cards-split-grid">
+
+          <!-- Card 01 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-wifi"></i></div>
+              <span class="card-code">01 // RF & BLE WIRELESS</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap1Title">RF & BLE Wireless Hardware</h3>
+            <p class="card-body-desc" data-i18n="cap1Desc">Design 2.4GHz ISM band RF transceivers and Nordic nRFxx BLE hardware to maximize signal sensitivity and power efficiency.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap1Bullet1">2.4GHz RF Transceiver & Nordic nRFxx Circuit Design</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap1Bullet2">VNA S11 Antenna Impedance Matching & Power Opt.</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap1Bullet3">PA / LNA / Filter Tuning & EMI / EMC Suppression</span></li>
+            </ul>
+          </article>
+
+          <!-- Card 02 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-id-card"></i></div>
+              <span class="card-code">02 // NFC & RFID HARDWARE</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap2Title">NFC & Dual-Frequency RFID</h3>
+            <p class="card-body-desc" data-i18n="cap2Desc">Support dual 125kHz LF RFID and 13.56MHz HF NFC frequencies with metal enclosure ferrite shielding and dual antenna systems.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap2Bullet1">125kHz LF RFID + 13.56MHz HF NFC Dual Circuit</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap2Bullet2">Metal Enclosure Ferrite Shielding Antenna Design</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap2Bullet3">Custom Compact NFC Module & Q-Factor Tuning</span></li>
+            </ul>
+          </article>
+
+          <!-- Card 03 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-cogs"></i></div>
+              <span class="card-code">03 // MOTOR & MOTION CONTROL</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap3Title">Industrial Motor & Motion Control</h3>
+            <p class="card-body-desc" data-i18n="cap3Desc">Design multi-motor drive circuits for DC/BLDC/PMSM/Stepper and EtherCAT real-time multi-axis synchronous motion control.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap3Bullet1">DC · BLDC · PMSM · Stepper Multi-Motor Drive Circuits</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap3Bullet2">EtherCAT Real-time Multi-axis Synchronous Motion Control</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap3Bullet3">15mm Ultra-slim Form Factor & Vibration Suppression</span></li>
+            </ul>
+          </article>
+
+          <!-- Card 04 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-wave-square"></i></div>
+              <span class="card-code">04 // MIXED-SIGNAL & AFE</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap4Title">Mixed-Signal Sensor Boards</h3>
+            <p class="card-body-desc" data-i18n="cap4Desc">Develop high-noise immune Analog Front-End (AFE) and high-resolution ADC sensor interfaces for industrial/medical equipment.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap4Bullet1">Analog Front-End (AFE) & Low-Noise Amplification Filter</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap4Bullet2">24-bit High-Resolution Sensor Data Conversion Interface</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap4Bullet3">MCU-Based ToF & High-Precision Fast Conversion</span></li>
+            </ul>
+          </article>
+
+          <!-- Card 05 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-award"></i></div>
+              <span class="card-code">05 // MASS PRODUCTION & CERT</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap5Title">Mass Production & Certification</h3>
+            <p class="card-body-desc" data-i18n="cap5Desc">Complete one-stop support from DFM verification and BOM optimization to mass line troubleshooting and KC/FCC/CE certification.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap5Bullet1">Design for Manufacturing (DFM) & Yield Optimization</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap5Bullet2">Component Sourcing & Optimized BOM Cost Structure</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap5Bullet3">KC / FCC / CE Global Compliance Certification Guide</span></li>
+            </ul>
+          </article>
+
+          <!-- Card 06 -->
+          <article class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-laptop-code"></i></div>
+              <span class="card-code">06 // DEV VIBE CODING</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap6Title">💻 Dev Vibe Coding</h3>
+            <p class="card-body-desc" data-i18n="cap6Desc">Develop futuristic applications and hardware parameter tuning software leveraging AI natural language prompt engineering.</p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap6Bullet1">Natural Language Prompt Engineering Analysis</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap6Bullet2">Intelligent Software & Hardware Control Integration</span></li>
+              <li><i class="fas fa-check text-lime"></i> <span data-i18n="cap6Bullet3">Web / App / YouTube Special Vibe Custom Dev.</span></li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE SECTION -->
+    <section class="section-block portfolio-section" id="portfolio">
+      <div class="section-watermark">PORTFOLIO</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// PROVEN RESULTS</span>
+          <span class="section-num-tag">03 / 06</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="portTitle">Project Portfolio</h2>
+        <p class="section-lead-desc" data-i18n="portSub">Proven track record from enterprise mass production to cold-chain sensors and dual NFC</p>
+
+        <!-- Category Filter Tabs -->
+        <div class="portfolio-filter-buttons">
+          <button class="filter-tab-btn active" data-filter="all">ALL PROJECTS</button>
+          <button class="filter-tab-btn" data-filter="rf">RF / BLE</button>
+          <button class="filter-tab-btn" data-filter="nfc">NFC / RFID</button>
+          <button class="filter-tab-btn" data-filter="sensor">SENSOR / AFE</button>
+        </div>
+
+        <div class="portfolio-cards-grid" id="portfolio-grid-container">
+
+          <!-- Project 0: Industrial Equipment Diagnosis -->
+          <article class="portfolio-luxe-card magnetic-hover" data-category="sensor">
+            <div class="port-card-visual">
+              <img src="/assets/industrial_factory_machinery.png" alt="Industrial Factory Machinery" class="port-bg-img" />
+              <div class="port-category-tag" data-i18n="proj0Btn">Supplied to S & L Corp</div>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn">B2B ENTERPRISE VERIFIED</span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">24-bit FFT Spectrum AFE | RS-485 / BLE Hybrid</div>
+              <h3 class="port-head-title" data-i18n="proj0Title">Predictive Maintenance & Condition Monitoring</h3>
+              <p class="port-body-desc" data-i18n="proj0Desc">Ultra-compact multi-sensor board mass-produced for major tech enterprises (S-Corp, L-Corp).</p>
+              
+              <div class="port-detail-spec-box">
+                <div class="port-tech-addition" data-i18n="proj0Tech">
+                  <strong>Technical Details:</strong> Implemented high-speed 24-bit Delta-Sigma ADC acceleration/vibration FFT spectrum analysis circuit. Passive L-C notch filters eliminate high-frequency EMI noise, paired with ultra-dense multi-layer PCB layout.
+                </div>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj0B1">Ultra-dense custom PCB layout artwork design</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj0B2">Integrated industrial acceleration, vibration & temp sensors</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj0B3">RS-485 / BLE hybrid communication interface</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj0B4">B2B mass-production supply for S-Corp & L-Corp</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 1: BLE Cold Chain -->
+          <article class="portfolio-luxe-card magnetic-hover" data-category="rf">
+            <div class="port-card-visual">
+              <div class="port-category-tag" data-i18n="proj1Btn">-70°C Cold-Chain</div>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn">KC CERTIFIED MASS SUPPLY</span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">Nordic nRF52840 | 2.1µA Standby | PT100 AFE</div>
+              <h3 class="port-head-title" data-i18n="proj1Title">BLE Cold-Chain Temperature Monitor</h3>
+              <p class="port-body-desc" data-i18n="proj1Desc">Disaster-response ultra-low power nRF52 device tested from -20°C to -70°C for vaccine logistics.</p>
+              
+              <div class="port-detail-spec-box">
+                <div class="port-tech-addition" data-i18n="proj1Tech">
+                  <strong>Technical Details:</strong> Maximized Nordic nRF52840 SoC DC-DC converter efficiency to achieve 2.1µA standby current. Conformal gel coating prevents condensation in dry ice (-70°C) with external PT100/RTD precision temperature probe AFE.
+                </div>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj1B1">BLE wireless communication module (Nordic nRF52 Series)</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj1B2">External temperature sensing probe AFE interface</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj1B3">Ultra-low temperature low-power firmware architecture</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj1B4">KC compliance & mass supply for national vaccine logistics</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2: Firefighter PASS Alarm -->
+          <article class="portfolio-luxe-card magnetic-hover" data-category="sensor">
+            <div class="port-card-visual">
+              <img src="/assets/firefighters_fighting_fire.png" alt="Firefighters Fighting Fire" class="port-bg-img" />
+              <div class="port-category-tag" data-i18n="proj2Btn">96dB High-Power</div>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn">IP67 WATERPROOF & FIRE AGENCY</span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">High-Voltage Piezo Driver | IP67 | 3-Axis Accel</div>
+              <h3 class="port-head-title" data-i18n="proj2Title">Firefighter Safety PASS Alarm</h3>
+              <p class="port-body-desc" data-i18n="proj2Desc">96dB high-power piezo alarm with IP67 waterproof enclosure & OLED interface.</p>
+              
+              <div class="port-detail-spec-box">
+                <div class="port-tech-addition" data-i18n="proj2Tech">
+                  <strong>Technical Details:</strong> High-Voltage Piezo Driver switching amplifier circuit secures 96dB acoustic output pressure. 3-axis accelerometer sensor triggers auto-alarm after 30s immobility, encased in IP67 dual-sealed waterproof enclosure.
+                </div>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj2B1">Piezo + resonator chamber 96dB high-power alarm</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj2B2">OLED display & 3-axis motion sensor integration</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj2B3">Extreme environment durability (IP67 waterproof & dustproof)</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj2B4">Full compliance with KC & National Fire Agency standards</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3: NFC Dual Frequency -->
+          <article class="portfolio-luxe-card magnetic-hover" data-category="nfc">
+            <div class="port-card-visual">
+              <div class="port-category-tag" data-i18n="proj3Btn">125kHz + 13.56MHz</div>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn">FERRITE SHIELDED DUAL COIL</span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">LF + HF Notch Filter | Differential RF Amp</div>
+              <h3 class="port-head-title" data-i18n="proj3Title">Dual-Frequency NFC Antenna System</h3>
+              <p class="port-body-desc" data-i18n="proj3Desc">Single reader supporting dual 125kHz & 13.56MHz frequencies with metal ferrite shielding.</p>
+              
+              <div class="port-detail-spec-box">
+                <div class="port-tech-addition" data-i18n="proj3Tech">
+                  <strong>Technical Details:</strong> LC resonance Q-Factor tuning with dual-frequency notch filter to suppress mutual crosstalk. Differential RF amplifier stage with high-permeability ferrite sandwich plate miniaturizes metal clearance distance to under 5mm.
+                </div>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj3B1">125kHz LF + 13.56MHz HF dual-coil PCB layout</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj3B2">Crosstalk suppression notch filter design</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj3B3">50Ω independent matching network & VNA S11 tuning</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj3B4">High-permeability ferrite substrate for metal enclosures</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4: Ultrasonic Concrete NDT -->
+          <article class="portfolio-luxe-card magnetic-hover" data-category="sensor">
+            <div class="port-card-visual">
+              <div class="port-category-tag" data-i18n="proj4Btn">High-Speed ToF</div>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn">300V HIGH-VOLTAGE PULSE DRIVER</span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">300V MOSFET Drive | 100Msps ToF ADC</div>
+              <h3 class="port-head-title" data-i18n="proj4Title">Ultrasonic Concrete NDT Equipment</h3>
+              <p class="port-body-desc" data-i18n="proj4Desc">High-voltage ultrasonic transducer driver with high-speed ADC ToF precision measurement.</p>
+              
+              <div class="port-detail-spec-box">
+                <div class="port-tech-addition" data-i18n="proj4Tech">
+                  <strong>Technical Details:</strong> High-Voltage MOSFET half-bridge transducer 300V pulse drive circuit. 100Msps high-speed ADC Time-of-Flight (ToF) sampling algorithm and differential bandpass filter minimize analog signal distortion.
+                </div>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj4B1">Ultrasonic transducer 300V high-voltage drive circuit</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj4B2">100Msps high-speed ADC ultra-precise ToF measurement</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj4B3">Signal filtering & high-frequency noise suppression AFE</span></div>
+                  <div><i class="fas fa-check text-lime"></i> <span data-i18n="proj4B4">Field portable low-power custom form factor design</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH BLOG & RESEARCH SECTION -->
+    <section class="section-block blog-section" id="blog">
+      <div class="section-watermark">TECH BLOG</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// INSIGHTS & PAPERS</span>
+          <span class="section-num-tag">04 / 06</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="blogTitle">Tech Blog & Papers</h2>
+        <p class="section-lead-desc" data-i18n="blogSub">Practical RF and hardware engineering insights and technical references.</p>
+
+        <div class="blog-cards-grid">
+
+          <!-- Blog Card 1 -->
+          <article class="blog-card-luxe magnetic-hover">
+            <div class="blog-cover-img-box">
+              <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_01.webp" alt="BLE Antenna Tuning" class="blog-cover-img" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-top">
+                <span class="blog-tag">RF / BLE TUNING</span>
+                <span class="blog-date">2026-08-08</span>
+              </div>
+              <h3 class="blog-card-title" data-i18n="blog1Title">BLE Antenna Impedance Matching & VNA Optimization Guide</h3>
+              <p class="blog-card-summary" data-i18n="blog1Desc">Complete guide from PCB layout mistakes to VNA S11 Return Loss calibration, VSWR reduction, and antenna selection.</p>
+              <button class="btn-read-doc" data-open-blog="doc1">
+                <span data-i18n="btnReadDoc">Read Tech Document</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+          <!-- Blog Card 2 -->
+          <article class="blog-card-luxe magnetic-hover">
+            <div class="blog-cover-img-box">
+              <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_01.webp" alt="nRF52805 Design Reference" class="blog-cover-img" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-top">
+                <span class="blog-tag">HARDWARE REF</span>
+                <span class="blog-date">2026-08-08</span>
+              </div>
+              <h3 class="blog-card-title" data-i18n="blog2Title">nRF52805 BLE Module Hardware Circuit Design Reference</h3>
+              <p class="blog-card-summary" data-i18n="blog2Desc">Nordic Semiconductor nRF52805 WLCSP 1st/2nd Build-up PCB design, RF shielding, and VNA antenna tuning process.</p>
+              <button class="btn-read-doc" data-open-blog="doc2">
+                <span data-i18n="btnReadDoc">Read Tech Document</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- RF ENGINEERING Q&A 50 ACCORDION SECTION -->
+    <section class="section-block faq-section" id="rf-faq">
+      <div class="section-watermark">Q&A 50</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// KNOWLEDGE BASE</span>
+          <span class="section-num-tag">05 / 06</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="faqTitle">RF Engineering Q&A (50 Items)</h2>
+        <p class="section-lead-desc" data-i18n="faqSub">Hardware solutions for 2.4GHz interference, antenna matching, AFE noise, and KC/FCC certs</p>
+
+        <!-- FAQ Search Box -->
+        <div class="faq-search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="faq-search-input" placeholder="Search Q&A (e.g. VNA, nRF52, KC cert, Antenna, ESD, Noise)..." />
+        </div>
+
+        <!-- FAQ Dynamic Accordion Container -->
+        <div class="faq-accordion-list" id="faq-accordion-container">
+          <!-- Dynamically populated 50 items via main.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT & CONSULTATION SECTION -->
+    <section class="section-block contact-section" id="contact">
+      <div class="section-watermark">CONTACT</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">// INQUIRY PROTOCOL</span>
+          <span class="section-num-tag">06 / 06</span>
+        </div>
+
+        <div class="contact-split-box">
+          
+          <div class="contact-info-col">
+            <h2 class="section-main-title" data-i18n="contactTitle">Project Inquiry & Consultation</h2>
+            <p class="contact-lead-text" data-i18n="contactLead">
+              Facing a tough hardware challenge? Contact 31NS-Tech Product Development LAB for rapid engineering feedback.
+            </p>
+
+            <div class="contact-cards-stack">
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-envelope"></i></div>
+                <div>
+                  <div class="item-label">PRIMARY EMAIL INQUIRY</div>
+                  <div class="item-val">nskim@31ns.kr / promisesmk@gmail.com</div>
+                </div>
+              </div>
+
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-map-marker-alt"></i></div>
+                <div>
+                  <div class="item-label">LAB LOCATION</div>
+                  <div class="item-val" data-i18n="contactAddr">Gwangmyeong-si, Gyeonggi-do, Republic of Korea</div>
+                </div>
+              </div>
+
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-clock"></i></div>
+                <div>
+                  <div class="item-label">RESPONSE PROTOCOL</div>
+                  <div class="item-val" data-i18n="contactResp">Engineer review & reply within 24 hours</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terminal Form Box -->
+          <div class="terminal-form-box">
+            <div class="form-header-bar">
+              <span class="dot r"></span>
+              <span class="dot y"></span>
+              <span class="dot g"></span>
+              <span class="form-title-text">INQUIRY_TRANSMITTER.sys</span>
+            </div>
+
+            <form class="terminal-input-form" id="contact-form">
+              <div class="input-field-group">
+                <label for="user-name">// NAME / COMPANY</label>
+                <input type="text" id="user-name" placeholder="Enter your name or company" required />
+              </div>
+
+              <div class="input-field-group">
+                <label for="user-email">// EMAIL ADDRESS</label>
+                <input type="email" id="user-email" placeholder="Enter your email address" required />
+              </div>
+
+              <div class="input-field-group">
+                <label for="service-select">// SERVICE CATEGORY</label>
+                <select id="service-select">
+                  <option value="rf">RF / BLE / NFC Circuit Design & Antenna Tuning</option>
+                  <option value="signal">Mixed-Signal & AFE Design</option>
+                  <option value="cert">KC / FCC / CE Certifications & DFM Consulting</option>
+                  <option value="vibe">Dev Vibe Coding & Application Development</option>
+                  <option value="other">General Technical Inquiry</option>
+                </select>
+              </div>
+
+              <div class="input-field-group">
+                <label for="user-message">// PROJECT REQUIREMENTS</label>
+                <textarea id="user-message" rows="4" placeholder="Describe your project requirements, target specs, or questions in detail." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit-luxe magnetic-hover" id="submit-btn">
+                <span data-i18n="btnSubmitForm">SEND INQUIRY PROTOCOL</span>
+                <i class="fas fa-paper-plane"></i>
+              </button>
+
+              <div class="form-result-notice" id="form-msg"></div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TECH BLOG MODAL VIEWER -->
+  <div class="blog-modal-overlay" id="blog-modal">
+    <div class="blog-modal-window">
+      <div class="blog-modal-header">
+        <span class="blog-modal-title" id="modal-article-title">TECH BLOG DOCUMENT</span>
+        <button class="blog-modal-close" id="btn-close-blog-modal">&times;</button>
+      </div>
+      <div class="blog-modal-body" id="modal-article-content">
+        <!-- Rendered markdown content with images -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="luxury-site-footer">
+    <div class="container">
+      <div class="footer-columns-grid">
+        <div class="footer-col brand-col">
+          <div class="brand-logo footer-logo-box">
+            <div class="logo-box-full">
+              <img src="/assets/Logo 31NS-Tech.jpg" alt="31NS Logo" class="brand-img" />
+            </div>
+            <span class="brand-title-single">31NS-TECH</span>
+          </div>
+          <p class="footer-about-text" data-i18n="footerAbout">
+            20+ years experienced RF/hardware team offering practical total engineering solutions from design to production.
+          </p>
+          <div class="footer-live-status">
+            <span class="live-dot-pulse"></span> 31NS PRODUCT DEVELOPMENT LAB // ONLINE
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="col-head-title">Navigation</h4>
+          <ul class="col-links-list">
+            <li><a href="#hero" data-i18n="navHome">Home</a></li>
+            <li><a href="#philosophy" data-i18n="navPhilosophy">Philosophy</a></li>
+            <li><a href="#capabilities" data-i18n="navCapabilities">Capabilities</a></li>
+            <li><a href="#portfolio" data-i18n="navPortfolio">Portfolio</a></li>
+            <li><a href="#blog" data-i18n="navBlog">Tech Blog</a></li>
+            <li><a href="#rf-faq" data-i18n="navFaq">RF Q&A</a></li>
+            <li><a href="#contact" data-i18n="navContact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="col-head-title">Specialization</h4>
+          <ul class="col-links-list">
+            <li><a href="#capabilities">2.4GHz RF & BLE 5.3</a></li>
+            <li><a href="#capabilities">NFC & Antenna VNA Matching</a></li>
+            <li><a href="#capabilities">Mixed-Signal & AFE Circuit</a></li>
+            <li><a href="#capabilities">KC / FCC / CE Certification</a></li>
+            <li><a href="#capabilities">Dev Vibe Prompt Eng.</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-sub-bar">
+        <div class="copyright-text">
+          © 2026 31NS-Tech Product Development LAB. All rights reserved.
+        </div>
+        <div class="location-text">
+          Gwangmyeong-si, Gyeonggi-do, Republic of Korea | Contact: nskim@31ns.kr
+        </div>
+      </div>
     </div>
   </footer>
 

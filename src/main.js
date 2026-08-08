@@ -456,6 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandler();
   initLangSwitcher();
   initScrollAnimations();
+
+  // Auto-detect English page from URL or <html lang="en">
+  if (window.location.pathname.includes('/en') || document.documentElement.lang === 'en') {
+    setLanguage('en');
+  }
 });
 
 // Smooth Dark Header Transition (Dark Slate -> Deeper Dark Obsidian)
