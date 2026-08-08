@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>31NS-Tech Product Development LAB | Total Engineering Solution</title>
+  <meta name="title" content="31NS-Tech Product Development LAB | Total Engineering Solution" />
+  <meta name="description" content="RF·BLE·NFC·Mixed-Signal 회로 설계, 센서보드, PCB 설계, RF 튜닝, 안테나 매칭, 하드웨어 제품개발, KC·FCC·CE 인증 — 31NS-Tech Product Development LAB" />
+  <meta name="keywords" content="RF 하드웨어 개발, BLE 모듈, NFC 회로, PCB 설계, RF 튜닝, 안테나 매칭, KC 인증, FCC 인증, Mixed-Signal, 센서보드, 모터드라이버, 31NS-Tech, 회로설계 외주" />
+  <meta name="author" content="31NS-Tech Product Development LAB" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://31ns.kr/" />
+
+  <!-- Language Alternates for Multi-language SEO -->
+  <link rel="alternate" hreflang="ko" href="https://31ns.kr/" />
+  <link rel="alternate" hreflang="en" href="https://31ns.kr/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://31ns.kr/" />
+
+  <!-- Naver & Google Site Verification Placeholders -->
+  <!-- <meta name="naver-site-verification" content="YOUR_NAVER_VERIFICATION_CODE" /> -->
+  <!-- <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" /> -->
+
+  <!-- Open Graph / Kakao / Naver Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://31ns.kr/" />
+  <meta property="og:site_name" content="31NS-Tech Product Development LAB" />
+  <meta property="og:title" content="31NS-Tech Product Development LAB | Total Engineering Solution" />
+  <meta property="og:description" content="RF·BLE·NFC·Mixed-Signal 회로 설계부터 양산·인증까지, 20년 이상 검증된 토털 엔지니어링 솔루션" />
+  <meta property="og:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://31ns.kr/" />
+  <meta name="twitter:title" content="31NS-Tech Product Development LAB | Total Engineering Solution" />
+  <meta name="twitter:description" content="RF·BLE·NFC·Mixed-Signal 회로 설계부터 양산·인증까지, 20년 이상 검증된 토털 엔지니어링 솔루션" />
+  <meta name="twitter:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
+
+  <!-- JSON-LD Structured Data (Google & Naver Algorithm Rich Snippets) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ResearchOrganization",
+    "name": "31NS-Tech Product Development LAB",
+    "alternateName": "31NS",
+    "url": "https://31ns.kr/",
+    "logo": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
+    "image": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
+    "description": "20년 이상 경력의 RF, BLE, NFC, Mixed-Signal 회로 설계, 초소형 센서보드, 산업용 모터 드라이버 및 글로벌 인증 지원 토털 엔지니어링 연구소",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Gwangmyeong-si",
+      "addressRegion": "Gyeonggi-do",
+      "addressCountry": "KR"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "nskim@31ns.kr",
+      "contactType": "customer service"
+    }
+  }
+  </script>
+
+  <!-- Fonts & Icons (Montserrat for clean high-end legibility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Custom SpinX Ultra-Luxe Style -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="spinx-luxury-body">
+
+  <!-- Custom Magnetic Cursor (Centered Alignment) -->
+  <div class="custom-cursor-dot" id="cursor-dot"></div>
+  <div class="custom-cursor-follower" id="cursor-follower"></div>
+
+  <!-- Ambient Dark Background Elements -->
+  <div class="bg-grid-overlay"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER (Product Development Lab + 2s Transition + Mobile Hamburger)
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="luxury-header" id="site-header">
+    <div class="header-inner">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo magnetic-hover">
+        <div class="logo-box-full">
+          <img src="/assets/Logo 31NS-Tech.jpg" alt="31NS-Tech Logo" class="brand-img" />
+        </div>
+        <div class="logo-text-inline">
+          <span class="brand-title-single">31NS-TECH</span>
+          <span class="brand-sub-tag">PRODUCT DEVELOPMENT LAB</span>
+        </div>
+      </a>
+
+      <!-- Navigation Menu -->
+      <nav class="luxury-nav" id="nav-container">
+        <ul class="nav-links-list">
+          <li><a href="#hero" class="nav-item active magnetic-hover" data-i18n="navHome">Home</a></li>
+          <li><a href="#philosophy" class="nav-item magnetic-hover" data-i18n="navPhilosophy">Philosophy</a></li>
+          <li><a href="#capabilities" class="nav-item magnetic-hover" data-i18n="navCapabilities">Capabilities</a></li>
+          <li><a href="#portfolio" class="nav-item magnetic-hover" data-i18n="navPortfolio">Portfolio</a></li>
+          <li><a href="#blog" class="nav-item magnetic-hover" data-i18n="navBlog">Tech Blog</a></li>
+          <li><a href="#rf-faq" class="nav-item magnetic-hover" data-i18n="navFaq">RF Q&A</a></li>
+          <li><a href="#contact" class="nav-item magnetic-hover" data-i18n="navContact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right Actions: Inquiry Button + Always-Visible KO/EN Switcher -->
+      <div class="header-right-actions">
+        <a href="#contact" class="btn-spinx-cta magnetic-hover">
+          <span data-i18n="btnInquireNav">프로젝트 의뢰</span>
+          <div class="btn-arrow-circle"><i class="fas fa-arrow-right"></i></div>
+        </a>
+
+        <!-- KO / EN Language Toggle Switch -->
+        <div class="header-lang-switch">
+          <button class="lang-btn active" id="btn-lang-ko" data-lang-btn="ko">KO</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn" id="btn-lang-en" data-lang-btn="en">EN</button>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Open Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════════ -->
+  <main>
+
+    <!-- HERO SECTION (Fluid Animated Cyan-Blue-Purple Metallic Gradient) -->
+    <section class="hero-luxury-section" id="hero">
+      <div class="container hero-container">
+        
+        <div class="hero-kicker-tag fade-in-up">
+          <span class="tag-badge">// PRODUCT DEVELOPMENT LAB</span>
+          <span class="tag-text" data-i18n="heroKicker">TOTAL ENGINEERING SOLUTION</span>
+          <span class="tag-status">SYS_VER 3.0</span>
+        </div>
+
+        <h1 class="hero-headline fade-in-up delay-1" data-i18n="heroHeadline">
+          <span class="spinx-headline-gradient">회로 설계부터 양산까지</span><br />
+          <span class="spinx-headline-gradient-2">검증된 기술력</span>으로<br />
+          성공적인 제품 개발을 보장합니다
+        </h1>
+
+        <p class="hero-lead-text fade-in-up delay-2" data-i18n="heroSubtext">
+          <strong class="highlight-text">RF · BLE · NFC · Mixed-Signal Circuit Engineering</strong><br />
+          20년 이상 축적된 RF 및 Mixed-Signal 실전 경험을 바탕으로, 고객의 개발 목표를 단축하고 양산 성공률을 높이는 최적의 엔지니어링 파트너입니다.
+        </p>
+
+        <div class="hero-buttons-row fade-in-up delay-3">
+          <a href="#contact" class="btn-lime-hero magnetic-hover">
+            <i class="fas fa-terminal"></i>
+            <span data-i18n="btnHeroPrimary">기술 상담 및 프로젝트 의뢰</span>
+            <i class="fas fa-chevron-right arrow-move"></i>
+          </a>
+          <a href="#capabilities" class="btn-glass-hero magnetic-hover">
+            <i class="fas fa-microchip"></i>
+            <span data-i18n="btnHeroSecondary">기술 서비스 보기</span>
+          </a>
+        </div>
+
+        <!-- 4-Stat Metric Bar -->
+        <div class="stat-metrics-bar fade-in-up delay-4">
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">20<span class="plus-sign">+</span></div>
+            <div class="metric-title" data-i18n="stat1Title">Years of Experience</div>
+            <div class="metric-desc" data-i18n="stat1Desc">RF/하드웨어 개발 실전 경력</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">RF·BLE</div>
+            <div class="metric-title" data-i18n="stat2Title">Core Specialization</div>
+            <div class="metric-desc" data-i18n="stat2Desc">NFC / Mixed-Signal 회로 설계</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">KC·FCC</div>
+            <div class="metric-title" data-i18n="stat3Title">Certification Support</div>
+            <div class="metric-desc" data-i18n="stat3Desc">CE 및 글로벌 규격 인증 대응</div>
+          </div>
+          <div class="metric-card magnetic-hover">
+            <div class="metric-number">E2E</div>
+            <div class="metric-title" data-i18n="stat4Title">Design to Production</div>
+            <div class="metric-desc" data-i18n="stat4Desc">시작품 원스톱 양산 연계</div>
+          </div>
+        </div>
+
+        <!-- Dual Live Video Terminal Feed Showcase -->
+        <div class="hud-feeds-wrapper fade-in-up delay-5">
+          <div class="hud-window-topbar">
+            <div class="window-controls">
+              <span class="win-btn red"></span>
+              <span class="win-btn yellow"></span>
+              <span class="win-btn green"></span>
+              <span class="win-title">31NS-LAB // REALTIME HARDWARE & CODE FEED MONITOR</span>
+            </div>
+            <div class="win-status">
+              <span class="rec-dot"></span> LIVE TRANSMISSION 60FPS
+            </div>
+          </div>
+
+          <div class="video-hud-grid">
+            <div class="video-hud-card">
+              <div class="card-hud-bar">
+                <span class="hud-badge"><i class="fas fa-microchip"></i> BOARD_FEED</span>
+                <span class="hud-signal"><span class="signal-bar b1"></span><span class="signal-bar b2"></span><span class="signal-bar b3"></span> 2.4GHz ACTIVE</span>
+              </div>
+              <div class="video-frame-box">
+                <video src="/assets/board_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <div class="hud-corner top-left"></div>
+                <div class="hud-corner top-right"></div>
+                <div class="hud-corner bottom-left"></div>
+                <div class="hud-corner bottom-right"></div>
+                <div class="hud-data-overlay">
+                  <div class="overlay-row-top">HARDWARE_LAB // BOARD_ANALYSIS</div>
+                  <div class="overlay-row-bottom">FREQ: 2.4GHz | IMPEDANCE: 50Ω MATCHED | VNA: OK</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-hud-card">
+              <div class="card-hud-bar">
+                <span class="hud-badge"><i class="fas fa-desktop"></i> MONITOR_FEED</span>
+                <span class="hud-signal"><span class="signal-bar b1"></span><span class="signal-bar b2"></span><span class="signal-bar b3"></span> DEV VIBE CODE</span>
+              </div>
+              <div class="video-frame-box">
+                <video src="/assets/monitor_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <div class="hud-corner top-left"></div>
+                <div class="hud-corner top-right"></div>
+                <div class="hud-corner bottom-left"></div>
+                <div class="hud-corner bottom-right"></div>
+                <div class="hud-data-overlay">
+                  <div class="overlay-row-top">DEV_VIBE // PROMPT_ENG_STUDIO</div>
+                  <div class="overlay-row-bottom">AI PROMPT SYNC: ACTIVE | RENDER: REALTIME</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INFINITE MARQUEE TICKER BAR -->
+    <div class="infinite-ticker-bar">
+      <div class="ticker-track">
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> RF HARDWARE DESIGN</span>
+        <span class="ticker-item stroke">BLE 5.3 WIRELESS</span>
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> NFC & VNA MATCHING</span>
+        <span class="ticker-item stroke">MIXED-SIGNAL AFE</span>
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> KC / FCC / CE CERTIFICATION</span>
+        <span class="ticker-item stroke">DEV VIBE PROMPT ENG</span>
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> RF HARDWARE DESIGN</span>
+        <span class="ticker-item stroke">BLE 5.3 WIRELESS</span>
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> NFC & VNA MATCHING</span>
+        <span class="ticker-item stroke">MIXED-SIGNAL AFE</span>
+        <span class="ticker-item"><i class="fas fa-bolt text-lime"></i> KC / FCC / CE CERTIFICATION</span>
+        <span class="ticker-item stroke">DEV VIBE PROMPT ENG</span>
+      </div>
+    </div>
+
+    <!-- PHILOSOPHY SECTION -->
+    <section class="section-block philosophy-block" id="philosophy">
+      <div class="section-watermark">01</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">PHILOSOPHY</span>
+          <span class="section-num-tag">01 // MISSION</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="philoTitle">엔지니어링 철학</h2>
+        <p class="section-lead-desc" data-i18n="philoSub">20년의 실전 노하우로 고객의 거대한 하드웨어 난제를 명확히 해결합니다.</p>
+
+        <div class="terminal-card-wrapper">
+          <div class="term-card-header">
+            <div class="term-left">
+              <i class="fas fa-terminal text-lime"></i>
+              <span class="term-filename">LAB_MISSION.LOG</span>
+            </div>
+            <div class="term-right">
+              <span class="status-live-dot"></span> PROTOCOL_ACTIVE
+            </div>
+          </div>
+          <div class="term-card-content">
+            <p class="log-entry text-muted">[SYSTEM INIT 2026-08-08] Loading 31NS Core Philosophy...</p>
+            <p class="log-entry text-body" data-i18n="philoBody">
+              31NS-Tech Product Development LAB은 20년 이상 축적된 RF 및 Mixed-Signal 실전 경험을 바탕으로,
+              고객의 개발 목표를 단축하고 양산 성공률을 높이는 최적의 토털 엔지니어링 파트너가 되겠습니다.
+            </p>
+            <p class="log-entry text-highlight" data-i18n="philoQuote">
+              &gt; 극한 환경에서도 검증된 고신뢰성 하드웨어 솔루션을 제공하는 것이 저희의 핵심 철학입니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE CAPABILITIES SECTION -->
+    <section class="section-block capabilities-block" id="capabilities">
+      <div class="section-watermark">02</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">CORE CAPABILITIES</span>
+          <span class="section-num-tag">02 // SERVICES</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="capaTitle">핵심 기술 역량</h2>
+        <p class="section-lead-desc" data-i18n="capaSub">RF/무선통신, 듀얼 NFC, 산업용 모터 제어, AFE 센서보드, 양산인증, Dev Vibe 6대 솔루션</p>
+
+        <div class="cards-split-grid">
+          
+          <!-- Card 1: RF & BLE Wireless Hardware -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-satellite-dish"></i></div>
+              <span class="card-code">01 // RF & BLE WIRELESS</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap1Title">RF & BLE Wireless Hardware</h3>
+            <p class="card-body-desc" data-i18n="cap1Desc">
+              2.4GHz ISM Band RF 송수신 회로 및 Nordic nRFxx 기반 BLE 디바이스를 설계하여 수신 감도와 전력 소모를 최적화합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap1Bullet1">2.4GHz RF 송수신 & Nordic nRFxx 회로 설계</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap1Bullet2">VNA S11 안테나 임피던스 매칭 & 전력 최적화</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap1Bullet3">PA / LNA / 필터 튜닝 & EMI / EMC 노이즈 억제</span></li>
+            </ul>
+          </div>
+
+          <!-- Card 2: NFC & Dual-Frequency RFID -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-wifi"></i></div>
+              <span class="card-code">02 // NFC & RFID HARDWARE</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap2Title">NFC & Dual-Frequency RFID</h3>
+            <p class="card-body-desc" data-i18n="cap2Desc">
+              125kHz 저주파 RFID와 13.56MHz NFC 듀얼 주파수를 지원하며, 금속 외함 차폐 및 복합 안테나 시스템을 구축합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap2Bullet1">125kHz LF RFID + 13.56MHz HF NFC 듀얼 회로</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap2Bullet2">금속 장착 환경 대응 페라이트 차폐 안테나 설계</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap2Bullet3">커스텀 초소형 NFC 모듈 & Q-Factor 매칭</span></li>
+            </ul>
+          </div>
+
+          <!-- Card 3: Industrial Motor & Motion Control -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-cogs"></i></div>
+              <span class="card-code">03 // MOTOR & MOTION CONTROL</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap3Title">Industrial Motor & Motion Control</h3>
+            <p class="card-body-desc" data-i18n="cap3Desc">
+              DC·BLDC·PMSM·Stepper 다종 모터 드라이브 회로와 EtherCAT 기반 고속 실시간 다축 동기 모션 제어 시스템을 설계합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap3Bullet1">DC · BLDC · PMSM · Stepper 범용 모터 드라이브 회로</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap3Bullet2">EtherCAT 기반 고속 실시간 다축 동기 모션 제어</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap3Bullet3">15mm 초슬림 폼팩터 & 기계 진동 감쇠(Suppression) 튜닝</span></li>
+            </ul>
+          </div>
+
+          <!-- Card 4: Mixed-Signal Sensor Boards -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-wave-square"></i></div>
+              <span class="card-code">04 // MIXED-SIGNAL & AFE</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap4Title">Mixed-Signal Sensor Boards</h3>
+            <p class="card-body-desc" data-i18n="cap4Desc">
+              산업·의료·반도체 장비용 고노이즈 차단 아날로그 프론트엔드(AFE) 및 고해상도 ADC 정밀 센서 인터페이스를 개발합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap4Bullet1">아날로그 프론트엔드(AFE) & 저노이즈 증폭 필터 설계</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap4Bullet2">24-bit 고해상도 센서 데이터 conversion 인터페이스</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap4Bullet3">MCU 기반 ToF & 초정밀 고속 데이터 변환 최적화</span></li>
+            </ul>
+          </div>
+
+          <!-- Card 5: Mass Production & Global Certification -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-industry"></i></div>
+              <span class="card-code">05 // MASS PRODUCTION & CERT</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap5Title">양산 · 테스트 · 글로벌 인증</h3>
+            <p class="card-body-desc" data-i18n="cap5Desc">
+              시작품 개발 완료 후 DFM 검증, 최적 BOM 단가 산정, 양산 수율 관리 및 KC·FCC·CE 인증 획득 전 과정을 원스톱 조율합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap5Bullet1">양산용 DFM(Design for Manufacturing) & 수율 최적화</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap5Bullet2">부품 대체 수급 & 최적 BOM Cost 구성</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap5Bullet3">KC / FCC / CE 글로벌 필수 인증 규격 컨설팅</span></li>
+            </ul>
+          </div>
+
+          <!-- Card 6: Dev Vibe Coding -->
+          <div class="capability-luxe-card magnetic-hover">
+            <div class="card-glow-aura"></div>
+            <div class="card-header-top">
+              <div class="card-icon-circle"><i class="fas fa-code"></i></div>
+              <span class="card-code">06 // DEV VIBE CODING</span>
+            </div>
+            <h3 class="card-head-title" data-i18n="cap6Title">💻 Dev Vibe 코딩</h3>
+            <p class="card-body-desc" data-i18n="cap6Desc">
+              AI 기반 자연어 프롬프트 엔지니어링을 활용하여 웹, 앱, 유튜브 연동 및 하드웨어 조율 응용 프로그램을 미래지향적으로 개발합니다.
+            </p>
+            <div class="card-divider"></div>
+            <ul class="card-bullets-list">
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap6Bullet1">자연어 프롬프트 엔지니어링 기술 분석</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap6Bullet2">지능형 소프트웨어 및 하드웨어 제어 응용 연동</span></li>
+              <li><i class="fas fa-check-circle text-lime"></i> <span data-i18n="cap6Bullet3">웹 / 앱 / 유튜브 특화 Vibe 맞춤 개발</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE SECTION (All Elements Fully Internationalized with data-i18n) -->
+    <section class="section-block portfolio-block" id="portfolio">
+      <div class="section-watermark">03</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">PORTFOLIO</span>
+          <span class="section-num-tag">03 // CASES</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="portTitle">프로젝트 및 개발 사례</h2>
+        <p class="section-lead-desc" data-i18n="portSub">국내 대기업 양산 공급부터 재난대응 센서, 소방장비, 듀얼 NFC까지 31NS-Tech 실전 실적</p>
+
+        <!-- Filter Tabs -->
+        <div class="portfolio-filter-buttons">
+          <button class="filter-tab-btn active magnetic-hover" data-filter="all">All Projects</button>
+          <button class="filter-tab-btn magnetic-hover" data-filter="industrial">Industrial B2B</button>
+          <button class="filter-tab-btn magnetic-hover" data-filter="ble">BLE Wireless</button>
+          <button class="filter-tab-btn magnetic-hover" data-filter="sensor">Sensors & AFE</button>
+        </div>
+
+        <div class="portfolio-cards-grid">
+          <!-- Project 000: Industrial Factory Heavy Machinery Concept (Custom Local Asset) -->
+          <div class="portfolio-luxe-card magnetic-hover" data-category="industrial">
+            <div class="port-card-visual">
+              <img src="/assets/industrial_factory_machinery.png" alt="Industrial Factory Machinery Floor" class="port-bg-img" loading="lazy" />
+              <span class="port-category-tag">MASS PRODUCTION B2B</span>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn"><i class="fas fa-industry"></i> <span data-i18n="proj0Btn">S사 · L사 공급 완료</span></span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">PROJECT 000 // Condition Monitoring & Predictive Maintenance</div>
+              <h3 class="port-head-title" data-i18n="proj0Title">산업용 설비 진단 & 예측 보전 시스템</h3>
+              <p class="port-body-desc" data-i18n="proj0Desc">
+                다중 센서 통합 및 폼팩터 극소형화 설계. 국내 주요 대기업(S사, L사) 양산 공급 완료.
+              </p>
+              <div class="port-detail-spec-box">
+                <p class="port-tech-addition" data-i18n="proj0Tech">
+                  <strong>엔지니어링 세부기술:</strong> 24-bit Delta-Sigma ADC 기반 고속 가속도/진동 FFT 스펙트럼 분석 회로 구현. 수동 L-C 차단 필터로 고주파 전자기 노이즈(EMI)를 완벽 차단하고, 초집적 다층 PCB 아트워크로 극소형 폼팩터를 완성함.
+                </p>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj0B1">초집적 폼팩터 커스텀 PCB 아트워크 설계</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj0B2">산업용 가속도·진동·온도 다중 센서 최적화 통합</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj0B3">RS-485 / BLE 하이브리드 통신 인터페이스 지원</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj0B4">S사 / L사 B2B 양산 공급 및 신뢰성 품질 검증</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 001: Medical Vaccine Vials & Hospital Cold Chain Logistics Concept -->
+          <div class="portfolio-luxe-card magnetic-hover" data-category="ble">
+            <div class="port-card-visual">
+              <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800&auto=format&fit=crop&q=80" alt="Hospital Vaccine Cold-Chain Logistics" class="port-bg-img" loading="lazy" />
+              <span class="port-category-tag">BLE / DISASTER RESP</span>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn"><i class="fas fa-snowflake"></i> <span data-i18n="proj1Btn">-70°C Cold-Chain</span></span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">PROJECT 001 // BLE Temp Monitoring System</div>
+              <h3 class="port-head-title" data-i18n="proj1Title">재난대응 극저온 BLE 온도 모니터링 장치</h3>
+              <p class="port-body-desc" data-i18n="proj1Desc">
+                국가 재난대응 백신 유통에 사용된 BLE 기반 저전력 온도 모니터링 장치입니다. 극저온(-20°C ~ -70°C) 환경에서도 안정적 동작.
+              </p>
+              <div class="port-detail-spec-box">
+                <p class="port-tech-addition" data-i18n="proj1Tech">
+                  <strong>엔지니어링 세부기술:</strong> Nordic nRF52840 SoC의 DC-DC 컨버터 효율을 극대화하여 대기 전류 2.1µA 달성. -70°C 드라이아이스 환경 내 결로 방지 기판 겔 방수(Conformal Coating) 및 외부 PT100/RTD 고정밀 온도 측정 프로브 AFE 설계.
+                </p>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj1B1">BLE 통신 모듈 (Nordic nRF52 Series)</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj1B2">외부 온도 센싱 프로브 인터페이스 설계</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj1B3">극저온 배터리 방전 방지 저전력 펌웨어 구조</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj1B4">KC 인증 대응 및 백신 유통 라인 양산 공급</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 002: Firefighters Fighting Fire Concept (Custom Local Asset) -->
+          <div class="portfolio-luxe-card magnetic-hover" data-category="sensor">
+            <div class="port-card-visual">
+              <img src="/assets/firefighters_fighting_fire.png" alt="Firefighters Fighting Massive Fire Action Scene" class="port-bg-img" loading="lazy" />
+              <span class="port-category-tag">SAFETY / IP67</span>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn"><i class="fas fa-shield-alt"></i> <span data-i18n="proj2Btn">96dB High-Power</span></span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">PROJECT 002 // Firefighter PASS Alarm</div>
+              <h3 class="port-head-title" data-i18n="proj2Title">소방 장비용 인명구조 경보기 (PASS)</h3>
+              <p class="port-body-desc" data-i18n="proj2Desc">
+                소방관을 위한 고출력 경보음(96dB) + 방수 구조의 인명구조 장비 개발 프로젝트. 충격/진동/고열 등 극한 환경 설계.
+              </p>
+              <div class="port-detail-spec-box">
+                <p class="port-tech-addition" data-i18n="proj2Tech">
+                  <strong>엔지니어링 세부기술:</strong> High-Voltage Piezo Driver 스위칭 앰프 회로 적용으로 96dB 고출력 음압 확보. 3축 가속도 모션 센서를 연동한 30초 무동작 시 자동 발화 구조 및 IP67 완전 방수 이중 실링 외함 구조 완성.
+                </p>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj2B1">피에조 + 울림통 기반 96dB 고출력 경보 구조</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj2B2">OLED 상태 디스플레이 및 모션 3축 센서 연동</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj2B3">극한 환경 내구성 (IP67 완전 방수 및 방진)</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj2B4">KC 인증 및 소방청 규격 기준 완전 충족</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 003: NFC Dual Antenna -->
+          <div class="portfolio-luxe-card magnetic-hover" data-category="industrial">
+            <div class="port-card-visual">
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80" alt="NFC Antenna PCB Hardware" class="port-bg-img" loading="lazy" />
+              <span class="port-category-tag">NFC / DUAL FREQ</span>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn"><i class="fas fa-wifi"></i> <span data-i18n="proj3Btn">125kHz + 13.56MHz</span></span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">PROJECT 003 // Dual-Frequency NFC System</div>
+              <h3 class="port-head-title" data-i18n="proj3Title">NFC 듀얼 주파수 안테나 회로 시스템</h3>
+              <p class="port-body-desc" data-i18n="proj3Desc">
+                125kHz 저주파와 13.56MHz NFC 두 주파수를 단일 리더기에서 동시 지원하는 복합 NFC 안테나 시스템.
+              </p>
+              <div class="port-detail-spec-box">
+                <p class="port-tech-addition" data-i18n="proj3Tech">
+                  <strong>엔지니어링 세부기술:</strong> LC 공진 회로 Q-Factor 조율로 두 주파수 간 상호 도청/간섭 방지 노치 필터(Notch Filter) 설계. 차동 RF 앰프 출력단과 고투과율 페라이트 샌드위치 플레이트로 금속 간섭 이격 거리를 5mm 이하로 극소형화함.
+                </p>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj3B1">125kHz LF + 13.56MHz HF 듀얼 코일 레이아웃</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj3B2">주파수 간 상호 간섭 억제 노치 필터 설계</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj3B3">50Ω 독립 매칭 네트워크 및 VNA S11 튜닝</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj3B4">금속 외함 환경 대응 페라이트 차폐 기판</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 004: Ultrasonic Concrete NDT -->
+          <div class="portfolio-luxe-card magnetic-hover" data-category="sensor">
+            <div class="port-card-visual">
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80" alt="Ultrasonic Precision Measurement" class="port-bg-img" loading="lazy" />
+              <span class="port-category-tag">MIXED-SIGNAL / ADC</span>
+              <div class="port-hover-overlay">
+                <span class="view-details-btn"><i class="fas fa-wave-square"></i> <span data-i18n="proj4Btn">High-Speed ToF</span></span>
+              </div>
+            </div>
+            <div class="port-card-meta">
+              <div class="port-tech-badge">PROJECT 004 // Ultrasonic NDT Equipment</div>
+              <h3 class="port-head-title" data-i18n="proj4Title">초음파 기반 콘크리트 비파괴 강도 측정기</h3>
+              <p class="port-body-desc" data-i18n="proj4Desc">
+                초음파 트랜스듀서를 활용하여 콘크리트의 경도 및 압축강도를 비파괴 방식으로 정밀 측정하는 장비.
+              </p>
+              <div class="port-detail-spec-box">
+                <p class="port-tech-addition" data-i18n="proj4Tech">
+                  <strong>엔지니어링 세부기술:</strong> High-Voltage MOSFET 하프브릿지 트랜스듀서 300V 펄스 드라이브 설계. 100Msps 고속 ADC 기반 ToF(Time of Flight) 샘플링 알고리즘 및 차동 Bandpass 필터로 아날로그 신호 왜곡을 최소화함.
+                </p>
+                <div class="port-bullets-sub">
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj4B1">초음파 트랜스듀서 300V 고전압 드라이브 회로</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj4B2">100Msps 고속 ADC 기반 초정밀 ToF 측정</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj4B3">신호 필터링 및 고주파 노이즈 억제 AFE</span></div>
+                  <div><i class="fas fa-chevron-right text-lime"></i> <span data-i18n="proj4B4">현장 휴대용 저전력 커스텀 폼팩터 설계</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TECH BLOG SECTION -->
+    <section class="section-block blog-block" id="blog">
+      <div class="section-watermark">04</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">TECH BLOG</span>
+          <span class="section-num-tag">04 // KNOWLEDGE</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="blogTitle">기술 블로그 & 연구 문서</h2>
+        <p class="section-lead-desc" data-i18n="blogSub">RF/하드웨어 개발 현장에서 검증된 최적화 노하우 및 실무 기술 리퍼런스</p>
+
+        <div class="blog-cards-grid">
+          <!-- Article 1: BLE Antenna Matching -->
+          <article class="blog-card-luxe magnetic-hover" id="blog-card-ble">
+            <div class="blog-cover-img-box">
+              <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_01.webp" alt="BLE Antenna Matching" class="blog-cover-img" loading="lazy" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-top">
+                <span class="blog-tag">BLE / RF / ANTENNA</span>
+                <span class="blog-date">2026.05.15</span>
+              </div>
+              <h3 class="blog-card-title" data-i18n="blog1Title">BLE 안테나 정합(매칭)과 RF 회로 최적화 실무 기술자료</h3>
+              <p class="blog-card-summary" data-i18n="blog1Desc">
+                초보자를 위한 PCB 설계 오류부터 VNA 튜닝 완벽 가이드. 50Ω 임피던스 매칭, VSWR 및 Return Loss 최소화, IFA / 세라믹 / 휩 안테나 비교 가이드.
+              </p>
+              <div class="blog-card-footer">
+                <button class="btn-read-doc magnetic-hover" id="btn-open-blog1">
+                  <i class="fas fa-book-open"></i> <span data-i18n="btnReadDoc">기술 문서 읽기</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2: nRF52805 Reference -->
+          <article class="blog-card-luxe magnetic-hover" id="blog-card-nrf">
+            <div class="blog-cover-img-box">
+              <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_01.webp" alt="nRF52805 BLE Module" class="blog-cover-img" loading="lazy" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-top">
+                <span class="blog-tag">NORDIC / nRF52805 / HARDWARE</span>
+                <span class="blog-date">2026.05.14</span>
+              </div>
+              <h3 class="blog-card-title" data-i18n="blog2Title">nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서</h3>
+              <p class="blog-card-summary" data-i18n="blog2Desc">
+                Nordic Semiconductor nRF52805 WLCSP 모듈 1차/2차 Build-up PCB 사양, 캔 적용, 안테나 패턴 타입 설계 및 시품 RF 튜닝 실무 프로세스.
+              </p>
+              <div class="blog-card-footer">
+                <button class="btn-read-doc magnetic-hover" id="btn-open-blog2">
+                  <i class="fas fa-book-open"></i> <span data-i18n="btnReadDoc">기술 문서 읽기</span>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RF FAQ SECTION -->
+    <section class="section-block faq-block" id="rf-faq">
+      <div class="section-watermark">05</div>
+      <div class="container">
+        <div class="section-tag-row">
+          <span class="section-kicker-tag">RF Q&A ARCHIVE</span>
+          <span class="section-num-tag">05 // 50 FAQ</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="faqTitle">RF & 하드웨어 실무 Q&A 50선</h2>
+        <p class="section-lead-desc" data-i18n="faqSub">2.4GHz 신호 혼선, 안테나 매칭, AFE 노이즈, KC/FCC 인증 대응 필수 하드웨어 답변</p>
+
+        <!-- Search Bar -->
+        <div class="faq-search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="faq-search-input" placeholder="Q&A 검색어 입력 (예: 와이파이, 간섭, BPF, 안테나, KC인증...)" />
+        </div>
+
+        <!-- Accordion Items List -->
+        <div class="faq-accordion-list" id="faq-accordion-container">
+          <!-- Dynamically filled via JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT / INQUIRY SECTION -->
+    <section class="section-block contact-block" id="contact">
+      <div class="section-watermark">06</div>
+      <div class="container">
+        <div class="contact-split-box">
+          
+          <div class="contact-info-column">
+            <div class="section-tag-row">
+              <span class="section-kicker-tag">REQUEST INQUIRY</span>
+              <span class="section-num-tag">06 // CONTACT</span>
+            </div>
+            <h2 class="section-main-title" data-i18n="contactTitle">프로젝트 의뢰 및 기술 상담</h2>
+            <p class="contact-lead-text" data-i18n="contactLead">
+              귀사의 하드웨어 난제, 20년 이상 경험의 31NS-Tech Product Development LAB에 문의하세요. 회로 설계, 튜닝, 양산 컨설팅까지 신속히 답변드립니다.
+            </p>
+
+            <div class="contact-cards-stack">
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-envelope"></i></div>
+                <div class="card-content-wrap">
+                  <div class="item-label">Direct Email</div>
+                  <div class="item-val"><a href="mailto:nskim@31ns.kr">nskim@31ns.kr</a></div>
+                </div>
+              </div>
+
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="card-content-wrap">
+                  <div class="item-label">Lab Location</div>
+                  <div class="item-val" data-i18n="contactAddr">경기도 광명시 (Gwangmyeong-si, Gyeonggi-do)</div>
+                </div>
+              </div>
+
+              <div class="contact-card-item magnetic-hover">
+                <div class="card-icon-wrap"><i class="fas fa-clock"></i></div>
+                <div class="card-content-wrap">
+                  <div class="item-label">Response Protocol</div>
+                  <div class="item-val" data-i18n="contactResp">24시간 이내 엔지니어 사전 검토 후 회신</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-column">
+            <div class="terminal-form-box">
+              <div class="form-header-bar">
+                <span class="dot r"></span>
+                <span class="dot y"></span>
+                <span class="dot g"></span>
+                <span class="form-title-text">INQUIRY_PROTOCOL.CMD</span>
+              </div>
+              
+              <form class="terminal-input-form" id="consultation-form" onsubmit="return false;">
+                <div class="input-field-group">
+                  <label for="user-name">// NAME / COMPANY</label>
+                  <input type="text" id="user-name" placeholder="성함 또는 의뢰 기업명 입력" required />
+                </div>
+
+                <div class="input-field-group">
+                  <label for="user-email">// EMAIL ADDRESS</label>
+                  <input type="email" id="user-email" placeholder="회신받으실 이메일 주소" required />
+                </div>
+
+                <div class="input-field-group">
+                  <label for="service-select">// SERVICE CATEGORY</label>
+                  <select id="service-select">
+                    <option value="rf">RF / BLE / NFC 회로 설계 및 안테나 튜닝</option>
+                    <option value="signal">Mixed-Signal & AFE 설계</option>
+                    <option value="cert">KC / FCC / CE 인증 및 DFM 양산 컨설팅</option>
+                    <option value="vibe">Dev Vibe 코딩 및 응용 개발</option>
+                    <option value="other">기타 종합 기술 문의</option>
+                  </select>
+                </div>
+
+                <div class="input-field-group">
+                  <label for="user-message">// PROJECT REQUIREMENTS</label>
+                  <textarea id="user-message" rows="4" placeholder="프로젝트 내용, 개발 사양, 문의 사항을 자세히 적어주세요." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-luxe magnetic-hover" id="submit-btn">
+                  <span data-i18n="btnSubmitForm">SEND INQUIRY PROTOCOL</span>
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+
+                <div class="form-result-notice" id="form-msg"></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TECH BLOG MODAL VIEWER
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="blog-modal-overlay" id="blog-modal">
+    <div class="blog-modal-window">
+      <div class="blog-modal-header">
+        <span class="blog-modal-title" id="modal-article-title">TECH BLOG DOCUMENT</span>
+        <button class="blog-modal-close" id="btn-close-blog-modal">&times;</button>
+      </div>
+      <div class="blog-modal-body" id="modal-article-content">
+        <!-- Rendered markdown content with images -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════ -->
+  <footer class="luxury-site-footer">
+    <div class="container">
+      <div class="footer-columns-grid">
+        <div class="footer-col brand-col">
+          <div class="brand-logo footer-logo-box">
+            <div class="logo-box-full">
+              <img src="/assets/Logo 31NS-Tech.jpg" alt="31NS Logo" class="brand-img" />
+            </div>
+            <span class="brand-title-single">31NS-TECH</span>
+          </div>
+          <p class="footer-about-text" data-i18n="footerAbout">
+            20년 이상 경력의 RF/하드웨어 전문가가 회로 설계부터 양산 및 인증까지 실용적인 토털 엔지니어링 솔루션을 제공합니다.
+          </p>
+          <div class="footer-live-status">
+            <span class="live-dot-pulse"></span> 31NS PRODUCT DEVELOPMENT LAB // ONLINE
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="col-head-title">Navigation</h4>
+          <ul class="col-links-list">
+            <li><a href="#hero" data-i18n="navHome">Home</a></li>
+            <li><a href="#philosophy" data-i18n="navPhilosophy">연구소 소개</a></li>
+            <li><a href="#capabilities" data-i18n="navCapabilities">기술 서비스</a></li>
+            <li><a href="#portfolio" data-i18n="navPortfolio">프로젝트 사례</a></li>
+            <li><a href="#blog" data-i18n="navBlog">기술 블로그</a></li>
+            <li><a href="#rf-faq" data-i18n="navFaq">RF Q&A 50선</a></li>
+            <li><a href="#contact" data-i18n="navContact">문의 및 상담</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="col-head-title">Specialization</h4>
+          <ul class="col-links-list">
+            <li><a href="#capabilities">2.4GHz RF & BLE 5.3</a></li>
+            <li><a href="#capabilities">NFC & Antenna VNA Matching</a></li>
+            <li><a href="#capabilities">Mixed-Signal & AFE Circuit</a></li>
+            <li><a href="#capabilities">KC / FCC / CE Certification</a></li>
+            <li><a href="#capabilities">Dev Vibe Prompt Eng.</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-sub-bar">
+        <div class="copyright-text">
+          © 2026 31NS-Tech Product Development LAB. All rights reserved.
+        </div>
+        <div class="location-text">
+          Gwangmyeong-si, Gyeonggi-do, Republic of Korea | Contact: nskim@31ns.kr
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

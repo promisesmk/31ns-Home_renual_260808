@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>31NS-Tech Product Development LAB | Page Redirecting...</title>
+  <script>
+    // GitHub Pages SPA & Subpath fallback redirect
+    var path = window.location.pathname;
+    if (path.indexOf('/en') === 0) {
+      window.location.replace('/en/');
+    } else {
+      window.location.replace('/');
+    }
+  </script>
+</head>
+<body style="background: #0B0C0E; color: #FFFFFF; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+  <div style="text-align: center;">
+    <h1 style="color: #b4e300; font-size: 2rem;">31NS-TECH PRODUCT DEVELOPMENT LAB</h1>
+    <p style="color: #A8B0C0;">요청하신 페이지로 이동 중입니다...</p>
+    <a href="/" style="color: #b4e300; text-decoration: underline;">홈으로 바로가기</a>
+  </div>
+</body>
+</html>
