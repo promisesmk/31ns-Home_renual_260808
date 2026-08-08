@@ -146,7 +146,7 @@ const rfFaqData = [
     "q_ko": "정전기(ESD) 인가 시 2.4GHz RF 칩셋이 리셋되거나 회로가 파괴되는 현상을 막는 보호 회로 설계법은?",
     "q_en": "How do you protect a 2.4GHz RF transceiver from ESD damage without degrading signal insertion loss?",
     "a_ko": "안테나 입력단과 외부 노출 포트에 초저용량(Low Capacitance) TVS 다이오드를 배치하여, RF 고주파 신호 손실은 방지하면서 정전기 에너지만 그라운드로 즉각 우회(Bypass)시킵니다.",
-    "a_en": "Place an ultra-low capacitance TVS diode (< 0.5pF) on the antenna line near the entry port. This channels high-voltage ESD pulses to ground while maintaining low insertion loss for the 2.4GHz high-frequency signal."
+    "a_en": "Place an ultra-low capacitance TVS diode (&lt; 0.5pF) on the antenna line near the entry port. This channels high-voltage ESD pulses to ground while maintaining low insertion loss for the 2.4GHz high-frequency signal."
   },
   {
     "q_ko": "24시간 장기 연속 구동 시 간헐적으로 발생하는 BLE 모듈의 하드웨어 멈춤 현상 디버깅 방법은?",

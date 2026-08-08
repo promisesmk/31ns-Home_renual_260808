@@ -71,6 +71,415 @@
 
   <!-- Custom SpinX Ultra-Luxe Style -->
   <link rel="stylesheet" href="/src/styles/main.css" />
+  <!-- JSON-LD FAQPage Schema for Search Indexing -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "2.4GHz 대역에서 와이파이와 블루투스 혼선(Coexistence)을 방지하려면 어떻게 하드웨어를 설계해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "대역 통과 필터(BPF)를 적용하여 대역 외 노이즈를 차단하고, 두 안테나 간의 물리적 이격 거리를 최대한 확보하며 안테나의 편파(Polarization)를 직교로 배치하는 것이 유리합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "공간이 극도로 협소한 초소형 센서 보드에서 안테나 이득(Gain)을 최대한 높이는 방법은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "칩 안테나 사용 시 데이터시트의 권장 클리어런스(Clearance) 영역을 반드시 엄수하고, PCB 공간이 부족할 경우 기구물 내벽의 입체적인 형태를 활용한 FPCB 커스텀 안테나 설계를 적용합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PCB 패턴 안테나 설계 시 50옴(Ohm) 임피던스 매칭은 어떤 절차로 진행하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "VNA(벡터 네트워크 분석기)를 통해 안테나 단의 스미스 차트를 분석하고, 파이(Pi) 또는 티(T) 형태의 매칭 네트워크에 적절한 인덕터와 커패시터 값을 대입하여 50옴에 수렴하도록 튜닝합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "메탈(금속) 케이스 내부에 2.4GHz 안테나를 배치할 때 통신 거리를 확보하는 방법이 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "완전 밀폐된 금속 케이스는 전파를 차단하므로 케이스 자체를 슬롯 안테나로 활용하도록 설계하거나, RF 신호가 투과할 수 있는 비금속 소재의 윈도우(RF Window) 구조를 반드시 기구에 반영해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "전원부(SMPS) 스위칭 노이즈가 2.4GHz RF 수신 감도(RSSI)에 미치는 영향을 최소화하는 레이아웃 팁은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "RF 단과 전원 단의 GND 영역을 분할한 뒤 페라이트 비드를 통해 한 점에서 연결하고, 디커플링 커패시터를 RF IC 전원 핀에 최대한 가깝게 배치하여 고주파 노이즈 유입을 차단합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "GND(그라운드) 면적이 부족한 초소형 PCB에서 RF 접지 성능을 끌어올리는 방법은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "4층 이상의 멀티 레이어 기판을 사용하여 내층 전체를 솔리드 그라운드(Solid Ground)로 할당하고, 신호선 주변에 수많은 비아(Via Shielding)를 뚫어 그라운드 임피던스를 극도로 낮춰야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz 무선 제품 테스트 시 실제 사용 환경과 무반사실(Anechoic Chamber) 측정값 차이를 줄이려면 어떻게 해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "제품이 인체에 부착되거나 특정 기구물에 매립되는 경우 해당 물체의 유전율을 고려해야 하므로, 실제 환경과 유사한 팬텀(Phantom)이나 조립 지그를 결합한 상태에서 최종 RF 튜닝을 진행합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "안테나 주변의 플라스틱 기구물이 2.4GHz 주파수 공진점(Resonance Frequency) 변경에 미치는 영향은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "플라스틱의 유전율로 인해 전파 속도가 느려져 안테나의 공진 주파수가 보통 낮은 대역(Low Shift)으로 이동하므로, 초기 베어보드 상태 튜닝 시 주파수를 타겟보다 살짝 높게 설정해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "초소형 폼팩터 기기에서는 Chip 안테나와 FPCB 안테나 중 어떤 것이 설계에 유리한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PCB 상의 클리어런스 확보조차 어렵다면 유연하게 기구물 내벽에 부착할 수 있는 FPCB 안테나가 통신 거리 확보에 유리하며, 조립 공정의 단일화와 단가를 중시한다면 칩 안테나가 적합합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz RF 회로에 실드캔(Shield Can)을 씌울 때 수신 감도에 미치는 득과 실은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "외부 노이즈 차단 및 EMI 방사 억제에는 탁월하지만, 실드캔 내부의 금속면과 발생하는 기생 커패시턴스로 인해 매칭값이 틀어질 수 있으므로 반드시 캔을 덮은 최종 상태에서 재튜닝해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Nordic nRF52 시리즈를 활용한 커스텀 보드 설계 시 반드시 확인해야 할 하드웨어 체크리스트는 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nordic 데이터시트의 레퍼런스 라우팅 준수 여부, 32MHz 및 32.768kHz 크리스탈 주변의 기생 커패시턴스, 그리고 DC-DC 변환용 인덕터 배치를 최우선으로 점검합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "BLE 기기 간 연결 끊김(Connection Drop)이 잦을 때 RF 하드웨어 단에서 먼저 의심해야 할 부분은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "32.768kHz RTC 크리스탈의 허용 오차(ppm) 틀어짐으로 인한 통신 타이밍 불일치를 점검하고, 안테나 매칭 불량으로 인한 수신 감도 한계점 도달 여부를 확인해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Nordic 칩셋이 저전력 모드(Sleep Mode)에 진입했는데도 배터리 소모량이 예상보다 높은 원인은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "사용하지 않는 GPIO 핀이 플로팅(Floating) 상태로 방치되어 누설 전류가 발생했거나, 내부 DC-DC 컨버터 대신 효율이 낮은 LDO 모드가 활성화되어 있는지 펌웨어 레지스터를 확인합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "BLE 통신 거리(Range)를 기존 대비 2배 이상 연장하기 위한 하드웨어 튜닝 기법은 무엇이 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "정밀한 RF 매칭 회로 최적화를 기본으로, 하드웨어에 별도의 FEM(PA/LNA 증폭기) 칩을 추가하거나 Nordic 칩셋이 지원하는 Coded PHY(Long Range) 모드를 소프트웨어적으로 활성화합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "nRF52840을 사용한 무선 센서 보드에서 데이터 처리량(Throughput)을 최대화하는 설정법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MTU(Maximum Transmission Unit) 페이로드 크기를 늘리고, Connection Interval을 최소 허용치로 단축하며, DLE(Data Length Extension) 기능을 켜서 패킷 전송 효율을 극대화합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "노르딕 칩셋 내장 DC-DC 컨버터 사용 시 발생하는 노이즈가 RF 송수신에 미치는 영향은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "인덕터 주변의 스위칭 노이즈가 안테나나 RF 입력단으로 유입되면 수신 감도가 급락하므로, 노이즈가 적은 권장 규격의 인덕터 사용 및 RF 트레이스와의 이격 배치가 매우 중요합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "다수의 BLE 센서가 동시에 통신하는 밀집 환경에서 패킷 충돌을 피하는 하드웨어 및 펌웨어 설계 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Advertising 간격(Interval)에 무작위성(Random Delay)을 부여하여 송신 시점을 분산시키고, 스캐닝 윈도우를 최적화하여 다중 기기 환경에서 패킷 충돌 확률을 낮춥니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "BLE Advertising 주기가 배터리 수명과 RF 안테나 발열에 미치는 상관관계는 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "주기가 짧을수록 연결 응답성은 좋아지나 순간적인 송신 전류(Peak Current) 발생 빈도가 급증하여 배터리 수명을 크게 단축시키며, 초소형 기기에서는 미세한 발열의 원인이 될 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "외부 32.768kHz 크리스탈(RTC)의 주파수 편차(ppm)가 BLE 연결 안정성에 미치는 영향은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "주파수 편차가 크면 저전력 모드에서 깨어날 때 마스터와 슬레이브 간의 통신 타이밍 윈도우가 어긋나게 되어 패킷 손실률이 급증하고 잦은 연결 끊김 현상이 발생합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "기존 메인 MCU에 Nordic BLE 통신 모듈을 통합(Integration)할 때 발생하는 통신 병목 현상을 해결하려면?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "메인 MCU와 BLE 모듈 간 통신(UART/SPI 등)의 보드레이트(Baudrate) 및 하드웨어 흐름 제어(Flow Control)를 최적화하고, 링 버퍼(Ring Buffer) 사이즈를 늘려 데이터 유실을 방지합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "주요 대기업 납품을 위한 무선 센서 보드의 환경 신뢰성(온습도 사이클) 테스트 통과 기준은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "통상적으로 -40℃~85℃의 가혹한 온도 사이클 및 고온 다습 환경을 견뎌야 하며, 이 환경 조건에서도 무선 송수신 감도(Sensitivity) 및 최대 출력이 스펙 범위 내에서 변동 없이 유지되어야 합격합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "고온 환경에서 2.4GHz 무선 칩셋의 성능 저하(Thermal Derating)를 방지하는 방열 설계 노하우는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "초소형 보드에서는 PCB 내 구리(Copper) 면적을 최대한 넓혀 방열판 역할을 하도록 설계하고 발열이 심한 전원 IC와 무선 칩셋을 물리적으로 이격시키며, 다량의 써멀 비아(Thermal Via)를 배치합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "진동이 심한 환경에 설치되는 무선 센서 보드의 크리스탈(Oscillator) 파손 방지 대책은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "기계적 진동에 취약한 크리스탈 부품 주변 및 하단에 댐핑용 에폭시 수지(Underfill)를 도포하거나, 내진동성이 압도적으로 뛰어난 소형 패키지 또는 MEMS 오실레이터로 부품을 대체 설계합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "정전기(ESD) 인가 시 2.4GHz RF 칩셋이 리셋되거나 회로가 파괴되는 현상을 막는 보호 회로 설계법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "안테나 입력단과 외부 노출 포트에 초저용량(Low Capacitance) TVS 다이오드를 배치하여, RF 고주파 신호 손실은 방지하면서 정전기 에너지만 그라운드로 즉각 우회(Bypass)시킵니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "24시간 장기 연속 구동 시 간헐적으로 발생하는 BLE 모듈의 하드웨어 멈춤 현상 디버깅 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "전원부의 미세한 리플 노이즈 누적이나 하드웨어 워치독(Watchdog) 타이머 설정 오류를 1차로 점검하고, JTAG 장기 로깅을 통해 메모리 누수나 하드웨어 인터럽트 충돌 지점을 특정합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "엔터프라이즈급 통신 장비에 요구되는 전자파 내성(EMS) 테스트 통과를 위한 PCB 레이아웃 가이드는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "외부 전자파 공격에 견디기 위해 민감한 RF 및 아날로그 트레이스를 내층으로 라우팅하고, 그 주변을 촘촘한 비아로 쉴딩(Via Shielding)하여 루프 안테나 역할을 원천 차단합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "초소형 보드에서 부품 간격 밀집으로 발생한 크로스토크(Crosstalk)가 무선 송수신에 미치는 악영향은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "고속 디지털 신호선(SPI, I2C 등)이 RF 라인에 인접할 경우 노이즈가 커플링되어 수신 감도를 훼손하므로, 직교 라우팅을 적용하거나 두 신호선 사이에 GND 가드 트레이스를 배치해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "센서 데이터 수집 시 간헐적으로 발생하는 통신 지연(Latency)의 하드웨어적 원인은 어떻게 찾나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "오실로스코프를 이용해 통신 시점의 전원 전압 강하(Drop) 파형이나 메인 MCU와의 인터페이스 통신 파형을 분석하여, 전원 불안정이나 하드웨어 인터럽트 병목 구간을 탐색합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "배터리 잔량 부족으로 인한 전압 강하(Voltage Drop)가 2.4GHz 최대 송신 출력(Tx Power)에 미치는 영향은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "배터리 전압이 칩셋 내부 PA(전력 증폭기)의 권장 동작 전압 이하로 떨어지면 최대 송신 출력이 급감하여 통신 거리가 줄어들므로, 벅-부스트(Buck-Boost) 컨버터 등을 통해 안정적인 전압을 공급해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "무선 보드의 수명(MTBF)을 예측하고 가혹 조건에서 신뢰성을 검증하는 가속 수명 테스트 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HALT(고가속 수명 시험) 장비를 이용해 고온, 고습, 강한 진동 등 극한 환경 스트레스를 복합적으로 가하여 초소형 제품의 하드웨어 취약 지점을 조기에 발견하고 개선합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz 무선 기기 KC 인증 진행 시 가장 빈번하게 발생하는 불합격(Fail) 사유와 예방법은 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "가장 흔한 원인은 불필요한 방사 노이즈(Spurious Emission) 기준치 초과이며, 설계 초기 단계부터 정밀한 안테나 매칭, 실드캔 적용, 전원부 노이즈 필터링 설계를 반영해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "BLE 기기의 방사 스퓨리어스(Radiated Spurious Emission) 기준 초과 시 하드웨어 디버깅 절차는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "스펙트럼 분석기로 초과되는 하모닉(고조파) 주파수 대역을 정확히 확인한 후, RF 매칭단에 Low Pass Filter(LPF) 소자를 추가하여 불요파를 감쇄시킵니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "보드 크기가 너무 작아 테스트 핀(Test Point)을 뽑기 어려울 때, 무선 인증용 펌웨어 제어 환경은 어떻게 구축하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "설계 단계에서 보드 바닥면에 초소형 Pogo Pin용 테스트 패드(Tx, Rx, GND 등)를 배치하고, 인증 시에만 맞춤형 테스트 지그를 결합하여 DTM(Direct Test Mode) 명령을 인가합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "이미 인증받은 2.4GHz 완제품 모듈을 사용해도 세트(Set) 단위에서 추가적인 전자파 인증이 필요한 경우는 언제인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "모듈 자체의 무선 인증(RF)은 면제받을 수 있으나, 최종 조립된 제품 상태에서 전원 노이즈나 기타 부품에 의한 전자파 간섭을 확인하기 위해 전자파 적합성(EMC/EMI) 인증은 별도로 받아야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "안테나 위치나 케이스 재질이 변경되었을 때 기존 KC 인증에서 파생 모델로 처리할 수 있는 허용 범위는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "동일한 RF 칩과 발진 회로를 사용하고 단지 케이스 재질이 바뀌거나 안테나의 이득(Gain)이 기존 인증품보다 낮아지는 변경이라면 파생 모델이나 동일성 선언으로 절차를 간소화할 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "FCC(미국), CE(유럽) 인증 진행 시 국내 KC 인증 측정 결과(Test Report)를 어디까지 활용할 수 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "국가별로 규격(Limit)과 시험 방법이 달라 성적서의 직접적인 재사용은 어렵지만, 설계 디버깅을 위한 사전 검증 데이터로 활용하여 해외 인증 비용과 재시험 기간을 획기적으로 줄이는 지표가 됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz 대역폭 내에서 채널별 송신 출력(Tx Power) 편차가 심할 때 인증 통과에 미치는 영향은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "채널별 출력 편차가 커서 특정 채널이 규격 한계치를 초과하거나 미달하면 인증 통과가 불가능하므로, 펌웨어 단에서 채널별 보정 값(Calibration)을 적용하여 출력을 평탄하게 맞추어야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "무선 충전 기능이 포함된 2.4GHz 초소형 센서 기기의 전자파 적합성(EMC) 복합 인증 절차는 어떻게 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "2.4GHz 무선 통신 기기 규격과 무선 충전(WPT) 장치 규격 인증을 동시에 진행해야 하며, 특히 무선 충전 시 발생하는 스위칭 노이즈가 무선 통신에 미치는 상호 간섭 여부를 엄격히 평가받습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "인증용 샘플 보드 제작 시 양산 보드와 동일한 RF 성능을 보장하기 위해 어떤 점을 중점 관리해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "양산 시 사용할 정확히 동일한 부품명세서(BOM)와 동일한 PCB 제조사를 통해 샘플을 제작해야 하며, 펌웨어 역시 양산 버전을 기반으로 테스트 모드만 추가한 형태로 준비해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "블루투스 로고를 사용하기 위한 Bluetooth SIG 인증과 국가별 전파 인증(KC/FCC)의 진행 순서 및 차이점은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bluetooth SIG는 블루투스 통신 규약 준수 및 로고 사용을 위한 글로벌 민간 인증이며, KC/FCC는 해당 국가의 전파법 준수를 위한 강제 법정 인증이므로 각각 독립적으로 병행 진행됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz 무선 보드 대량 양산 시 RF 성능 편차로 인한 통신 불량률을 획기적으로 낮추는 공정 관리 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "초소형 보드일수록 SMT 공정의 부품 실장 오차에 민감하므로, RF 부품과 매칭 소자 주변의 솔더 크림 두께(스텐실 마스크 두께)와 리플로우 온도 프로파일을 최적화하는 것이 핵심입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "SMT 양산 라인에서 BLE 보드의 RF 수신 감도(Rx Sensitivity)를 빠르게 전수 검사하는 테스트 지그(Jig) 구축법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pogo Pin 지그에 Golden Sample(성능 기준 보드) 또는 전용 블루투스 테스터 장비를 내장하여, 양산 라인에서 빠르고 자동으로 RSSI를 측정하고 합격/불합격을 판정하는 자동화 스크립트를 구축합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "글로벌 반도체 수급 이슈 발생 시 Nordic 칩셋 등 주요 2.4GHz RF IC의 핀투핀(Pin-to-Pin) 대체품 선정 기준은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "대체하려는 칩셋이 기존과 완벽히 동일한 풋프린트(Footprint)를 가지는지 하드웨어적으로 확인하고, 펌웨어 이식성(Porting) 및 내부 플래시 메모리 용량을 종합적으로 검토해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "초소형 무선 보드 설계부터 양산까지 턴키(Turn-key) 외주 진행 시 개발사 선정 체크리스트는 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "제한된 공간에서의 고밀도 레이아웃 설계 역량, 엔터프라이즈급 기업 납품을 성공시킨 포트폴리오, 까다로운 무선 인증 디버깅 경험, 그리고 양산 수율 관리 능력을 반드시 확인해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2.4GHz 칩셋 직접 실장(SoC) 방식과 인증 완료된 모듈 사용 방식 중 우리 프로젝트에 유리한 단가/일정 비교 기준은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "생산 수량이 적고 빠른 출시(인증 비용 절감)가 필요하다면 모듈이 유리하며, 극도로 작은 초소형 폼팩터가 필수이고 대량 양산을 통한 부품 단가 절감이 목적이라면 SoC 직접 실장이 압도적으로 유리합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "양산 후 시장에 배포된 무선 제품의 펌웨어를 원격 업데이트(OTA)할 때 전원 차단 등으로 인한 하드웨어 벽돌(Brick) 현상 방지 방안은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "듀얼 뱅크(Dual Bank) 플래시 메모리 구조를 적용하여, 새로운 펌웨어 다운로드가 100% 완료되고 무결성이 검증된 후에만 기존 부팅 이미지를 교체하도록 Fail-safe 안전장치를 설계합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PCB 레이어(Layer) 수를 줄여 양산 단가를 절감하면서도 RF 안테나 성능을 유지하는 설계 노하우는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "6층 기판을 4층으로 줄일 경우 RF 임피던스 매칭을 위한 선폭(Trace Width)과 층간 두께(Prepreg)를 재계산하고, 부품 배치를 밀도 있게 최적화하여 필수적인 그라운드 쉴딩 영역을 사수합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "자동화 테스트 지그(Test Jig) 제작 시 2.4GHz 안테나 성능 및 연결 테스트까지 한 번에 자동화하는 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "테스트 지그 내부에 외부 노이즈를 차단하는 미니 RF 쉴드 박스 공간을 마련하고, 계측 장비와 PC를 연동하여 DTM 통신 제어 및 RSSI 판독을 원클릭으로 자동화합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "잦은 하드웨어 리비전(Revision)으로 인한 개발 지연을 막기 위해 기획 단계부터 전문 RF 컨설팅을 받아야 하는 이유는?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "초소형 폼팩터 하드웨어는 기구물과 RF의 상관관계가 극도로 높아, 초기 설계부터 전문가의 개입이 있어야 금형 재수정이나 인증 재시험 같은 치명적인 시간 및 비용 낭비를 막을 수 있습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "성공적인 B2B 엔터프라이즈 납품을 위해 2.4GHz 센서 보드 기획 단계에서 반드시 확립해야 할 요구사항(PRD) 정의 방법은?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "필요한 통신 거리, 타겟 배터리 수명, 동작 온도 범위, 제품 크기(폼팩터)의 물리적 한계선을 명확히 수치화하여, 엔터프라이즈 납품 기준에 부합하는 현실적인 하드웨어 설계 목표를 설정해야 합니다."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body class="spinx-luxury-body">
 
@@ -687,7 +1096,1600 @@
 
         <!-- Accordion Items List -->
         <div class="faq-accordion-list" id="faq-accordion-container">
-          <!-- Dynamically filled via JS -->
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q1. 2.4GHz 대역에서 와이파이와 블루투스 혼선(Coexistence)을 방지하려면 어떻게 하드웨어를 설계해야 하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>대역 통과 필터(BPF)를 적용하여 대역 외 노이즈를 차단하고, 두 안테나 간의 물리적 이격 거리를 최대한 확보하며 안테나의 편파(Polarization)를 직교로 배치하는 것이 유리합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q2. 공간이 극도로 협소한 초소형 센서 보드에서 안테나 이득(Gain)을 최대한 높이는 방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>칩 안테나 사용 시 데이터시트의 권장 클리어런스(Clearance) 영역을 반드시 엄수하고, PCB 공간이 부족할 경우 기구물 내벽의 입체적인 형태를 활용한 FPCB 커스텀 안테나 설계를 적용합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q3. PCB 패턴 안테나 설계 시 50옴(Ohm) 임피던스 매칭은 어떤 절차로 진행하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>VNA(벡터 네트워크 분석기)를 통해 안테나 단의 스미스 차트를 분석하고, 파이(Pi) 또는 티(T) 형태의 매칭 네트워크에 적절한 인덕터와 커패시터 값을 대입하여 50옴에 수렴하도록 튜닝합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q4. 메탈(금속) 케이스 내부에 2.4GHz 안테나를 배치할 때 통신 거리를 확보하는 방법이 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>완전 밀폐된 금속 케이스는 전파를 차단하므로 케이스 자체를 슬롯 안테나로 활용하도록 설계하거나, RF 신호가 투과할 수 있는 비금속 소재의 윈도우(RF Window) 구조를 반드시 기구에 반영해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q5. 전원부(SMPS) 스위칭 노이즈가 2.4GHz RF 수신 감도(RSSI)에 미치는 영향을 최소화하는 레이아웃 팁은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>RF 단과 전원 단의 GND 영역을 분할한 뒤 페라이트 비드를 통해 한 점에서 연결하고, 디커플링 커패시터를 RF IC 전원 핀에 최대한 가깝게 배치하여 고주파 노이즈 유입을 차단합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q6. GND(그라운드) 면적이 부족한 초소형 PCB에서 RF 접지 성능을 끌어올리는 방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>4층 이상의 멀티 레이어 기판을 사용하여 내층 전체를 솔리드 그라운드(Solid Ground)로 할당하고, 신호선 주변에 수많은 비아(Via Shielding)를 뚫어 그라운드 임피던스를 극도로 낮춰야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q7. 2.4GHz 무선 제품 테스트 시 실제 사용 환경과 무반사실(Anechoic Chamber) 측정값 차이를 줄이려면 어떻게 해야 하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>제품이 인체에 부착되거나 특정 기구물에 매립되는 경우 해당 물체의 유전율을 고려해야 하므로, 실제 환경과 유사한 팬텀(Phantom)이나 조립 지그를 결합한 상태에서 최종 RF 튜닝을 진행합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q8. 안테나 주변의 플라스틱 기구물이 2.4GHz 주파수 공진점(Resonance Frequency) 변경에 미치는 영향은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>플라스틱의 유전율로 인해 전파 속도가 느려져 안테나의 공진 주파수가 보통 낮은 대역(Low Shift)으로 이동하므로, 초기 베어보드 상태 튜닝 시 주파수를 타겟보다 살짝 높게 설정해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q9. 초소형 폼팩터 기기에서는 Chip 안테나와 FPCB 안테나 중 어떤 것이 설계에 유리한가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>PCB 상의 클리어런스 확보조차 어렵다면 유연하게 기구물 내벽에 부착할 수 있는 FPCB 안테나가 통신 거리 확보에 유리하며, 조립 공정의 단일화와 단가를 중시한다면 칩 안테나가 적합합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q10. 2.4GHz RF 회로에 실드캔(Shield Can)을 씌울 때 수신 감도에 미치는 득과 실은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>외부 노이즈 차단 및 EMI 방사 억제에는 탁월하지만, 실드캔 내부의 금속면과 발생하는 기생 커패시턴스로 인해 매칭값이 틀어질 수 있으므로 반드시 캔을 덮은 최종 상태에서 재튜닝해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q11. Nordic nRF52 시리즈를 활용한 커스텀 보드 설계 시 반드시 확인해야 할 하드웨어 체크리스트는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Nordic 데이터시트의 레퍼런스 라우팅 준수 여부, 32MHz 및 32.768kHz 크리스탈 주변의 기생 커패시턴스, 그리고 DC-DC 변환용 인덕터 배치를 최우선으로 점검합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q12. BLE 기기 간 연결 끊김(Connection Drop)이 잦을 때 RF 하드웨어 단에서 먼저 의심해야 할 부분은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>32.768kHz RTC 크리스탈의 허용 오차(ppm) 틀어짐으로 인한 통신 타이밍 불일치를 점검하고, 안테나 매칭 불량으로 인한 수신 감도 한계점 도달 여부를 확인해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q13. Nordic 칩셋이 저전력 모드(Sleep Mode)에 진입했는데도 배터리 소모량이 예상보다 높은 원인은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>사용하지 않는 GPIO 핀이 플로팅(Floating) 상태로 방치되어 누설 전류가 발생했거나, 내부 DC-DC 컨버터 대신 효율이 낮은 LDO 모드가 활성화되어 있는지 펌웨어 레지스터를 확인합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q14. BLE 통신 거리(Range)를 기존 대비 2배 이상 연장하기 위한 하드웨어 튜닝 기법은 무엇이 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>정밀한 RF 매칭 회로 최적화를 기본으로, 하드웨어에 별도의 FEM(PA/LNA 증폭기) 칩을 추가하거나 Nordic 칩셋이 지원하는 Coded PHY(Long Range) 모드를 소프트웨어적으로 활성화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q15. nRF52840을 사용한 무선 센서 보드에서 데이터 처리량(Throughput)을 최대화하는 설정법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>MTU(Maximum Transmission Unit) 페이로드 크기를 늘리고, Connection Interval을 최소 허용치로 단축하며, DLE(Data Length Extension) 기능을 켜서 패킷 전송 효율을 극대화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q16. 노르딕 칩셋 내장 DC-DC 컨버터 사용 시 발생하는 노이즈가 RF 송수신에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>인덕터 주변의 스위칭 노이즈가 안테나나 RF 입력단으로 유입되면 수신 감도가 급락하므로, 노이즈가 적은 권장 규격의 인덕터 사용 및 RF 트레이스와의 이격 배치가 매우 중요합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q17. 다수의 BLE 센서가 동시에 통신하는 밀집 환경에서 패킷 충돌을 피하는 하드웨어 및 펌웨어 설계 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Advertising 간격(Interval)에 무작위성(Random Delay)을 부여하여 송신 시점을 분산시키고, 스캐닝 윈도우를 최적화하여 다중 기기 환경에서 패킷 충돌 확률을 낮춥니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q18. BLE Advertising 주기가 배터리 수명과 RF 안테나 발열에 미치는 상관관계는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>주기가 짧을수록 연결 응답성은 좋아지나 순간적인 송신 전류(Peak Current) 발생 빈도가 급증하여 배터리 수명을 크게 단축시키며, 초소형 기기에서는 미세한 발열의 원인이 될 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q19. 외부 32.768kHz 크리스탈(RTC)의 주파수 편차(ppm)가 BLE 연결 안정성에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>주파수 편차가 크면 저전력 모드에서 깨어날 때 마스터와 슬레이브 간의 통신 타이밍 윈도우가 어긋나게 되어 패킷 손실률이 급증하고 잦은 연결 끊김 현상이 발생합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q20. 기존 메인 MCU에 Nordic BLE 통신 모듈을 통합(Integration)할 때 발생하는 통신 병목 현상을 해결하려면?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>메인 MCU와 BLE 모듈 간 통신(UART/SPI 등)의 보드레이트(Baudrate) 및 하드웨어 흐름 제어(Flow Control)를 최적화하고, 링 버퍼(Ring Buffer) 사이즈를 늘려 데이터 유실을 방지합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q21. 주요 대기업 납품을 위한 무선 센서 보드의 환경 신뢰성(온습도 사이클) 테스트 통과 기준은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>통상적으로 -40℃~85℃의 가혹한 온도 사이클 및 고온 다습 환경을 견뎌야 하며, 이 환경 조건에서도 무선 송수신 감도(Sensitivity) 및 최대 출력이 스펙 범위 내에서 변동 없이 유지되어야 합격합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q22. 고온 환경에서 2.4GHz 무선 칩셋의 성능 저하(Thermal Derating)를 방지하는 방열 설계 노하우는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 보드에서는 PCB 내 구리(Copper) 면적을 최대한 넓혀 방열판 역할을 하도록 설계하고 발열이 심한 전원 IC와 무선 칩셋을 물리적으로 이격시키며, 다량의 써멀 비아(Thermal Via)를 배치합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q23. 진동이 심한 환경에 설치되는 무선 센서 보드의 크리스탈(Oscillator) 파손 방지 대책은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>기계적 진동에 취약한 크리스탈 부품 주변 및 하단에 댐핑용 에폭시 수지(Underfill)를 도포하거나, 내진동성이 압도적으로 뛰어난 소형 패키지 또는 MEMS 오실레이터로 부품을 대체 설계합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q24. 정전기(ESD) 인가 시 2.4GHz RF 칩셋이 리셋되거나 회로가 파괴되는 현상을 막는 보호 회로 설계법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>안테나 입력단과 외부 노출 포트에 초저용량(Low Capacitance) TVS 다이오드를 배치하여, RF 고주파 신호 손실은 방지하면서 정전기 에너지만 그라운드로 즉각 우회(Bypass)시킵니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q25. 24시간 장기 연속 구동 시 간헐적으로 발생하는 BLE 모듈의 하드웨어 멈춤 현상 디버깅 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>전원부의 미세한 리플 노이즈 누적이나 하드웨어 워치독(Watchdog) 타이머 설정 오류를 1차로 점검하고, JTAG 장기 로깅을 통해 메모리 누수나 하드웨어 인터럽트 충돌 지점을 특정합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q26. 엔터프라이즈급 통신 장비에 요구되는 전자파 내성(EMS) 테스트 통과를 위한 PCB 레이아웃 가이드는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>외부 전자파 공격에 견디기 위해 민감한 RF 및 아날로그 트레이스를 내층으로 라우팅하고, 그 주변을 촘촘한 비아로 쉴딩(Via Shielding)하여 루프 안테나 역할을 원천 차단합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q27. 초소형 보드에서 부품 간격 밀집으로 발생한 크로스토크(Crosstalk)가 무선 송수신에 미치는 악영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>고속 디지털 신호선(SPI, I2C 등)이 RF 라인에 인접할 경우 노이즈가 커플링되어 수신 감도를 훼손하므로, 직교 라우팅을 적용하거나 두 신호선 사이에 GND 가드 트레이스를 배치해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q28. 센서 데이터 수집 시 간헐적으로 발생하는 통신 지연(Latency)의 하드웨어적 원인은 어떻게 찾나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>오실로스코프를 이용해 통신 시점의 전원 전압 강하(Drop) 파형이나 메인 MCU와의 인터페이스 통신 파형을 분석하여, 전원 불안정이나 하드웨어 인터럽트 병목 구간을 탐색합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q29. 배터리 잔량 부족으로 인한 전압 강하(Voltage Drop)가 2.4GHz 최대 송신 출력(Tx Power)에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>배터리 전압이 칩셋 내부 PA(전력 증폭기)의 권장 동작 전압 이하로 떨어지면 최대 송신 출력이 급감하여 통신 거리가 줄어들므로, 벅-부스트(Buck-Boost) 컨버터 등을 통해 안정적인 전압을 공급해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q30. 무선 보드의 수명(MTBF)을 예측하고 가혹 조건에서 신뢰성을 검증하는 가속 수명 테스트 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>HALT(고가속 수명 시험) 장비를 이용해 고온, 고습, 강한 진동 등 극한 환경 스트레스를 복합적으로 가하여 초소형 제품의 하드웨어 취약 지점을 조기에 발견하고 개선합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q31. 2.4GHz 무선 기기 KC 인증 진행 시 가장 빈번하게 발생하는 불합격(Fail) 사유와 예방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>가장 흔한 원인은 불필요한 방사 노이즈(Spurious Emission) 기준치 초과이며, 설계 초기 단계부터 정밀한 안테나 매칭, 실드캔 적용, 전원부 노이즈 필터링 설계를 반영해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q32. BLE 기기의 방사 스퓨리어스(Radiated Spurious Emission) 기준 초과 시 하드웨어 디버깅 절차는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>스펙트럼 분석기로 초과되는 하모닉(고조파) 주파수 대역을 정확히 확인한 후, RF 매칭단에 Low Pass Filter(LPF) 소자를 추가하여 불요파를 감쇄시킵니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q33. 보드 크기가 너무 작아 테스트 핀(Test Point)을 뽑기 어려울 때, 무선 인증용 펌웨어 제어 환경은 어떻게 구축하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>설계 단계에서 보드 바닥면에 초소형 Pogo Pin용 테스트 패드(Tx, Rx, GND 등)를 배치하고, 인증 시에만 맞춤형 테스트 지그를 결합하여 DTM(Direct Test Mode) 명령을 인가합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q34. 이미 인증받은 2.4GHz 완제품 모듈을 사용해도 세트(Set) 단위에서 추가적인 전자파 인증이 필요한 경우는 언제인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>모듈 자체의 무선 인증(RF)은 면제받을 수 있으나, 최종 조립된 제품 상태에서 전원 노이즈나 기타 부품에 의한 전자파 간섭을 확인하기 위해 전자파 적합성(EMC/EMI) 인증은 별도로 받아야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q35. 안테나 위치나 케이스 재질이 변경되었을 때 기존 KC 인증에서 파생 모델로 처리할 수 있는 허용 범위는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>동일한 RF 칩과 발진 회로를 사용하고 단지 케이스 재질이 바뀌거나 안테나의 이득(Gain)이 기존 인증품보다 낮아지는 변경이라면 파생 모델이나 동일성 선언으로 절차를 간소화할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q36. FCC(미국), CE(유럽) 인증 진행 시 국내 KC 인증 측정 결과(Test Report)를 어디까지 활용할 수 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>국가별로 규격(Limit)과 시험 방법이 달라 성적서의 직접적인 재사용은 어렵지만, 설계 디버깅을 위한 사전 검증 데이터로 활용하여 해외 인증 비용과 재시험 기간을 획기적으로 줄이는 지표가 됩니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q37. 2.4GHz 대역폭 내에서 채널별 송신 출력(Tx Power) 편차가 심할 때 인증 통과에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>채널별 출력 편차가 커서 특정 채널이 규격 한계치를 초과하거나 미달하면 인증 통과가 불가능하므로, 펌웨어 단에서 채널별 보정 값(Calibration)을 적용하여 출력을 평탄하게 맞추어야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q38. 무선 충전 기능이 포함된 2.4GHz 초소형 센서 기기의 전자파 적합성(EMC) 복합 인증 절차는 어떻게 되나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>2.4GHz 무선 통신 기기 규격과 무선 충전(WPT) 장치 규격 인증을 동시에 진행해야 하며, 특히 무선 충전 시 발생하는 스위칭 노이즈가 무선 통신에 미치는 상호 간섭 여부를 엄격히 평가받습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q39. 인증용 샘플 보드 제작 시 양산 보드와 동일한 RF 성능을 보장하기 위해 어떤 점을 중점 관리해야 하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>양산 시 사용할 정확히 동일한 부품명세서(BOM)와 동일한 PCB 제조사를 통해 샘플을 제작해야 하며, 펌웨어 역시 양산 버전을 기반으로 테스트 모드만 추가한 형태로 준비해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q40. 블루투스 로고를 사용하기 위한 Bluetooth SIG 인증과 국가별 전파 인증(KC/FCC)의 진행 순서 및 차이점은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Bluetooth SIG는 블루투스 통신 규약 준수 및 로고 사용을 위한 글로벌 민간 인증이며, KC/FCC는 해당 국가의 전파법 준수를 위한 강제 법정 인증이므로 각각 독립적으로 병행 진행됩니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q41. 2.4GHz 무선 보드 대량 양산 시 RF 성능 편차로 인한 통신 불량률을 획기적으로 낮추는 공정 관리 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 보드일수록 SMT 공정의 부품 실장 오차에 민감하므로, RF 부품과 매칭 소자 주변의 솔더 크림 두께(스텐실 마스크 두께)와 리플로우 온도 프로파일을 최적화하는 것이 핵심입니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q42. SMT 양산 라인에서 BLE 보드의 RF 수신 감도(Rx Sensitivity)를 빠르게 전수 검사하는 테스트 지그(Jig) 구축법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Pogo Pin 지그에 Golden Sample(성능 기준 보드) 또는 전용 블루투스 테스터 장비를 내장하여, 양산 라인에서 빠르고 자동으로 RSSI를 측정하고 합격/불합격을 판정하는 자동화 스크립트를 구축합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q43. 글로벌 반도체 수급 이슈 발생 시 Nordic 칩셋 등 주요 2.4GHz RF IC의 핀투핀(Pin-to-Pin) 대체품 선정 기준은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>대체하려는 칩셋이 기존과 완벽히 동일한 풋프린트(Footprint)를 가지는지 하드웨어적으로 확인하고, 펌웨어 이식성(Porting) 및 내부 플래시 메모리 용량을 종합적으로 검토해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q44. 초소형 무선 보드 설계부터 양산까지 턴키(Turn-key) 외주 진행 시 개발사 선정 체크리스트는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>제한된 공간에서의 고밀도 레이아웃 설계 역량, 엔터프라이즈급 기업 납품을 성공시킨 포트폴리오, 까다로운 무선 인증 디버깅 경험, 그리고 양산 수율 관리 능력을 반드시 확인해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q45. 2.4GHz 칩셋 직접 실장(SoC) 방식과 인증 완료된 모듈 사용 방식 중 우리 프로젝트에 유리한 단가/일정 비교 기준은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>생산 수량이 적고 빠른 출시(인증 비용 절감)가 필요하다면 모듈이 유리하며, 극도로 작은 초소형 폼팩터가 필수이고 대량 양산을 통한 부품 단가 절감이 목적이라면 SoC 직접 실장이 압도적으로 유리합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q46. 양산 후 시장에 배포된 무선 제품의 펌웨어를 원격 업데이트(OTA)할 때 전원 차단 등으로 인한 하드웨어 벽돌(Brick) 현상 방지 방안은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>듀얼 뱅크(Dual Bank) 플래시 메모리 구조를 적용하여, 새로운 펌웨어 다운로드가 100% 완료되고 무결성이 검증된 후에만 기존 부팅 이미지를 교체하도록 Fail-safe 안전장치를 설계합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q47. PCB 레이어(Layer) 수를 줄여 양산 단가를 절감하면서도 RF 안테나 성능을 유지하는 설계 노하우는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>6층 기판을 4층으로 줄일 경우 RF 임피던스 매칭을 위한 선폭(Trace Width)과 층간 두께(Prepreg)를 재계산하고, 부품 배치를 밀도 있게 최적화하여 필수적인 그라운드 쉴딩 영역을 사수합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q48. 자동화 테스트 지그(Test Jig) 제작 시 2.4GHz 안테나 성능 및 연결 테스트까지 한 번에 자동화하는 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>테스트 지그 내부에 외부 노이즈를 차단하는 미니 RF 쉴드 박스 공간을 마련하고, 계측 장비와 PC를 연동하여 DTM 통신 제어 및 RSSI 판독을 원클릭으로 자동화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q49. 잦은 하드웨어 리비전(Revision)으로 인한 개발 지연을 막기 위해 기획 단계부터 전문 RF 컨설팅을 받아야 하는 이유는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 폼팩터 하드웨어는 기구물과 RF의 상관관계가 극도로 높아, 초기 설계부터 전문가의 개입이 있어야 금형 재수정이나 인증 재시험 같은 치명적인 시간 및 비용 낭비를 막을 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q50. 성공적인 B2B 엔터프라이즈 납품을 위해 2.4GHz 센서 보드 기획 단계에서 반드시 확립해야 할 요구사항(PRD) 정의 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>필요한 통신 거리, 타겟 배터리 수명, 동작 온도 범위, 제품 크기(폼팩터)의 물리적 한계선을 명확히 수치화하여, 엔터프라이즈 납품 기준에 부합하는 현실적인 하드웨어 설계 목표를 설정해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>대역 통과 필터(BPF)를 적용하여 대역 외 노이즈를 차단하고, 두 안테나 간의 물리적 이격 거리를 최대한 확보하며 안테나의 편파(Polarization)를 직교로 배치하는 것이 유리합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q2. 공간이 극도로 협소한 초소형 센서 보드에서 안테나 이득(Gain)을 최대한 높이는 방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>칩 안테나 사용 시 데이터시트의 권장 클리어런스(Clearance) 영역을 반드시 엄수하고, PCB 공간이 부족할 경우 기구물 내벽의 입체적인 형태를 활용한 FPCB 커스텀 안테나 설계를 적용합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q3. PCB 패턴 안테나 설계 시 50옴(Ohm) 임피던스 매칭은 어떤 절차로 진행하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>VNA(벡터 네트워크 분석기)를 통해 안테나 단의 스미스 차트를 분석하고, 파이(Pi) 또는 티(T) 형태의 매칭 네트워크에 적절한 인덕터와 커패시터 값을 대입하여 50옴에 수렴하도록 튜닝합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q4. 메탈(금속) 케이스 내부에 2.4GHz 안테나를 배치할 때 통신 거리를 확보하는 방법이 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>완전 밀폐된 금속 케이스는 전파를 차단하므로 케이스 자체를 슬롯 안테나로 활용하도록 설계하거나, RF 신호가 투과할 수 있는 비금속 소재의 윈도우(RF Window) 구조를 반드시 기구에 반영해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q5. 전원부(SMPS) 스위칭 노이즈가 2.4GHz RF 수신 감도(RSSI)에 미치는 영향을 최소화하는 레이아웃 팁은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>RF 단과 전원 단의 GND 영역을 분할한 뒤 페라이트 비드를 통해 한 점에서 연결하고, 디커플링 커패시터를 RF IC 전원 핀에 최대한 가깝게 배치하여 고주파 노이즈 유입을 차단합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q6. GND(그라운드) 면적이 부족한 초소형 PCB에서 RF 접지 성능을 끌어올리는 방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>4층 이상의 멀티 레이어 기판을 사용하여 내층 전체를 솔리드 그라운드(Solid Ground)로 할당하고, 신호선 주변에 수많은 비아(Via Shielding)를 뚫어 그라운드 임피던스를 극도로 낮춰야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q7. 2.4GHz 무선 제품 테스트 시 실제 사용 환경과 무반사실(Anechoic Chamber) 측정값 차이를 줄이려면 어떻게 해야 하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>제품이 인체에 부착되거나 특정 기구물에 매립되는 경우 해당 물체의 유전율을 고려해야 하므로, 실제 환경과 유사한 팬텀(Phantom)이나 조립 지그를 결합한 상태에서 최종 RF 튜닝을 진행합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q8. 안테나 주변의 플라스틱 기구물이 2.4GHz 주파수 공진점(Resonance Frequency) 변경에 미치는 영향은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>플라스틱의 유전율로 인해 전파 속도가 느려져 안테나의 공진 주파수가 보통 낮은 대역(Low Shift)으로 이동하므로, 초기 베어보드 상태 튜닝 시 주파수를 타겟보다 살짝 높게 설정해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q9. 초소형 폼팩터 기기에서는 Chip 안테나와 FPCB 안테나 중 어떤 것이 설계에 유리한가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>PCB 상의 클리어런스 확보조차 어렵다면 유연하게 기구물 내벽에 부착할 수 있는 FPCB 안테나가 통신 거리 확보에 유리하며, 조립 공정의 단일화와 단가를 중시한다면 칩 안테나가 적합합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q10. 2.4GHz RF 회로에 실드캔(Shield Can)을 씌울 때 수신 감도에 미치는 득과 실은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>외부 노이즈 차단 및 EMI 방사 억제에는 탁월하지만, 실드캔 내부의 금속면과 발생하는 기생 커패시턴스로 인해 매칭값이 틀어질 수 있으므로 반드시 캔을 덮은 최종 상태에서 재튜닝해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q11. Nordic nRF52 시리즈를 활용한 커스텀 보드 설계 시 반드시 확인해야 할 하드웨어 체크리스트는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Nordic 데이터시트의 레퍼런스 라우팅 준수 여부, 32MHz 및 32.768kHz 크리스탈 주변의 기생 커패시턴스, 그리고 DC-DC 변환용 인덕터 배치를 최우선으로 점검합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q12. BLE 기기 간 연결 끊김(Connection Drop)이 잦을 때 RF 하드웨어 단에서 먼저 의심해야 할 부분은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>32.768kHz RTC 크리스탈의 허용 오차(ppm) 틀어짐으로 인한 통신 타이밍 불일치를 점검하고, 안테나 매칭 불량으로 인한 수신 감도 한계점 도달 여부를 확인해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q13. Nordic 칩셋이 저전력 모드(Sleep Mode)에 진입했는데도 배터리 소모량이 예상보다 높은 원인은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>사용하지 않는 GPIO 핀이 플로팅(Floating) 상태로 방치되어 누설 전류가 발생했거나, 내부 DC-DC 컨버터 대신 효율이 낮은 LDO 모드가 활성화되어 있는지 펌웨어 레지스터를 확인합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q14. BLE 통신 거리(Range)를 기존 대비 2배 이상 연장하기 위한 하드웨어 튜닝 기법은 무엇이 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>정밀한 RF 매칭 회로 최적화를 기본으로, 하드웨어에 별도의 FEM(PA/LNA 증폭기) 칩을 추가하거나 Nordic 칩셋이 지원하는 Coded PHY(Long Range) 모드를 소프트웨어적으로 활성화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q15. nRF52840을 사용한 무선 센서 보드에서 데이터 처리량(Throughput)을 최대화하는 설정법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>MTU(Maximum Transmission Unit) 페이로드 크기를 늘리고, Connection Interval을 최소 허용치로 단축하며, DLE(Data Length Extension) 기능을 켜서 패킷 전송 효율을 극대화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q16. 노르딕 칩셋 내장 DC-DC 컨버터 사용 시 발생하는 노이즈가 RF 송수신에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>인덕터 주변의 스위칭 노이즈가 안테나나 RF 입력단으로 유입되면 수신 감도가 급락하므로, 노이즈가 적은 권장 규격의 인덕터 사용 및 RF 트레이스와의 이격 배치가 매우 중요합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q17. 다수의 BLE 센서가 동시에 통신하는 밀집 환경에서 패킷 충돌을 피하는 하드웨어 및 펌웨어 설계 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Advertising 간격(Interval)에 무작위성(Random Delay)을 부여하여 송신 시점을 분산시키고, 스캐닝 윈도우를 최적화하여 다중 기기 환경에서 패킷 충돌 확률을 낮춥니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q18. BLE Advertising 주기가 배터리 수명과 RF 안테나 발열에 미치는 상관관계는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>주기가 짧을수록 연결 응답성은 좋아지나 순간적인 송신 전류(Peak Current) 발생 빈도가 급증하여 배터리 수명을 크게 단축시키며, 초소형 기기에서는 미세한 발열의 원인이 될 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q19. 외부 32.768kHz 크리스탈(RTC)의 주파수 편차(ppm)가 BLE 연결 안정성에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>주파수 편차가 크면 저전력 모드에서 깨어날 때 마스터와 슬레이브 간의 통신 타이밍 윈도우가 어긋나게 되어 패킷 손실률이 급증하고 잦은 연결 끊김 현상이 발생합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q20. 기존 메인 MCU에 Nordic BLE 통신 모듈을 통합(Integration)할 때 발생하는 통신 병목 현상을 해결하려면?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>메인 MCU와 BLE 모듈 간 통신(UART/SPI 등)의 보드레이트(Baudrate) 및 하드웨어 흐름 제어(Flow Control)를 최적화하고, 링 버퍼(Ring Buffer) 사이즈를 늘려 데이터 유실을 방지합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q21. 주요 대기업 납품을 위한 무선 센서 보드의 환경 신뢰성(온습도 사이클) 테스트 통과 기준은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>통상적으로 -40℃~85℃의 가혹한 온도 사이클 및 고온 다습 환경을 견뎌야 하며, 이 환경 조건에서도 무선 송수신 감도(Sensitivity) 및 최대 출력이 스펙 범위 내에서 변동 없이 유지되어야 합격합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q22. 고온 환경에서 2.4GHz 무선 칩셋의 성능 저하(Thermal Derating)를 방지하는 방열 설계 노하우는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 보드에서는 PCB 내 구리(Copper) 면적을 최대한 넓혀 방열판 역할을 하도록 설계하고 발열이 심한 전원 IC와 무선 칩셋을 물리적으로 이격시키며, 다량의 써멀 비아(Thermal Via)를 배치합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q23. 진동이 심한 환경에 설치되는 무선 센서 보드의 크리스탈(Oscillator) 파손 방지 대책은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>기계적 진동에 취약한 크리스탈 부품 주변 및 하단에 댐핑용 에폭시 수지(Underfill)를 도포하거나, 내진동성이 압도적으로 뛰어난 소형 패키지 또는 MEMS 오실레이터로 부품을 대체 설계합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q24. 정전기(ESD) 인가 시 2.4GHz RF 칩셋이 리셋되거나 회로가 파괴되는 현상을 막는 보호 회로 설계법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>안테나 입력단과 외부 노출 포트에 초저용량(Low Capacitance) TVS 다이오드를 배치하여, RF 고주파 신호 손실은 방지하면서 정전기 에너지만 그라운드로 즉각 우회(Bypass)시킵니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q25. 24시간 장기 연속 구동 시 간헐적으로 발생하는 BLE 모듈의 하드웨어 멈춤 현상 디버깅 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>전원부의 미세한 리플 노이즈 누적이나 하드웨어 워치독(Watchdog) 타이머 설정 오류를 1차로 점검하고, JTAG 장기 로깅을 통해 메모리 누수나 하드웨어 인터럽트 충돌 지점을 특정합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q26. 엔터프라이즈급 통신 장비에 요구되는 전자파 내성(EMS) 테스트 통과를 위한 PCB 레이아웃 가이드는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>외부 전자파 공격에 견디기 위해 민감한 RF 및 아날로그 트레이스를 내층으로 라우팅하고, 그 주변을 촘촘한 비아로 쉴딩(Via Shielding)하여 루프 안테나 역할을 원천 차단합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q27. 초소형 보드에서 부품 간격 밀집으로 발생한 크로스토크(Crosstalk)가 무선 송수신에 미치는 악영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>고속 디지털 신호선(SPI, I2C 등)이 RF 라인에 인접할 경우 노이즈가 커플링되어 수신 감도를 훼손하므로, 직교 라우팅을 적용하거나 두 신호선 사이에 GND 가드 트레이스를 배치해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q28. 센서 데이터 수집 시 간헐적으로 발생하는 통신 지연(Latency)의 하드웨어적 원인은 어떻게 찾나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>오실로스코프를 이용해 통신 시점의 전원 전압 강하(Drop) 파형이나 메인 MCU와의 인터페이스 통신 파형을 분석하여, 전원 불안정이나 하드웨어 인터럽트 병목 구간을 탐색합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q29. 배터리 잔량 부족으로 인한 전압 강하(Voltage Drop)가 2.4GHz 최대 송신 출력(Tx Power)에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>배터리 전압이 칩셋 내부 PA(전력 증폭기)의 권장 동작 전압 이하로 떨어지면 최대 송신 출력이 급감하여 통신 거리가 줄어들므로, 벅-부스트(Buck-Boost) 컨버터 등을 통해 안정적인 전압을 공급해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q30. 무선 보드의 수명(MTBF)을 예측하고 가혹 조건에서 신뢰성을 검증하는 가속 수명 테스트 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>HALT(고가속 수명 시험) 장비를 이용해 고온, 고습, 강한 진동 등 극한 환경 스트레스를 복합적으로 가하여 초소형 제품의 하드웨어 취약 지점을 조기에 발견하고 개선합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q31. 2.4GHz 무선 기기 KC 인증 진행 시 가장 빈번하게 발생하는 불합격(Fail) 사유와 예방법은 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>가장 흔한 원인은 불필요한 방사 노이즈(Spurious Emission) 기준치 초과이며, 설계 초기 단계부터 정밀한 안테나 매칭, 실드캔 적용, 전원부 노이즈 필터링 설계를 반영해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q32. BLE 기기의 방사 스퓨리어스(Radiated Spurious Emission) 기준 초과 시 하드웨어 디버깅 절차는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>스펙트럼 분석기로 초과되는 하모닉(고조파) 주파수 대역을 정확히 확인한 후, RF 매칭단에 Low Pass Filter(LPF) 소자를 추가하여 불요파를 감쇄시킵니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q33. 보드 크기가 너무 작아 테스트 핀(Test Point)을 뽑기 어려울 때, 무선 인증용 펌웨어 제어 환경은 어떻게 구축하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>설계 단계에서 보드 바닥면에 초소형 Pogo Pin용 테스트 패드(Tx, Rx, GND 등)를 배치하고, 인증 시에만 맞춤형 테스트 지그를 결합하여 DTM(Direct Test Mode) 명령을 인가합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q34. 이미 인증받은 2.4GHz 완제품 모듈을 사용해도 세트(Set) 단위에서 추가적인 전자파 인증이 필요한 경우는 언제인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>모듈 자체의 무선 인증(RF)은 면제받을 수 있으나, 최종 조립된 제품 상태에서 전원 노이즈나 기타 부품에 의한 전자파 간섭을 확인하기 위해 전자파 적합성(EMC/EMI) 인증은 별도로 받아야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q35. 안테나 위치나 케이스 재질이 변경되었을 때 기존 KC 인증에서 파생 모델로 처리할 수 있는 허용 범위는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>동일한 RF 칩과 발진 회로를 사용하고 단지 케이스 재질이 바뀌거나 안테나의 이득(Gain)이 기존 인증품보다 낮아지는 변경이라면 파생 모델이나 동일성 선언으로 절차를 간소화할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q36. FCC(미국), CE(유럽) 인증 진행 시 국내 KC 인증 측정 결과(Test Report)를 어디까지 활용할 수 있나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>국가별로 규격(Limit)과 시험 방법이 달라 성적서의 직접적인 재사용은 어렵지만, 설계 디버깅을 위한 사전 검증 데이터로 활용하여 해외 인증 비용과 재시험 기간을 획기적으로 줄이는 지표가 됩니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q37. 2.4GHz 대역폭 내에서 채널별 송신 출력(Tx Power) 편차가 심할 때 인증 통과에 미치는 영향은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>채널별 출력 편차가 커서 특정 채널이 규격 한계치를 초과하거나 미달하면 인증 통과가 불가능하므로, 펌웨어 단에서 채널별 보정 값(Calibration)을 적용하여 출력을 평탄하게 맞추어야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q38. 무선 충전 기능이 포함된 2.4GHz 초소형 센서 기기의 전자파 적합성(EMC) 복합 인증 절차는 어떻게 되나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>2.4GHz 무선 통신 기기 규격과 무선 충전(WPT) 장치 규격 인증을 동시에 진행해야 하며, 특히 무선 충전 시 발생하는 스위칭 노이즈가 무선 통신에 미치는 상호 간섭 여부를 엄격히 평가받습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q39. 인증용 샘플 보드 제작 시 양산 보드와 동일한 RF 성능을 보장하기 위해 어떤 점을 중점 관리해야 하나요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>양산 시 사용할 정확히 동일한 부품명세서(BOM)와 동일한 PCB 제조사를 통해 샘플을 제작해야 하며, 펌웨어 역시 양산 버전을 기반으로 테스트 모드만 추가한 형태로 준비해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q40. 블루투스 로고를 사용하기 위한 Bluetooth SIG 인증과 국가별 전파 인증(KC/FCC)의 진행 순서 및 차이점은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Bluetooth SIG는 블루투스 통신 규약 준수 및 로고 사용을 위한 글로벌 민간 인증이며, KC/FCC는 해당 국가의 전파법 준수를 위한 강제 법정 인증이므로 각각 독립적으로 병행 진행됩니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q41. 2.4GHz 무선 보드 대량 양산 시 RF 성능 편차로 인한 통신 불량률을 획기적으로 낮추는 공정 관리 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 보드일수록 SMT 공정의 부품 실장 오차에 민감하므로, RF 부품과 매칭 소자 주변의 솔더 크림 두께(스텐실 마스크 두께)와 리플로우 온도 프로파일을 최적화하는 것이 핵심입니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q42. SMT 양산 라인에서 BLE 보드의 RF 수신 감도(Rx Sensitivity)를 빠르게 전수 검사하는 테스트 지그(Jig) 구축법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>Pogo Pin 지그에 Golden Sample(성능 기준 보드) 또는 전용 블루투스 테스터 장비를 내장하여, 양산 라인에서 빠르고 자동으로 RSSI를 측정하고 합격/불합격을 판정하는 자동화 스크립트를 구축합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q43. 글로벌 반도체 수급 이슈 발생 시 Nordic 칩셋 등 주요 2.4GHz RF IC의 핀투핀(Pin-to-Pin) 대체품 선정 기준은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>대체하려는 칩셋이 기존과 완벽히 동일한 풋프린트(Footprint)를 가지는지 하드웨어적으로 확인하고, 펌웨어 이식성(Porting) 및 내부 플래시 메모리 용량을 종합적으로 검토해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q44. 초소형 무선 보드 설계부터 양산까지 턴키(Turn-key) 외주 진행 시 개발사 선정 체크리스트는 무엇인가요?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>제한된 공간에서의 고밀도 레이아웃 설계 역량, 엔터프라이즈급 기업 납품을 성공시킨 포트폴리오, 까다로운 무선 인증 디버깅 경험, 그리고 양산 수율 관리 능력을 반드시 확인해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q45. 2.4GHz 칩셋 직접 실장(SoC) 방식과 인증 완료된 모듈 사용 방식 중 우리 프로젝트에 유리한 단가/일정 비교 기준은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>생산 수량이 적고 빠른 출시(인증 비용 절감)가 필요하다면 모듈이 유리하며, 극도로 작은 초소형 폼팩터가 필수이고 대량 양산을 통한 부품 단가 절감이 목적이라면 SoC 직접 실장이 압도적으로 유리합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q46. 양산 후 시장에 배포된 무선 제품의 펌웨어를 원격 업데이트(OTA)할 때 전원 차단 등으로 인한 하드웨어 벽돌(Brick) 현상 방지 방안은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>듀얼 뱅크(Dual Bank) 플래시 메모리 구조를 적용하여, 새로운 펌웨어 다운로드가 100% 완료되고 무결성이 검증된 후에만 기존 부팅 이미지를 교체하도록 Fail-safe 안전장치를 설계합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q47. PCB 레이어(Layer) 수를 줄여 양산 단가를 절감하면서도 RF 안테나 성능을 유지하는 설계 노하우는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>6층 기판을 4층으로 줄일 경우 RF 임피던스 매칭을 위한 선폭(Trace Width)과 층간 두께(Prepreg)를 재계산하고, 부품 배치를 밀도 있게 최적화하여 필수적인 그라운드 쉴딩 영역을 사수합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q48. 자동화 테스트 지그(Test Jig) 제작 시 2.4GHz 안테나 성능 및 연결 테스트까지 한 번에 자동화하는 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>테스트 지그 내부에 외부 노이즈를 차단하는 미니 RF 쉴드 박스 공간을 마련하고, 계측 장비와 PC를 연동하여 DTM 통신 제어 및 RSSI 판독을 원클릭으로 자동화합니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q49. 잦은 하드웨어 리비전(Revision)으로 인한 개발 지연을 막기 위해 기획 단계부터 전문 RF 컨설팅을 받아야 하는 이유는?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>초소형 폼팩터 하드웨어는 기구물과 RF의 상관관계가 극도로 높아, 초기 설계부터 전문가의 개입이 있어야 금형 재수정이나 인증 재시험 같은 치명적인 시간 및 비용 낭비를 막을 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="faq-accordion-item">
+      <div class="faq-question-head">
+        <div class="faq-q-text">
+          <span class="faq-cat-badge">RF HARDWARE</span>
+          <span class="faq-q-title">Q50. 성공적인 B2B 엔터프라이즈 납품을 위해 2.4GHz 센서 보드 기획 단계에서 반드시 확립해야 할 요구사항(PRD) 정의 방법은?</span>
+        </div>
+        <div class="faq-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="faq-answer-body">
+        <div class="faq-answer-inner">
+          <p>필요한 통신 거리, 타겟 배터리 수명, 동작 온도 범위, 제품 크기(폼팩터)의 물리적 한계선을 명확히 수치화하여, 엔터프라이즈 납품 기준에 부합하는 현실적인 하드웨어 설계 목표를 설정해야 합니다.</p>
+        </div>
+      </div>
+    </div>
+  
         </div>
 
       </div>
