@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>31NS-Tech Product Development LAB</title>
+    <link>https://31ns.kr/</link>
+    <description>RF, BLE, NFC, Mixed-Signal Circuit Design and Engineering Tech Blog</description>
+    <language>ko-KR</language>
+    <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
+    <lastBuildDate>Sun, 09 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://31ns.kr/rss.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title>BLE 안테나 임피던스 정합과 VNA 측정 실무 가이드</title>
+      <link>https://31ns.kr/#blog</link>
+      <description>nRF52840 기반 2.4GHz BLE 회로 설계 시 VNA S11 측정 및 50Ω 패턴 정합 최적화 기술 문서</description>
+      <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://31ns.kr/#blog-doc1</guid>
+    </item>
+
+    <item>
+      <title>nRF52805 BLE 모듈 하드웨어 회로 설계 기술 참고 문서</title>
+      <link>https://31ns.kr/#blog</link>
+      <description>Nordic Semiconductor nRF52805 WLCSP 패키지 초소형 BLE 회로 설계 및 Build-up PCB 아트웍 고려사항</description>
+      <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+      <guid>https://31ns.kr/#blog-doc2</guid>
+    </item>
+  </channel>
+</rss>
