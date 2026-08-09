@@ -2,7 +2,10 @@
 // SPINX DIGITAL ULTRA-LUXE INTERACTIVE JS FOR 31NS-TECH HARDWARE LAB
 // ═════════════════════════════════════════════════════════════════
 
+import { ThreeRobot } from './components/ThreeRobot.js';
+
 // 50 RF Engineering Q&A Database (KO & EN)
+
 const rfFaqData = [
   {
     "q_ko": "2.4GHz 대역에서 와이파이와 블루투스 혼선(Coexistence)을 방지하려면 어떻게 하드웨어를 설계해야 하나요?",
@@ -456,6 +459,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandler();
   initLangSwitcher();
   initScrollAnimations();
+
+  // Initialize Claude 3D RobotExpressive.glb Interactive Mascot
+  try {
+    const threeRobot = new ThreeRobot();
+    threeRobot.init();
+  } catch (err) {
+    console.warn('ThreeRobot init warning:', err);
+  }
 
   // Auto-detect English page from URL or <html lang="en">
   if (window.location.pathname.includes('/en') || document.documentElement.lang === 'en') {
