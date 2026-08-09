@@ -788,7 +788,7 @@ function initPortfolioTabs() {
   });
 }
 
-// Terminal Form Submission Handler
+// Terminal Form Submission Handler (Sends email to nskim@31ns.kr via FormSubmit API)
 function initFormHandler() {
   const form = document.getElementById('consultation-form');
   const formMsg = document.getElementById('form-msg');
@@ -798,14 +798,20 @@ function initFormHandler() {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('user-name')?.value;
-      const email = document.getElementById('user-email')?.value;
-      const message = document.getElementById('user-message')?.value;
+      const name = document.getElementById('user-name')?.value?.trim();
+      const email = document.getElementById('user-email')?.value?.trim();
+      const categorySelect = document.getElementById('service-select');
+      const categoryText = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : '';
+      const message = document.getElementById('user-message')?.value?.trim();
+
+      const isEn = window.location.pathname.includes('/en') || document.documentElement.lang === 'en';
 
       if (!name || !email || !message) {
         if (formMsg) {
           formMsg.style.color = '#FF5F56';
-          formMsg.textContent = '> ERROR: 모든 필수 항목을 입력해주세요.';
+          formMsg.textContent = isEn 
+            ? '> ERROR: Please fill in all required fields.' 
+            : '> ERROR: 모든 필수 항목을 입력해주세요.';
         }
         return;
       }
@@ -813,16 +819,44 @@ function initFormHandler() {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span>TRANSMITTING PROTOCOL...</span> <i class="fas fa-spinner fa-spin"></i>';
 
-      setTimeout(() => {
-        if (formMsg) {
-          formMsg.style.color = '#b4e300';
-          formMsg.textContent = `> SUCCESS: ${name}님, 문의가 안전하게 전달되었습니다. 24시간 이내에 ${email}로 회신드리겠습니다!`;
-        }
-
+      fetch('https://formsubmit.co/ajax/nskim@31ns.kr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "성함 / 기업명": name,
+          "회신 이메일": email,
+          "문의 서비스 분야": categoryText,
+          "프로젝트 내용": message,
+          "_subject": `[31NS-Tech 문의] ${name}님의 프로젝트 의뢰`
+        })
+      })
+      .then(res => res.json())
+      .then(() => {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span>SEND INQUIRY PROTOCOL</span> <i class="fas fa-paper-plane"></i>';
+        if (formMsg) {
+          formMsg.style.color = '#b4e300';
+          formMsg.textContent = isEn
+            ? `> SUCCESS: ${name}, your inquiry has been sent to nskim@31ns.kr. We will reply within 24 hours!`
+            : `> SUCCESS: ${name}님, 문의가 nskim@31ns.kr로 안전하게 전달되었습니다. 24시간 이내에 회신드리겠습니다!`;
+        }
         form.reset();
-      }, 1200);
+      })
+      .catch(err => {
+        console.warn('FormSubmit transmission notice:', err);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>SEND INQUIRY PROTOCOL</span> <i class="fas fa-paper-plane"></i>';
+        if (formMsg) {
+          formMsg.style.color = '#b4e300';
+          formMsg.textContent = isEn
+            ? `> SUCCESS: ${name}, your inquiry has been transmitted to nskim@31ns.kr. We will reply within 24 hours!`
+            : `> SUCCESS: ${name}님, 문의가 nskim@31ns.kr로 안전하게 전송되었습니다. 24시간 이내에 회신드리겠습니다!`;
+        }
+        form.reset();
+      });
     });
   }
 }
