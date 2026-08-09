@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 /**
  * ThreeRobot Component (Far-Right Screen Edge 3D Optics Fix)
+ * - Multi-language URL support (loads /assets/RobotExpressive.glb reliably on both / and /en/)
  * - Camera looks at (0, 0.8, 0)
  * - Robot is offset to far-right margin (+6.5) so it NEVER sits in screen center
  * - Constant Z distance (18.0) preventing zooming in on scroll
@@ -41,7 +42,8 @@ export class ThreeRobot {
       { id: 'contact', anim: 'ThumbsUp', cam: { y: 0.8, z: 18.0, ry: 0.0, look: 0.8 } }
     ];
 
-    this.modelPath = 'assets/RobotExpressive.glb';
+    // Absolute root path to ensure 100% resolution on both / and /en/
+    this.modelPath = '/assets/RobotExpressive.glb';
   }
 
   init() {
@@ -118,10 +120,12 @@ export class ThreeRobot {
     return 0.22;                     // Mobile compact scale
   }
 
-  loadModel() {
+  loadModel(customPath = null) {
     const loader = new GLTFLoader();
+    const pathToUse = customPath || this.modelPath;
+
     loader.load(
-      this.modelPath,
+      pathToUse,
       (gltf) => {
         this.robot = gltf.scene;
         this.robot.traverse((o) => {
@@ -152,7 +156,11 @@ export class ThreeRobot {
       },
       undefined,
       (err) => {
-        console.error('Failed to load 3D Robot model:', err);
+        console.warn(`Primary 3D path [${pathToUse}] failed, trying fallback path...`, err);
+        if (!customPath && pathToUse.startsWith('/')) {
+          // Fallback to relative path if absolute root path fails
+          this.loadModel('assets/RobotExpressive.glb');
+        }
       }
     );
   }
