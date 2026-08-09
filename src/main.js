@@ -543,7 +543,7 @@ function renderFaqList(searchTerm = '') {
     const itemEl = document.createElement('div');
     itemEl.className = 'faq-accordion-item';
     itemEl.innerHTML = `
-      <button class="faq-question-btn">
+      <button type="button" class="faq-question-btn">
         <span><strong class="faq-q-number">Q${numStr}.</strong> ${question}</span>
         <i class="fas fa-chevron-down faq-chevron"></i>
       </button>
@@ -552,17 +552,26 @@ function renderFaqList(searchTerm = '') {
       </div>
     `;
 
-    const btn = itemEl.querySelector('.faq-question-btn');
-    btn.addEventListener('click', () => {
-      itemEl.classList.toggle('active');
-    });
-
     container.appendChild(itemEl);
   });
 }
 
 function initFaqAccordion() {
   renderFaqList();
+
+  const container = document.getElementById('faq-accordion-container');
+  if (container && !container.dataset.hasAccordionListener) {
+    container.dataset.hasAccordionListener = 'true';
+    container.addEventListener('click', (e) => {
+      const qBtn = e.target.closest('.faq-question-btn, .faq-question-head, .faq-q-text, .faq-q-number');
+      if (qBtn) {
+        const item = qBtn.closest('.faq-accordion-item');
+        if (item) {
+          item.classList.toggle('active');
+        }
+      }
+    });
+  }
 
   const searchInput = document.getElementById('faq-search-input');
   if (searchInput) {

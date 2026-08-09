@@ -403,30 +403,39 @@ export class ThreeRobot {
     window.addEventListener('pointermove', this._onPointerMove, { passive: true });
 
     if (this.renderer && this.renderer.domElement) {
-      this.renderer.domElement.style.pointerEvents = 'auto';
-      this.renderer.domElement.style.cursor = 'pointer';
-      this.renderer.domElement.addEventListener('click', this._onCanvasClick);
+      this.renderer.domElement.style.pointerEvents = 'none';
     }
 
-    // Global Background / Outside Click Handler:
-    // If HUD is active and user clicks OUTSIDE the HUD container, CLOSE HUD without playing Jump, and focus back on gold mining!
+    // Global Click Handler:
+    // 1. Allows all underlying HTML links/buttons/inputs/accordions to receive clicks without obstruction
+    // 2. Raycasts for 3D Robot Mesh click when user clicks on background/robot area
     this._onDocumentClick = (e) => {
-      if (this.hudModal && this.hudModal.classList.contains('active')) {
-        const isClickInsideHUD = this.hudModal.contains(e.target);
-        const isClickOnCanvas = this.renderer?.domElement?.contains(e.target);
+      const isClickInsideHUD = this.hudModal && this.hudModal.contains(e.target);
+      const isInteractiveHTML = e.target.closest(
+        'a, button, input, textarea, select, label, .faq-accordion-item, .portfolio-luxe-card, .nav-container, .filter-tab-btn, .blog-card-luxe, #site-header, .hud-action-btn'
+      );
 
-        if (!isClickInsideHUD && isClickOnCanvas) {
-          this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-          this.raycaster.setFromCamera(this.mouse, this.camera);
-          const intersects = this.robot ? this.raycaster.intersectObjects(this.robot.children, true) : [];
+      // If user clicked inside HUD or on another interactive HTML element, do not raycast 3D robot
+      if (isClickInsideHUD || isInteractiveHTML) {
+        return;
+      }
 
-          if (intersects.length === 0) {
-            this.closeHUDAndResumeMining();
-          }
-        } else if (!isClickInsideHUD) {
-          this.closeHUDAndResumeMining();
-        }
+      // Check 3D Robot Mesh intersection
+      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+      const intersects = this.robot ? this.raycaster.intersectObjects(this.robot.children, true) : [];
+
+      if (intersects.length > 0) {
+        // 3D Robot mesh was clicked!
+        this.robotState = 'clicked';
+        this.robot.rotation.y = 0.0;
+        if (this.goldIngot) this.goldIngot.visible = false;
+        this.playAction('Jump', 0.15);
+        this.toggleHUD();
+      } else if (this.hudModal && this.hudModal.classList.contains('active')) {
+        // Clicked outside HUD and not on robot: close HUD
+        this.closeHUDAndResumeMining();
       }
     };
     document.addEventListener('click', this._onDocumentClick);
@@ -454,26 +463,6 @@ export class ThreeRobot {
       const isEn = window.location.pathname.includes('/en');
       window.location.href = isEn ? '/' : '/en/';
     });
-  }
-
-  onCanvasClick(e) {
-    if (!this.robot || !this.camera) return;
-
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-    const intersects = this.raycaster.intersectObjects(this.robot.children, true);
-
-    // ONLY trigger Jump + HUD when the actual 3D Robot mesh itself is clicked!
-    if (intersects.length > 0) {
-      this.robotState = 'clicked';
-      this.robot.rotation.y = 0.0;
-
-      if (this.goldIngot) this.goldIngot.visible = false;
-      this.playAction('Jump', 0.15);
-      this.toggleHUD();
-    }
   }
 
   toggleHUD() {
