@@ -145,8 +145,10 @@ export class ThreeRobot {
   }
 
   setupScene() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const isMobile = window.innerWidth <= 768;
+    const maxRatio = isMobile ? 1.25 : 2;
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxRatio));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.holder.appendChild(this.renderer.domElement);
@@ -172,10 +174,10 @@ export class ThreeRobot {
     this.cyanLight.position.set(initialX + 2, 1, 2);
     this.scene.add(this.cyanLight);
 
-    // Transparent Neon Green Floor Ring (#33FF00 / Opacity 0.45)
+    // Transparent Coral Orange Floor Ring (#ec5829 / Opacity 0.45)
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(0.6, 1.4, 64),
-      new THREE.MeshBasicMaterial({ color: 0x33ff00, transparent: true, opacity: 0.45, side: THREE.DoubleSide })
+      new THREE.MeshBasicMaterial({ color: 0xec5829, transparent: true, opacity: 0.45, side: THREE.DoubleSide })
     );
     ring.rotation.x = -Math.PI / 2;
     ring.position.set(initialX, -1.2, 0);
@@ -428,13 +430,19 @@ export class ThreeRobot {
 
       if (intersects.length > 0) {
         // 3D Robot mesh was clicked!
-        this.robotState = 'clicked';
-        this.robot.rotation.y = 0.0;
-        if (this.goldIngot) this.goldIngot.visible = false;
-        this.playAction('Jump', 0.15);
-        this.toggleHUD();
+        if (this.hudModal && this.hudModal.classList.contains('active')) {
+          // If HUD popup is already open, clicking on robot closes HUD and resumes work!
+          this.closeHUDAndResumeMining();
+        } else {
+          // Open HUD popup and pause robot to greet user
+          this.robotState = 'clicked';
+          this.robot.rotation.y = 0.0;
+          if (this.goldIngot) this.goldIngot.visible = false;
+          this.playAction('Jump', 0.15);
+          this.toggleHUD();
+        }
       } else if (this.hudModal && this.hudModal.classList.contains('active')) {
-        // Clicked outside HUD and not on robot: close HUD
+        // Clicked outside HUD and not on robot: close HUD and resume work!
         this.closeHUDAndResumeMining();
       }
     };
@@ -498,6 +506,10 @@ export class ThreeRobot {
     if (this.robot) {
       this.robot.scale.set(targetScale, targetScale, targetScale);
     }
+
+    const isMobile = window.innerWidth <= 768;
+    const maxRatio = isMobile ? 1.25 : 2;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxRatio));
 
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();

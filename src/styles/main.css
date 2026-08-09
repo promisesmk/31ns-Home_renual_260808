@@ -1,7 +1,7 @@
 /* ═════════════════════════════════════════════════════════════════
    HIGH-LEGIBILITY ULTRA-LUXE SYSTEM FOR 31NS-TECH PRODUCT DEVELOPMENT LAB
    Font Family: Montserrat (Clean & Modern Legible Headline Font)
-   Theme Palette: Dark Charcoal (#0B0C0E) & Soft Pastel Lime Glass Header (#d7f06e)
+   Theme Palette: Dark Charcoal (#0B0C0E) & Coral Orange Glass Header (#ec5829)
    ═════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -11,11 +11,11 @@
   --bg-card: #1C1E26;
   --bg-card-hover: #232632;
   --bg-header-top: rgba(22, 25, 32, 0.95);
-  --bg-header-scrolled: rgba(215, 240, 110, 0.92); /* Soft Pastel Lime Glass Scrolled Header */
+  --bg-header-scrolled: rgba(236, 88, 41, 0.92); /* Coral Orange Glass Scrolled Header */
   
-  --lime-accent: #b4e300;
-  --lime-glow: rgba(180, 227, 0, 0.35);
-  --lime-dim: rgba(180, 227, 0, 0.12);
+  --lime-accent: #ec5829;
+  --lime-glow: rgba(236, 88, 41, 0.35);
+  --lime-dim: rgba(236, 88, 41, 0.12);
   
   --cyan-accent: #00e5c1;
   --cyan-glow: rgba(0, 229, 193, 0.2);
@@ -26,7 +26,7 @@
   
   --border-dark: #272A36;
   --border-light: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(180, 227, 0, 0.4);
+  --border-hover: rgba(236, 88, 41, 0.4);
   
   /* Highly Legible Modern Typography */
   --font-display: 'Montserrat', 'Inter', -apple-system, sans-serif;
@@ -88,7 +88,7 @@ body.spinx-luxury-body {
   left: 0;
   width: 38px;
   height: 38px;
-  border: 1px solid rgba(180, 227, 0, 0.6);
+  border: 1px solid rgba(236, 88, 41, 0.6);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
@@ -99,7 +99,7 @@ body.spinx-luxury-body {
 body:hover .custom-cursor-follower.hovering {
   width: 56px;
   height: 56px;
-  background: rgba(180, 227, 0, 0.08);
+  background: rgba(236, 88, 41, 0.08);
   border-color: var(--lime-accent);
 }
 
@@ -151,7 +151,7 @@ a {
   width: 100%;
 }
 
-/* 7초 주기 딥 메탈릭 어두운 톤 -> 은은한 퓨어 화이트 & 플래티넘 글로우 애니메이션 */
+/* 7초 주기 딥 메탈릭 어두운 톤 -> 은은한 퓨어 화이트 & 코랄 오렌지 글로우 애니메이션 */
 @keyframes darkToShiningWhite7s {
   0% {
     background-position: 0% 50%;
@@ -159,7 +159,7 @@ a {
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 35px rgba(56, 189, 248, 0.25));
+    filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.75)) drop-shadow(0 0 35px rgba(236, 88, 41, 0.4));
   }
   100% {
     background-position: 0% 50%;
@@ -177,7 +177,7 @@ a {
     #94A3B8 35%, 
     #FFFFFF 50%, 
     #F8FAFC 65%, 
-    #38BDF8 82%, 
+    #ec5829 82%, 
     #1e293b 100%
   );
   background-size: 300% 300%;
@@ -241,13 +241,13 @@ a {
               color 2s ease;
 }
 
-/* SOFT PASTEL LIME SCROLLED HEADER WITH SMOOTH 2s TRANSITION */
+/* CORAL ORANGE SCROLLED HEADER WITH SMOOTH 2s TRANSITION */
 .luxury-header.scrolled {
   background: var(--bg-header-scrolled);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-bottom: 2px solid rgba(165, 205, 50, 0.5);
-  box-shadow: 0 10px 30px rgba(180, 227, 0, 0.2);
+  border-bottom: 2px solid rgba(236, 88, 41, 0.5);
+  box-shadow: 0 10px 30px rgba(236, 88, 41, 0.2);
   color: #0B0E14;
 }
 
@@ -306,7 +306,7 @@ a {
   font-size: 0.7rem;
   color: var(--lime-accent);
   background: var(--lime-dim);
-  border: 1px solid rgba(180, 227, 0, 0.3);
+  border: 1px solid rgba(236, 88, 41, 0.3);
   padding: 3px 8px;
   border-radius: 4px;
   font-weight: 700;
@@ -320,7 +320,7 @@ a {
 }
 
 .luxury-header.scrolled .brand-sub-tag {
-  color: #b4e300;
+  color: #ec5829;
   background: #000000;
   border-color: #000000;
 }
@@ -420,11 +420,11 @@ a {
 
 .luxury-header.scrolled .btn-spinx-cta {
   background: #000000;
-  color: #b4e300;
+  color: #ec5829;
 }
 
 .luxury-header.scrolled .btn-arrow-circle {
-  background: #b4e300;
+  background: #ec5829;
   color: #000000;
 }
 
@@ -479,7 +479,7 @@ a {
 }
 
 .luxury-header.scrolled .lang-btn.active {
-  color: #b4e300;
+  color: #ec5829;
   background: #20232B;
 }
 
@@ -1020,7 +1020,7 @@ a {
   width: 52px;
   height: 52px;
   background: var(--lime-dim);
-  border: 1px solid rgba(180, 227, 0, 0.3);
+  border: 1px solid rgba(236, 88, 41, 0.3);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -1150,7 +1150,7 @@ a {
   font-size: 0.7rem;
   color: var(--lime-accent);
   background: rgba(0, 0, 0, 0.88);
-  border: 1px solid rgba(180, 227, 0, 0.4);
+  border: 1px solid rgba(236, 88, 41, 0.4);
   padding: 4px 10px;
   border-radius: 4px;
   z-index: 2;
@@ -1598,7 +1598,7 @@ a {
   width: 44px;
   height: 44px;
   background: var(--lime-dim);
-  border: 1px solid rgba(180, 227, 0, 0.25);
+  border: 1px solid rgba(236, 88, 41, 0.25);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -1845,8 +1845,8 @@ a {
     justify-content: center;
     font-size: 1.5rem !important;
     padding: 6px 12px !important;
-    background: rgba(180, 227, 0, 0.12) !important;
-    border: 1px solid rgba(180, 227, 0, 0.4) !important;
+    background: rgba(236, 88, 41, 0.12) !important;
+    border: 1px solid rgba(236, 88, 41, 0.4) !important;
     border-radius: 8px !important;
     color: var(--lime-accent) !important;
     cursor: pointer;
@@ -1858,7 +1858,7 @@ a {
   .luxury-header.scrolled .mobile-menu-btn {
     background: #000000 !important;
     border-color: #000000 !important;
-    color: #b4e300 !important;
+    color: #ec5829 !important;
   }
 }
 
@@ -1877,6 +1877,7 @@ a {
   .header-inner { padding: 0 16px; }
   .brand-title-single { font-size: 0.98rem; }
   .header-right-actions { gap: 8px; }
+  #three-robot-scene { display: none !important; }
 }
 
 @media (max-width: 600px) {
@@ -2000,7 +2001,7 @@ a {
   border: 1px dashed #3dd7d0;
   border-radius: 12px;
   padding: 10px 12px;
-  color: #b4e300;
+  color: #ec5829;
   font-size: 0.78rem;
   font-family: var(--font-body);
   line-height: 1.45;

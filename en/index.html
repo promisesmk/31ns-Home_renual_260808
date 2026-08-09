@@ -636,7 +636,10 @@
                 <div class="hud-corner top-right"></div>
                 <div class="hud-corner bottom-left"></div>
                 <div class="hud-corner bottom-right"></div>
-                <video src="/assets/board_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <video autoplay loop muted playsinline preload="metadata" class="lab-video-stream">
+                  <source src="/assets/board_feed_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+                  <source src="/assets/board_feed.mp4" type="video/mp4" />
+                </video>
                 <div class="hud-data-overlay">
                   <div class="overlay-row-top">NORDIC nRF52840 BLE 5.3 BOARD ARTWORK</div>
                   <div class="overlay-row-bottom">VNA S11 RETURN LOSS: -24.5dB | FREQ: 2.45GHz</div>
@@ -659,7 +662,10 @@
                 <div class="hud-corner top-right"></div>
                 <div class="hud-corner bottom-left"></div>
                 <div class="hud-corner bottom-right"></div>
-                <video src="/assets/monitor_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <video autoplay loop muted playsinline preload="metadata" class="lab-video-stream">
+                  <source src="/assets/monitor_feed_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+                  <source src="/assets/monitor_feed.mp4" type="video/mp4" />
+                </video>
                 <div class="hud-data-overlay">
                   <div class="overlay-row-top">AFE SENSOR SIGNAL FFT ANALYSIS</div>
                   <div class="overlay-row-bottom">NOISE FLOOR: -110dBm | EMI SHIELDING STABLE</div>
@@ -874,7 +880,7 @@
           <!-- Project 0: Industrial Equipment Diagnosis -->
           <article class="portfolio-luxe-card magnetic-hover" data-category="sensor">
             <div class="port-card-visual">
-              <img src="/assets/industrial_factory_machinery.png" alt="Industrial Factory Machinery" class="port-bg-img" />
+              <img src="/assets/industrial_factory_machinery.webp" alt="Industrial Factory Machinery" class="port-bg-img" loading="lazy" />
               <div class="port-category-tag" data-i18n="proj0Btn">Supplied to S & L Corp</div>
               <div class="port-hover-overlay">
                 <span class="view-details-btn">B2B ENTERPRISE VERIFIED</span>
@@ -929,7 +935,7 @@
           <!-- Project 2: Firefighter PASS Alarm -->
           <article class="portfolio-luxe-card magnetic-hover" data-category="sensor">
             <div class="port-card-visual">
-              <img src="/assets/firefighters_fighting_fire.png" alt="Firefighters Fighting Fire" class="port-bg-img" />
+              <img src="/assets/firefighters_fighting_fire.webp" alt="Firefighters Fighting Fire" class="port-bg-img" loading="lazy" />
               <div class="port-category-tag" data-i18n="proj2Btn">96dB High-Power</div>
               <div class="port-hover-overlay">
                 <span class="view-details-btn">IP67 WATERPROOF & FIRE AGENCY</span>

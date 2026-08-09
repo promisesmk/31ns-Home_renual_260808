@@ -460,12 +460,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initLangSwitcher();
   initScrollAnimations();
 
-  // Initialize Claude 3D RobotExpressive.glb Interactive Mascot
-  try {
-    const threeRobot = new ThreeRobot();
-    threeRobot.init();
-  } catch (err) {
-    console.warn('ThreeRobot init warning:', err);
+  // Initialize 3D RobotExpressive.glb Interactive Mascot (Desktop PC only for 0-lag Mobile performance)
+  if (window.innerWidth > 768) {
+    try {
+      const threeRobot = new ThreeRobot();
+      threeRobot.init();
+    } catch (err) {
+      console.warn('ThreeRobot init warning:', err);
+    }
   }
 
   // Auto-detect English page from URL or <html lang="en">
@@ -838,7 +840,7 @@ function initFormHandler() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span>SEND INQUIRY PROTOCOL</span> <i class="fas fa-paper-plane"></i>';
         if (formMsg) {
-          formMsg.style.color = '#b4e300';
+          formMsg.style.color = '#ec5829';
           formMsg.textContent = isEn
             ? `> SUCCESS: ${name}, your inquiry has been sent to nskim@31ns.kr. We will reply within 24 hours!`
             : `> SUCCESS: ${name}님, 문의가 nskim@31ns.kr로 안전하게 전달되었습니다. 24시간 이내에 회신드리겠습니다!`;
@@ -850,7 +852,7 @@ function initFormHandler() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span>SEND INQUIRY PROTOCOL</span> <i class="fas fa-paper-plane"></i>';
         if (formMsg) {
-          formMsg.style.color = '#b4e300';
+          formMsg.style.color = '#ec5829';
           formMsg.textContent = isEn
             ? `> SUCCESS: ${name}, your inquiry has been transmitted to nskim@31ns.kr. We will reply within 24 hours!`
             : `> SUCCESS: ${name}님, 문의가 nskim@31ns.kr로 안전하게 전송되었습니다. 24시간 이내에 회신드리겠습니다!`;

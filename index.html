@@ -628,7 +628,10 @@
                 <span class="hud-signal"><span class="signal-bar b1"></span><span class="signal-bar b2"></span><span class="signal-bar b3"></span> 2.4GHz ACTIVE</span>
               </div>
               <div class="video-frame-box">
-                <video src="/assets/board_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <video autoplay loop muted playsinline preload="metadata" class="lab-video-stream">
+                  <source src="/assets/board_feed_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+                  <source src="/assets/board_feed.mp4" type="video/mp4" />
+                </video>
                 <div class="hud-corner top-left"></div>
                 <div class="hud-corner top-right"></div>
                 <div class="hud-corner bottom-left"></div>
@@ -646,7 +649,10 @@
                 <span class="hud-signal"><span class="signal-bar b1"></span><span class="signal-bar b2"></span><span class="signal-bar b3"></span> DEV VIBE CODE</span>
               </div>
               <div class="video-frame-box">
-                <video src="/assets/monitor_feed.mp4" autoplay loop muted playsinline class="lab-video-stream"></video>
+                <video autoplay loop muted playsinline preload="metadata" class="lab-video-stream">
+                  <source src="/assets/monitor_feed_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+                  <source src="/assets/monitor_feed.mp4" type="video/mp4" />
+                </video>
                 <div class="hud-corner top-left"></div>
                 <div class="hud-corner top-right"></div>
                 <div class="hud-corner bottom-left"></div>
@@ -871,7 +877,7 @@
           <!-- Project 000: Industrial Factory Heavy Machinery Concept (Custom Local Asset) -->
           <div class="portfolio-luxe-card magnetic-hover" data-category="industrial">
             <div class="port-card-visual">
-              <img src="/assets/industrial_factory_machinery.png" alt="Industrial Factory Machinery Floor" class="port-bg-img" loading="lazy" />
+              <img src="/assets/industrial_factory_machinery.webp" alt="Industrial Factory Machinery Floor" class="port-bg-img" loading="lazy" />
               <span class="port-category-tag">MASS PRODUCTION B2B</span>
               <div class="port-hover-overlay">
                 <span class="view-details-btn"><i class="fas fa-industry"></i> <span data-i18n="proj0Btn">S사 · L사 공급 완료</span></span>
@@ -929,7 +935,7 @@
           <!-- Project 002: Firefighters Fighting Fire Concept (Custom Local Asset) -->
           <div class="portfolio-luxe-card magnetic-hover" data-category="sensor">
             <div class="port-card-visual">
-              <img src="/assets/firefighters_fighting_fire.png" alt="Firefighters Fighting Massive Fire Action Scene" class="port-bg-img" loading="lazy" />
+              <img src="/assets/firefighters_fighting_fire.webp" alt="Firefighters Fighting Massive Fire Action Scene" class="port-bg-img" loading="lazy" />
               <span class="port-category-tag">SAFETY / IP67</span>
               <div class="port-hover-overlay">
                 <span class="view-details-btn"><i class="fas fa-shield-alt"></i> <span data-i18n="proj2Btn">96dB High-Power</span></span>
