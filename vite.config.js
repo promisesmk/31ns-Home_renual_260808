@@ -8,6 +8,12 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         en: resolve(__dirname, 'en/index.html'),
       },
+      output: {
+        manualChunks: {
+          three: ['three'],
+        },
+      },
     },
   },
 });
+
