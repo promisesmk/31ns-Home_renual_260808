@@ -6,7 +6,7 @@ import { ThreeRobot } from './components/ThreeRobot.js';
 
 // 50 RF Engineering Q&A Database (KO & EN)
 
-const rfFaqData = [
+export const rfFaqData = [
   {
     "q_ko": "2.4GHz 대역에서 와이파이와 블루투스 혼선(Coexistence)을 방지하려면 어떻게 하드웨어를 설계해야 하나요?",
     "q_en": "How should the hardware be designed to prevent coexistence interference between Wi-Fi and Bluetooth in the 2.4GHz band?",
@@ -374,8 +374,11 @@ const i18n = {
     blog2Title: "nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서", blog2Desc: "Nordic Semiconductor nRF52805 WLCSP 모듈 1차/2차 Build-up PCB 사양, 캔 적용, 안테나 패턴 타입 설계 및 시품 RF 튜닝 실무 프로세스.",
     btnReadDoc: "기술 문서 읽기",
     faqTitle: "RF & 하드웨어 실무 Q&A 50선", faqSub: "2.4GHz 신호 혼선, 안테나 매칭, AFE 노이즈, KC/FCC 인증 대응 필수 하드웨어 답변",
+    btnGoogleMap: "Google 지도", btnNaverMap: "네이버 지도",
+    namePlaceholder: "성함 또는 의뢰 기업명 입력", emailPlaceholder: "회신받으실 이메일 주소", msgPlaceholder: "프로젝트 내용, 개발 사양, 문의 사항을 자세히 적어주세요.",
+    optRf: "RF / BLE / NFC 회로 설계 및 안테나 튜닝", optSignal: "Mixed-Signal & AFE 설계", optCert: "KC / FCC / CE 인증 및 DFM 양산 컨설팅", optVibe: "Dev Vibe 코딩 및 응용 개발", optOther: "기타 종합 기술 문의",
     contactTitle: "프로젝트 의뢰 및 기술 상담", contactLead: "귀사의 하드웨어 난제, 20년 이상 경험의 31NS-Tech Product Development LAB에 문의하세요. 회로 설계, 튜닝, 양산 컨설팅까지 신속히 답변드립니다.",
-    contactAddr: "경기도 광명시 (Gwangmyeong-si, Gyeonggi-do)", contactResp: "24시간 이내 엔지니어 사전 검토 후 회신", btnSubmitForm: "SEND INQUIRY PROTOCOL", footerAbout: "20년 이상 경력의 RF/하드웨어 전문가가 회로 설계부터 양산 및 인증까지 실용적인 토털 엔지니어링 솔루션을 제공합니다."
+    contactAddr: "경기도 광명시 광명역로 28 (광명역센트럴자이)", contactResp: "24시간 이내 엔지니어 사전 검토 후 회신", btnSubmitForm: "SEND INQUIRY PROTOCOL", footerAbout: "20년 이상 경력의 RF/하드웨어 전문가가 회로 설계부터 양산 및 인증까지 실용적인 토털 엔지니어링 솔루션을 제공합니다."
   },
   en: {
     navHome: "Home",
@@ -441,8 +444,11 @@ const i18n = {
     blog2Title: "nRF52805 BLE Module Hardware Circuit Design Reference", blog2Desc: "Nordic Semiconductor nRF52805 WLCSP 1st/2nd Build-up PCB design, RF shielding, and VNA antenna tuning process.",
     btnReadDoc: "Read Tech Document",
     faqTitle: "RF Engineering Q&A (50 Items)", faqSub: "Hardware solutions for 2.4GHz interference, antenna matching, AFE noise, and KC/FCC certs",
+    btnGoogleMap: "Google Maps", btnNaverMap: "Naver Maps",
+    namePlaceholder: "Enter your name or company", emailPlaceholder: "Enter your email address", msgPlaceholder: "Describe your project goals, technical specs, or inquiry details.",
+    optRf: "RF / BLE / NFC Circuit Design & Antenna Tuning", optSignal: "Mixed-Signal & AFE Design", optCert: "KC / FCC / CE Certification & DFM Consulting", optVibe: "Dev Vibe Coding & Application Development", optOther: "General Technical Inquiry",
     contactTitle: "Project Inquiry & Consultation", contactLead: "Facing a tough hardware challenge? Contact 31NS-Tech Product Development LAB for rapid engineering feedback.",
-    contactAddr: "Gwangmyeong-si, Gyeonggi-do, Republic of Korea", contactResp: "Engineer review & reply within 24 hours", btnSubmitForm: "SEND INQUIRY PROTOCOL", footerAbout: "20+ years experienced RF/hardware team offering practical total engineering solutions from design to production."
+    contactAddr: "28 Gwangmyeongyeok-ro (Gwangmyeong Station Central Xi), Gwangmyeong-si, Gyeonggi-do, Korea", contactResp: "Engineer review & reply within 24 hours", btnSubmitForm: "SEND INQUIRY PROTOCOL", footerAbout: "20+ years experienced RF/hardware team offering practical total engineering solutions from design to production."
   }
 };
 
@@ -474,6 +480,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('/en') || document.documentElement.lang === 'en') {
     setLanguage('en');
   }
+
+  // Restore scroll position after language switching redirect if stored
+  const savedY = sessionStorage.getItem('langScrollY');
+  if (savedY !== null) {
+    sessionStorage.removeItem('langScrollY');
+    requestAnimationFrame(() => {
+      window.scrollTo(0, parseInt(savedY, 10));
+    });
+  }
 });
 
 // Smooth Dark Header Transition (Dark Slate -> Deeper Dark Obsidian)
@@ -499,8 +514,17 @@ function initLangSwitcher() {
   const btnEn = document.getElementById('btn-lang-en');
 
   if (btnKo && btnEn) {
-    btnKo.addEventListener('click', () => setLanguage('ko'));
-    btnEn.addEventListener('click', () => setLanguage('en'));
+    btnKo.addEventListener('click', () => {
+      if (window.location.pathname.includes('/en')) {
+        sessionStorage.setItem('langScrollY', window.scrollY);
+        window.location.href = '/';
+      } else {
+        setLanguage('ko');
+      }
+    });
+    btnEn.addEventListener('click', () => {
+      setLanguage('en');
+    });
   }
 }
 
@@ -517,6 +541,13 @@ function setLanguage(lang) {
     const key = el.getAttribute('data-i18n');
     if (dict[key]) {
       el.innerHTML = dict[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (dict[key]) {
+      el.placeholder = dict[key];
     }
   });
 
@@ -876,4 +907,21 @@ function initScrollAnimations() {
   document.querySelectorAll('.capability-luxe-card, .process-step-item, .portfolio-luxe-card, .blog-card-luxe, .contact-card-item').forEach(el => {
     observer.observe(el);
   });
+
+  // Keyword Drawer Toggle Listener
+  const mainToggleBtn = document.getElementById('main-toggle-keywords');
+  const mainKeywordsBody = document.getElementById('main-keywords-body');
+  const mainDrawerArrow = document.getElementById('main-drawer-arrow');
+
+  if (mainToggleBtn && mainKeywordsBody && mainDrawerArrow) {
+    mainToggleBtn.addEventListener('click', () => {
+      if (mainKeywordsBody.style.display === 'none' || !mainKeywordsBody.style.display) {
+        mainKeywordsBody.style.display = 'block';
+        mainDrawerArrow.style.transform = 'rotate(180deg)';
+      } else {
+        mainKeywordsBody.style.display = 'none';
+        mainDrawerArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
 }

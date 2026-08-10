@@ -1918,23 +1918,33 @@
               <div class="contact-card-item magnetic-hover">
                 <div class="card-icon-wrap"><i class="fas fa-envelope"></i></div>
                 <div>
-                  <div class="item-label">PRIMARY EMAIL INQUIRY</div>
+                  <div class="item-label" data-i18n="labelEmail">PRIMARY EMAIL INQUIRY</div>
                   <div class="item-val">nskim@31ns.kr / promisesmk@gmail.com</div>
                 </div>
               </div>
 
-              <div class="contact-card-item magnetic-hover">
-                <div class="card-icon-wrap"><i class="fas fa-map-marker-alt"></i></div>
-                <div>
-                  <div class="item-label">LAB LOCATION</div>
-                  <div class="item-val" data-i18n="contactAddr">Gwangmyeong-si, Gyeonggi-do, Republic of Korea</div>
+              <div class="contact-card-item magnetic-hover" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                <div style="display: flex; gap: 15px; align-items: center; width: 100%;">
+                  <div class="card-icon-wrap"><i class="fas fa-map-marker-alt"></i></div>
+                  <div>
+                    <div class="item-label" data-i18n="labelLocation">LAB LOCATION</div>
+                    <div class="item-val" data-i18n="contactAddr">28 Gwangmyeongyeok-ro (Gwangmyeong Station Central Xi), Gwangmyeong-si, Gyeonggi-do, Korea</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%; padding-left: 55px;">
+                  <a href="https://maps.google.com/?q=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EA%B4%94%EB%AA%85%EC%8B%9C+%EA%B4%94%EB%AA%85%EC%97%AD%EB%A1%9C+28" target="_blank" rel="noopener noreferrer" style="background: rgba(236,88,41,0.15); color: #ec5829; padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; text-decoration: none; font-weight: 600; border: 1px solid rgba(236,88,41,0.3);">
+                    <i class="fab fa-google"></i> <span data-i18n="btnGoogleMap">Google Maps</span>
+                  </a>
+                  <a href="https://map.naver.com/v5/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B4%94%EB%AA%85%EC%8B%9C%20%EA%B4%94%EB%AA%85%EC%97%AD%EB%A1%9C%2028" target="_blank" rel="noopener noreferrer" style="background: rgba(34,197,94,0.15); color: #4ade80; padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; text-decoration: none; font-weight: 600; border: 1px solid rgba(34,197,94,0.3);">
+                    <i class="fas fa-map-marked-alt"></i> <span data-i18n="btnNaverMap">Naver Maps</span>
+                  </a>
                 </div>
               </div>
 
               <div class="contact-card-item magnetic-hover">
                 <div class="card-icon-wrap"><i class="fas fa-clock"></i></div>
                 <div>
-                  <div class="item-label">RESPONSE PROTOCOL</div>
+                  <div class="item-label" data-i18n="labelResponse">RESPONSE PROTOCOL</div>
                   <div class="item-val" data-i18n="contactResp">Engineer review & reply within 24 hours</div>
                 </div>
               </div>
@@ -1952,29 +1962,29 @@
 
             <form class="terminal-input-form" id="contact-form">
               <div class="input-field-group">
-                <label for="user-name">// NAME / COMPANY</label>
-                <input type="text" id="user-name" placeholder="Enter your name or company" required />
+                <label for="user-name" data-i18n="lblFormName">// NAME / COMPANY</label>
+                <input type="text" id="user-name" data-i18n-ph="namePlaceholder" placeholder="Enter your name or company" required />
               </div>
 
               <div class="input-field-group">
-                <label for="user-email">// EMAIL ADDRESS</label>
-                <input type="email" id="user-email" placeholder="Enter your email address" required />
+                <label for="user-email" data-i18n="lblFormEmail">// EMAIL ADDRESS</label>
+                <input type="email" id="user-email" data-i18n-ph="emailPlaceholder" placeholder="Enter your email address" required />
               </div>
 
               <div class="input-field-group">
-                <label for="service-select">// SERVICE CATEGORY</label>
+                <label for="service-select" data-i18n="lblFormService">// SERVICE CATEGORY</label>
                 <select id="service-select">
-                  <option value="rf">RF / BLE / NFC Circuit Design & Antenna Tuning</option>
-                  <option value="signal">Mixed-Signal & AFE Design</option>
-                  <option value="cert">KC / FCC / CE Certifications & DFM Consulting</option>
-                  <option value="vibe">Dev Vibe Coding & Application Development</option>
-                  <option value="other">General Technical Inquiry</option>
+                  <option value="rf" data-i18n="optRf">RF / BLE / NFC Circuit Design & Antenna Tuning</option>
+                  <option value="signal" data-i18n="optSignal">Mixed-Signal & AFE Design</option>
+                  <option value="cert" data-i18n="optCert">KC / FCC / CE Certifications & DFM Consulting</option>
+                  <option value="vibe" data-i18n="optVibe">Dev Vibe Coding & Application Development</option>
+                  <option value="other" data-i18n="optOther">General Technical Inquiry</option>
                 </select>
               </div>
 
               <div class="input-field-group">
-                <label for="user-message">// PROJECT REQUIREMENTS</label>
-                <textarea id="user-message" rows="4" placeholder="Describe your project requirements, target specs, or questions in detail." required></textarea>
+                <label for="user-message" data-i18n="lblFormReq">// PROJECT REQUIREMENTS</label>
+                <textarea id="user-message" data-i18n-ph="msgPlaceholder" rows="4" placeholder="Describe your project requirements, target specs, or questions in detail." required></textarea>
               </div>
 
               <button type="submit" class="btn-submit-luxe magnetic-hover" id="submit-btn">

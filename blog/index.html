@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tech Blog & Research | 31NS-Tech RF·하드웨어 기술 문서</title>
+  <meta name="title" content="Tech Blog & Research | 31NS-Tech RF·하드웨어 기술 문서" />
+  <meta name="description" content="2.4GHz BLE 안테나 임피던스 매칭, Nordic nRF52805 PCB 레이아웃, VNA S11 측정 노하우 등 20년 경력 RF/하드웨어 개발 현장 실무 기술 리퍼런스 전문 읽기" />
+  <meta name="keywords" content="BLE 안테나 매칭, VNA 스미스차트, nRF52805 회로설계, RF 튜닝, PCB 레이아웃, 실드캔 기생 용량, 31NS-Tech 기술 블로그" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://31ns.kr/blog/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://31ns.kr/blog/" />
+  <meta property="og:site_name" content="31NS-Tech Product Development LAB" />
+  <meta property="og:title" content="Tech Blog & Research | 31NS-Tech RF·하드웨어 기술 문서" />
+  <meta property="og:description" content="RF/하드웨어 개발 현장에서 검증된 최적화 노하우 및 실무 기술 리퍼런스 집대성" />
+  <meta property="og:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+
+  <style>
+    @keyframes pulseBlink {
+      0% { box-shadow: 0 0 0 0 rgba(236, 88, 41, 0.7); background: #ec5829; transform: scale(1); }
+      50% { box-shadow: 0 0 16px 6px rgba(236, 88, 41, 0.95); background: #ff7347; transform: scale(1.05); }
+      100% { box-shadow: 0 0 0 0 rgba(236, 88, 41, 0.7); background: #ec5829; transform: scale(1); }
+    }
+    .btn-home-pulse {
+      animation: pulseBlink 1.6s infinite ease-in-out;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      padding: 10px 22px !important;
+      border-radius: 30px !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      font-size: 0.95rem !important;
+      letter-spacing: 0.5px;
+    }
+    .lang-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #94a3b8;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: #ec5829;
+      color: #ffffff;
+      border-color: #ec5829;
+    }
+  </style>
+</head>
+<body style="background: #0b0f19; color: #e2e8f0; font-family: 'Inter', sans-serif; margin: 0; padding: 0;">
+
+  <!-- Header Nav (Simplified per user request: Brand + Blinking Return Home Button + Language Switcher) -->
+  <header style="padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(236,88,41,0.25); background: rgba(11,15,25,0.92); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100;">
+    <a href="/" style="color: #ffffff; text-decoration: none; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+      <span style="color: #ec5829;">31NS-Tech</span> LAB
+    </a>
+    
+    <div style="display: flex; gap: 20px; align-items: center;">
+      <a href="/" class="btn-home-pulse" id="btn-return-home">
+        <i class="fas fa-arrow-left"></i> <span data-i18n="btnReturnHome">🏠 메인으로 돌아가기</span>
+      </a>
+      <div style="display: flex; gap: 6px;">
+        <button class="lang-btn active" id="lang-ko">KO</button>
+        <button class="lang-btn" id="lang-en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 60px 20px;">
+    <!-- Title -->
+    <div style="text-align: center; margin-bottom: 50px;">
+      <span style="color: #ec5829; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">LAB TECHNICAL PAPERS</span>
+      <h1 style="font-size: 2.4rem; font-weight: 800; margin: 15px 0; color: #ffffff;" data-i18n="blogPageTitle">Tech Blog & Research 전문 아카이브</h1>
+      <p style="color: #94a3b8; font-size: 1.08rem; max-width: 760px; margin: 0 auto; line-height: 1.6;" data-i18n="blogPageSub">RF/무선통신 및 하드웨어 개발 현장에서 20년 이상 검증된 실무 기술 노하우 및 상세 그림 기술 문서를 전문 뷰어로 읽으실 수 있습니다.</p>
+    </div>
+
+    <!-- Keyword Drawer Component (Exclusive to Subpages) -->
+    <div style="margin-bottom: 50px; background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(236, 88, 41, 0.3); border-radius: 12px; overflow: hidden;">
+      <button id="toggle-keywords" style="width: 100%; padding: 18px 24px; background: rgba(236, 88, 41, 0.08); border: none; color: #ec5829; font-size: 1rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+        <span><i class="fas fa-search" style="margin-right: 8px;"></i> <span data-i18n="kwDrawerTitle">🔍 31NS-Tech 8대 핵심 엔지니어링 키워드 & 기술 태그 펼치기 ▾</span></span>
+        <i id="drawer-arrow" class="fas fa-chevron-down" style="transition: transform 0.3s;"></i>
+      </button>
+      <div id="keywords-body" style="display: none; padding: 24px; background: rgba(15, 23, 42, 0.85); border-top: 1px solid rgba(236,88,41,0.15);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+          <div>
+            <h4 style="color: #ec5829; margin-top: 0; font-size: 0.95rem;"><i class="fas fa-wifi"></i> <span data-i18n="kwCat1">RF & 안테나 정합</span></h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span style="background: rgba(236,88,41,0.15); color: #f87171; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">2.4GHz BLE 안테나 임피던스 매칭</span>
+              <span style="background: rgba(236,88,41,0.15); color: #f87171; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">VNA 스미스차트 S11 튜닝</span>
+              <span style="background: rgba(236,88,41,0.15); color: #f87171; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">PCB 패턴 안테나 50옴</span>
+              <span style="background: rgba(236,88,41,0.15); color: #f87171; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">FPCB 커스텀 안테나</span>
+            </div>
+          </div>
+          <div>
+            <h4 style="color: #ec5829; margin-top: 0; font-size: 0.95rem;"><i class="fas fa-microchip"></i> <span data-i18n="kwCat2">Nordic BLE 칩셋 개발</span></h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span style="background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">nRF52805 nRF52840 nRF5340</span>
+              <span style="background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">32.768kHz RTC ppm 오차</span>
+              <span style="background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">저전력 GPIO 플로팅 누설전류</span>
+              <span style="background: rgba(59,130,246,0.15); color: #60a5fa; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">Coded PHY Long Range</span>
+            </div>
+          </div>
+          <div>
+            <h4 style="color: #ec5829; margin-top: 0; font-size: 0.95rem;"><i class="fas fa-shield-alt"></i> <span data-i18n="kwCat3">PCB 노이즈 & 인증 DFM</span></h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">SMPS 스위칭 노이즈 RSSI 차단</span>
+              <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">4층 PCB 내층 그라운드 비아쉴딩</span>
+              <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">KC/FCC 인증 DFM 설계</span>
+              <span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem;">AFE 아날로그 프론트엔드 센서</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 30px;">
+      <!-- Article 1 -->
+      <article style="background: rgba(30,41,59,0.4); border: 1px solid rgba(236,88,41,0.25); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_01.webp" alt="BLE Antenna Matching" style="width: 100%; height: 200px; object-fit: cover;" />
+          <div style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #ec5829; margin-bottom: 12px;">
+              <span>BLE / RF / ANTENNA</span>
+              <span style="color: #64748b;">2026-05-15</span>
+            </div>
+            <h2 style="font-size: 1.25rem; margin: 0 0 12px 0; color: #fff; line-height: 1.4;" data-i18n="blog1Title">BLE 안테나 정합(매칭)과 RF 회로 최적화 실무 기술자료</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;" data-i18n="blog1Desc">초보자를 위한 PCB 설계 오류부터 VNA 튜닝 완벽 가이드. 50Ω 임피던스 매칭, VSWR 및 Return Loss 최소화, IFA / 세라믹 / 휩 안테나 비교 가이드.</p>
+          </div>
+        </div>
+        <div style="padding: 0 24px 24px 24px;">
+          <button id="subpage-btn-blog1" style="width: 100%; padding: 14px 20px; background: rgba(236,88,41,0.15); border: 1px solid #ec5829; color: #ec5829; border-radius: 8px; font-weight: 700; font-size: 0.92rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s;" class="magnetic-hover">
+            <i class="fas fa-book-open"></i> <span data-i18n="btnReadDocModal">📖 기술 문서 전문 읽기 (그림/계측 차트 포함)</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article style="background: rgba(30,41,59,0.4); border: 1px solid rgba(59,130,246,0.25); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_01.webp" alt="nRF52805 Design Reference" style="width: 100%; height: 200px; object-fit: cover;" />
+          <div style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #3b82f6; margin-bottom: 12px;">
+              <span>NORDIC / nRF52805 / HARDWARE</span>
+              <span style="color: #64748b;">2026-05-14</span>
+            </div>
+            <h2 style="font-size: 1.25rem; margin: 0 0 12px 0; color: #fff; line-height: 1.4;" data-i18n="blog2Title">nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서</h2>
+            <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;" data-i18n="blog2Desc">Nordic Semiconductor nRF52805 WLCSP 모듈 1차/2차 Build-up PCB 사양, 캔 적용, 안테나 패턴 타입 설계 및 시품 RF 튜닝 실무 프로세스.</p>
+          </div>
+        </div>
+        <div style="padding: 0 24px 24px 24px;">
+          <button id="subpage-btn-blog2" style="width: 100%; padding: 14px 20px; background: rgba(59,130,246,0.15); border: 1px solid #3b82f6; color: #60a5fa; border-radius: 8px; font-weight: 700; font-size: 0.92rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s;" class="magnetic-hover">
+            <i class="fas fa-book-open"></i> <span data-i18n="btnReadDocModal">📖 기술 문서 전문 읽기 (그림/계측 차트 포함)</span>
+          </button>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- TECH BLOG MODAL VIEWER -->
+  <div class="blog-modal-overlay" id="subpage-blog-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
+    <div class="blog-modal-window" style="background: #0f172a; border: 1px solid rgba(236,88,41,0.4); border-radius: 16px; width: 90%; max-width: 900px; max-height: 85vh; overflow-y: auto; padding: 30px; box-sizing: border-box; color: #e2e8f0; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
+        <span id="subpage-modal-title" style="color: #ec5829; font-weight: 800; font-size: 1.2rem;">31NS-Tech LAB TECHNICAL PAPERS</span>
+        <button id="subpage-modal-close" style="background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer;">&times;</button>
+      </div>
+      <div id="subpage-modal-content" style="line-height: 1.8; font-size: 1rem;"></div>
+    </div>
+  </div>
+
+  <footer style="padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #64748b; font-size: 0.9rem;">
+    &copy; 2026 31NS-Tech Product Development LAB. All rights reserved.
+  </footer>
+
+  <script>
+    // Dictionary for Subpage KO/EN i18n
+    const i18nSub = {
+      ko: {
+        btnReturnHome: '🏠 메인으로 돌아가기',
+        blogPageTitle: 'Tech Blog & Research 전문 아카이브',
+        blogPageSub: 'RF/무선통신 및 하드웨어 개발 현장에서 20년 이상 검증된 실무 기술 노하우 및 상세 그림 기술 문서를 전문 뷰어로 읽으실 수 있습니다.',
+        kwDrawerTitle: '🔍 31NS-Tech 8대 핵심 엔지니어링 키워드 & 기술 태그 펼치기 ▾',
+        kwCat1: 'RF & 안테나 정합',
+        kwCat2: 'Nordic BLE 칩셋 개발',
+        kwCat3: 'PCB 노이즈 & 인증 DFM',
+        blog1Title: 'BLE 안테나 정합(매칭)과 RF 회로 최적화 실무 기술자료',
+        blog1Desc: '초보자를 위한 PCB 설계 오류부터 VNA 튜닝 완벽 가이드. 50Ω 임피던스 매칭, VSWR 및 Return Loss 최소화, IFA / 세라믹 / 휩 안테나 비교 가이드.',
+        blog2Title: 'nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서',
+        blog2Desc: 'Nordic Semiconductor nRF52805 WLCSP 모듈 1차/2차 Build-up PCB 사양, 캔 적용, 안테나 패턴 타입 설계 및 시품 RF 튜닝 실무 프로세스.',
+        btnReadDocModal: '📖 기술 문서 전문 읽기 (그림/계측 차트 포함)'
+      },
+      en: {
+        btnReturnHome: '🏠 Return to Home',
+        blogPageTitle: 'Tech Blog & Research Technical Papers Archive',
+        blogPageSub: 'Access 20+ years of battle-tested RF/Wireless hardware engineering references, full circuit schematics, and measured VNA charts in our interactive viewer.',
+        kwDrawerTitle: '🔍 Expand 31NS-Tech Core Engineering Keywords & Tech Tags ▾',
+        kwCat1: 'RF & Antenna Matching',
+        kwCat2: 'Nordic BLE Chipset Development',
+        kwCat3: 'PCB Noise & Certification DFM',
+        blog1Title: 'BLE Antenna Impedance Matching & RF Circuit Optimization Guide',
+        blog1Desc: 'Step-by-step guide from PCB layout pitfalls to VNA tuning. 50Ω impedance matching, VSWR/Return loss minimization, and IFA vs Ceramic vs Whip antenna benchmarks.',
+        blog2Title: 'Nordic nRF52805 BLE Module Circuit Design & Technical Reference',
+        blog2Desc: 'Nordic nRF52805 WLCSP module 1st/2nd Build-up PCB specs, shield can parasitic capacitance compensation, and RF tuning procedures.',
+        btnReadDocModal: '📖 Read Full Technical Document (with Figures & Charts)'
+      }
+    };
+
+    let currentLang = 'ko';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18nSub[lang] && i18nSub[lang][key]) {
+          el.innerHTML = i18nSub[lang][key];
+        }
+      });
+      document.getElementById('lang-ko').classList.toggle('active', lang === 'ko');
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    }
+
+    document.getElementById('lang-ko').addEventListener('click', () => setLanguage('ko'));
+    document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+    // Keyword Drawer
+    document.getElementById('toggle-keywords').addEventListener('click', function() {
+      const body = document.getElementById('keywords-body');
+      const arrow = document.getElementById('drawer-arrow');
+      if (body.style.display === 'none') {
+        body.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+      } else {
+        body.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Modal Document Reader
+    const modal = document.getElementById('subpage-blog-modal');
+    const modalTitle = document.getElementById('subpage-modal-title');
+    const modalContent = document.getElementById('subpage-modal-content');
+    const closeBtn = document.getElementById('subpage-modal-close');
+
+    function openDoc(title, html) {
+      modalTitle.textContent = title;
+      modalContent.innerHTML = html;
+      modal.style.display = 'flex';
+    }
+
+    closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+    document.getElementById('subpage-btn-blog1').addEventListener('click', () => {
+      openDoc("BLE 안테나 정합(매칭)과 RF 회로 최적화 실무 기술자료", `
+        <h2 style="color: #fff; font-size: 1.6rem; margin-bottom: 10px;">BLE 안테나 정합과 최적화의 모든 것</h2>
+        <p style="color: #ec5829; font-size: 0.9rem; margin-bottom: 20px;"><strong>작성일:</strong> 2026-05-15 | <strong>태그:</strong> Hardware, BLE, RF, Embedded</p>
+        <hr style="margin:20px 0; border-color:rgba(255,255,255,0.1);" />
+
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_01.webp" alt="BLE Antenna System Overview" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 1. BLE 안테나 시스템 개요 — 50Ω 임피던스 매칭 경로와 불량 설계 비교</div>
+
+        <h3 style="color:#ec5829; margin-top:25px;">보이지 않는 파이프라인 (The Invisible Pipeline)</h3>
+        <p>RF 신호는 2.4 GHz (파장 약 12.5 cm)로 진동하는 민감한 에너지입니다. 칩셋, 패턴, 안테나가 모두 50옴(Ω)이라는 표준 규격을 맞추지 못하면 에너지는 방사되지 못하고 칩으로 반사되어 수신 거리 감소와 발열을 유발합니다. (VSWR 및 Return Loss 증가)</p>
+        
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_02.webp" alt="Matched vs Mismatched" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 2. 정합 상태(Matched 50Ω) vs 임피던스 불일치(Mismatched) 비교</div>
+
+        <h3 style="color:#ec5829; margin-top:25px;">나에게 맞는 안테나 찾기</h3>
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/BLE_안테나_정합과_최적화_기술자료/img_03.webp" alt="Antenna Comparison" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 3. IFA / 세라믹 칩 / 외장 휩 안테나 비교 분석</div>
+
+        <ul style="padding-left:20px;">
+          <li style="margin-bottom:8px;"><strong>Inverted-F (IFA) — 역F형 패턴 안테나:</strong> 공간 15×25mm, 방사 효율 70%~80%, 비용 Zero. 가장 추천하는 표준 방식 (스마트 센서, 비콘).</li>
+          <li style="margin-bottom:8px;"><strong>Ceramic Chip — 세라믹 칩 안테나:</strong> 공간 3×2mm, 방사 효율 20%~50%. 초소형 기기에 적합하나 효율이 낮음.</li>
+          <li style="margin-bottom:8px;"><strong>Wire & Monopole — 외장 휩 안테나:</strong> 31mm 길이, 방사 효율 80%~90%. 고성능 산업용 장비에 최적.</li>
+        </ul>
+
+        <h3 style="color:#ec5829; margin-top:25px;">VNA 튜닝 실무 프로세스</h3>
+        <p>Vector Network Analyzer 계측 장비의 Port Extension 상차 보정을 마친 후, S11 Smith Chart 상의 임피던스 궤적이 50Ω 중심점에 정확히 수렴하도록 Pi(π) 매칭 네트워크의 L, C 값을 정밀 조율합니다.</p>
+      `);
+    });
+
+    document.getElementById('subpage-btn-blog2').addEventListener('click', () => {
+      openDoc("nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서", `
+        <h2 style="color: #fff; font-size: 1.6rem; margin-bottom: 10px;">nRF52805 BLE 모듈 개발 기술 참고문서</h2>
+        <p style="color: #3b82f6; font-size: 0.9rem; margin-bottom: 20px;"><strong>작성일:</strong> 2026-05-14 | <strong>태그:</strong> Hardware, BLE, Nordic, WLCSP</p>
+        <hr style="margin:20px 0; border-color:rgba(255,255,255,0.1);" />
+
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_01.webp" alt="Raytac Module Reference" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 1. Raytac nRF52805 모듈 참도 핀아웃 및 안테나 설계 분석</div>
+
+        <h3 style="color:#3b82f6; margin-top:25px;">nRF52805 WLCSP 패키지 아트워크 고려사항</h3>
+        <p>0.09mm 극소형 패드를 사용하는 WLCSP 패키지 특성상 Build-up PCB 사양(2층/4층)에 맞춰 안테나 패턴 타입과 쉴드 캔(Can) 영역을 사전 설계해야 합니다.</p>
+
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_02.webp" alt="Nordic Reference BOM" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 2. Nordic 레퍼런스 BOM / 0603 대처 수동소자 인치 규격표</div>
+
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_03.webp" alt="Inch to mm Reference" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 3. SMD 소자 Inch - mm 변환 치수표</div>
+
+        <img src="https://cdn.jsdelivr.net/gh/promisesmk/31ns-Home-blog-assets@main/nRF52805_BLE모듈_개발기술참고문서_이미지포함/img_04.webp" alt="Raytac DK Board" style="width:100%; border-radius:8px; margin:15px 0;" />
+        <div style="font-size:0.85rem; color:#94a3b8; text-align:center; margin-bottom:20px;">그림 4. Raytac 개발키트(DK) 보드 레이아웃 및 핑인터페이스 JIG</div>
+
+        <h3 style="color:#3b82f6; margin-top:25px;">주요 회로 검토 항목</h3>
+        <ul style="padding-left:20px;">
+          <li style="margin-bottom:8px;"><strong>Build-up A, B, C:</strong> 층간 비아 인패드(Via-in-pad) 채움 공정 및 50Ω 임피던스 가이드 line 적용.</li>
+          <li style="margin-bottom:8px;"><strong>RF 쉴딩 캔:</strong> 외부 EMI 노이즈 차단을 위한 캔 립(Can lip) 접지 패턴 1.0mm 간격 배치.</li>
+          <li style="margin-bottom:8px;"><strong>시품 RF 튜닝:</strong> 1차 기판 제작 후 안테나 튜닝을 실행하고, 2차 메인보드 결합 시 추가 정합 튜닝 수행.</li>
+        </ul>
+      `);
+    });
+  </script>
+</body>
+</html>
