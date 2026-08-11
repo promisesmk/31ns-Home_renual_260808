@@ -1873,7 +1873,14 @@ a {
 }
 
 @media (max-width: 768px) {
-  .btn-spinx-cta { display: none !important; }
+  .luxury-header .btn-spinx-cta { display: none !important; }
+  .btn-spinx-cta {
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+    justify-content: center;
+    word-break: keep-all;
+  }
   .header-inner { padding: 0 16px; }
   .brand-title-single { font-size: 0.98rem; }
   .header-right-actions { gap: 8px; }
