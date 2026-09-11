@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics 4 (GA4) 태그 (측정 ID: G-M6ZKCVME6D) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M6ZKCVME6D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-M6ZKCVME6D');
+  </script>
+  
+  <title>2.4GHz 멀티벤더 칩·모듈 개발 | Nordic·TI·SiLabs·Espressif·NXP·Telink — 31NS-Tech</title>
+  <meta name="title" content="2.4GHz 멀티벤더 칩·모듈 개발 | Nordic·TI·SiLabs·Espressif·NXP·Telink — 31NS-Tech" />
+  <meta name="description" content="Nordic nRF5340 등으로 20년 검증된 RF 설계 역량으로 TI CC2340, Silicon Labs EFR32, Espressif ESP32-C6, NXP KW47, Telink TLSR8258 등 모든 벤더의 2.4GHz 칩·모듈 제품을 회로설계부터 KC/FCC/CE 인증·양산까지 개발합니다." />
+  <meta name="keywords" content="2.4GHz 개발, 2.4GHz ISM, 멀티벤더 RF, BLE 회로설계, nRF5340, nRF52840, nRF54L15, TI CC2340, CC2652, Silicon Labs EFR32, EFR32MG24, ESP32-C6, ESP32-H2, NXP KW45, KW47, Telink TLSR825x, TLSR8258, Zigbee, Thread, Matter, 무선 모듈 개발 외주, RF 안테나 임피던스 매칭, KC FCC CE 인증, 31NS-Tech" />
+  <meta name="author" content="31NS-Tech Product Development LAB" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://31ns.kr/2.4ghz.html" />
+
+  <!-- Language Alternates for Multi-language SEO -->
+  <link rel="alternate" hreflang="ko" href="https://31ns.kr/2.4ghz.html" />
+  <!-- <link rel="alternate" hreflang="en" href="https://31ns.kr/en/2.4ghz.html" /> -->
+
+  <!-- Open Graph / Kakao / Naver Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://31ns.kr/2.4ghz.html" />
+  <meta property="og:site_name" content="31NS-Tech Product Development LAB" />
+  <meta property="og:title" content="2.4GHz 멀티벤더 칩·모듈 개발 | Nordic·TI·SiLabs·Espressif·NXP·Telink — 31NS-Tech" />
+  <meta property="og:description" content="Nordic nRF5340 등으로 20년 검증된 RF 설계 역량으로 TI CC2340, Silicon Labs EFR32, Espressif ESP32-C6, NXP KW47, Telink TLSR8258 등 모든 벤더의 2.4GHz 칩·모듈 제품을 회로설계부터 KC/FCC/CE 인증·양산까지 개발합니다." />
+  <meta property="og:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://31ns.kr/2.4ghz.html" />
+  <meta name="twitter:title" content="2.4GHz 멀티벤더 칩·모듈 개발 | Nordic·TI·SiLabs·Espressif·NXP·Telink — 31NS-Tech" />
+  <meta name="twitter:description" content="20년 검증된 RF 설계 역량으로 모든 벤더의 2.4GHz 칩·모듈 하드웨어를 회로설계부터 양산·인증까지 완성합니다." />
+  <meta name="twitter:image" content="https://31ns.kr/assets/Logo%2031NS-Tech.jpg" />
+
+  <!-- JSON-LD 1: Service Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "2.4GHz ISM 멀티벤더 무선 하드웨어 개발",
+    "provider": {
+      "@type": "Organization",
+      "name": "31NS-Tech Product Development LAB",
+      "url": "https://31ns.kr/"
+    },
+    "areaServed": "Global",
+    "description": "Nordic, Texas Instruments, Silicon Labs, Espressif, NXP, Telink 등 모든 주요 벤더의 2.4GHz 칩·모듈을 활용한 BLE/Zigbee/Thread/Matter 제품 회로설계·안테나 매칭·KC/FCC/CE 인증·양산 개발.",
+    "url": "https://31ns.kr/2.4ghz.html"
+  }
+  </script>
+
+  <!-- JSON-LD 2: FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Nordic가 아닌 다른 벤더의 2.4GHz 칩으로도 개발이 가능한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "가능합니다. 2.4GHz ISM 대역 무선 설계의 핵심 원리(임피던스 매칭, 안테나 튜닝, 저전력 전원, 코엑지스턴스, 인증)는 벤더가 달라도 동일하게 적용됩니다. Nordic nRF 시리즈로 20년간 축적한 설계 역량으로 TI, Silicon Labs, Espressif, NXP, Telink 등 신규 벤더 칩도 단기간 숙지 후 즉시 개발에 착수합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "어떤 벤더의 어떤 칩을 선택해야 할지 모르는데 상담이 되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "요구 사양(전력·거리·프로토콜·원가·인증)에 맞춰 최적 벤더와 칩·모듈을 선정하는 컨설팅부터 회로 설계, 튜닝, KC/FCC/CE 인증, 양산까지 원스톱으로 지원합니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Custom SpinX Ultra-Luxe Style -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="spinx-luxury-body">
+
+  <!-- Custom Magnetic Cursor -->
+  <div class="custom-cursor-dot" id="cursor-dot"></div>
+  <div class="custom-cursor-follower" id="cursor-follower"></div>
+
+  <!-- Ambient Dark Background Elements -->
+  <div class="bg-grid-overlay"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SUBPAGE HEADER (Matching Blog & RF-FAQ Subpages)
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="subpage-header" id="site-header">
+    <a href="/" class="subpage-brand">
+      <span>31NS-Tech</span> LAB
+    </a>
+    
+    <div class="subpage-header-actions">
+      <a href="/" class="btn-home-pulse" id="btn-return-home">
+        <i class="fas fa-arrow-left"></i> <span data-i18n="btnReturnHome">🏠 메인으로 돌아가기</span>
+      </a>
+      <div class="subpage-lang-switch">
+        <button class="lang-btn active" id="btn-lang-ko" data-lang-btn="ko">KO</button>
+        <button class="lang-btn" id="btn-lang-en" data-lang-btn="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT: 2.4GHz MULTI-VENDOR STANDALONE PAGE
+       ═══════════════════════════════════════════════════════════ -->
+  <main>
+
+    <!-- 2.4-00 // HERO SECTION -->
+    <section class="page-24ghz-hero">
+      <div class="container">
+        
+        <div class="mono-meta-bar fade-in-up">
+          <span class="mono-meta-tag highlight" data-i18n="pg24Meta1">// MULTI-VENDOR RF ENGINEERING</span>
+          <span class="mono-meta-tag" data-i18n="pg24Meta2">FREQ: 2.4GHz ISM</span>
+          <span class="mono-meta-tag" data-i18n="pg24Meta3">PROTOCOL: BLE / ZIGBEE / THREAD / MATTER / PROPRIETARY</span>
+          <span class="mono-meta-tag highlight" data-i18n="pg24Meta4">VENDOR: AGNOSTIC</span>
+        </div>
+
+        <h1 class="hero-headline fade-in-up delay-1" style="max-width: 1000px; font-size: clamp(2.2rem, 4.2vw, 3.8rem);" data-i18n="pg24HeroH1">
+          모든 벤더의 2.4GHz 칩·모듈,<br />
+          <span class="spinx-headline-gradient">어떤 제품이든 개발합니다</span>
+        </h1>
+
+        <p class="hero-lead-text fade-in-up delay-2" style="max-width: 960px; line-height: 1.85; margin-top: 24px;" data-i18n="pg24HeroLead">
+          Nordic nRF 시리즈로 20년간 수많은 양산 제품을 개발해 왔습니다. 2.4GHz ISM 대역 무선 설계의 핵심 원리는 벤더가 달라도 변하지 않습니다. 임피던스 매칭, 발룬·안테나 튜닝, 저전력 전원 설계, 코엑지스턴스, 그리고 KC·FCC·CE 인증 대응 — 이 검증된 설계 역량을 바탕으로 31NS-Tech는 Nordic은 물론 TI, Silicon Labs, Espressif, NXP, Telink 등 어떤 벤더의 칩과 모듈로도 제품을 완성합니다.
+        </p>
+
+        <div class="hero-buttons-row fade-in-up delay-3" style="margin-top: 36px;">
+          <a href="#vendor-matrix" class="btn-lime-hero magnetic-hover">
+            <i class="fas fa-table"></i>
+            <span data-i18n="pg24BtnCompare">벤더 비교표 보기</span>
+            <i class="fas fa-chevron-down arrow-move"></i>
+          </a>
+          <a href="/#contact" class="btn-glass-hero magnetic-hover">
+            <i class="fas fa-paper-plane"></i>
+            <span data-i18n="pg24BtnInquire">2.4GHz 프로젝트 의뢰</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-01 // WHY VENDOR-AGNOSTIC -->
+    <section class="section-block" style="padding-top: 40px; padding-bottom: 80px;">
+      <div class="container">
+        
+        <div class="section-tag-row">
+          <span class="section-kicker-tag" data-i18n="pg24WhyKicker">ENGINEERING LOGIC</span>
+          <span class="section-num-tag" data-i18n="pg24WhyNum">2.4-01 // WHY VENDOR-AGNOSTIC</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="pg24WhyTitle">벤더를 초월하는 무선 물리 법칙</h2>
+        <p class="section-lead-desc" data-i18n="pg24WhyLead">특정 벤더 종속을 탈피하여, 제품 목적에 가장 부합하는 최적의 칩셋을 자유롭게 채택합니다.</p>
+
+        <div class="logic-cards-grid">
+          
+          <!-- Proof Card -->
+          <div class="logic-card magnetic-hover">
+            <div class="logic-card-header" data-i18n="pg24ProofHeader">PROOF // 검증된 실적</div>
+            <h3 class="logic-card-title" data-i18n="pg24ProofTitle">20년간 검증된 전 세대 nRF 양산</h3>
+            <p class="logic-card-body" data-i18n="pg24ProofBody">
+              Nordic nRF52805, nRF52840, nRF5340, nRF54L15에 이르기까지 전 세대 SoC로 재난대응 극저온 온도계, 소방 인명구조 경보기, 산업 예측보전 센서 등 국내 대기업 양산 라인에 공급되는 제품을 설계·양산해 왔습니다.
+            </p>
+          </div>
+
+          <!-- Principle Card -->
+          <div class="logic-card magnetic-hover">
+            <div class="logic-card-header" data-i18n="pg24PrincipleHeader">PRINCIPLE // 벤더를 초월하는 물리</div>
+            <h3 class="logic-card-title" data-i18n="pg24PrincipleTitle">변하지 않는 2.4GHz ISM 물리 법칙</h3>
+            <p class="logic-card-body" data-i18n="pg24PrincipleBody">
+              2.4GHz ISM 대역의 무선 하드웨어 설계는 벤더가 달라도 동일한 물리 법칙 위에서 이뤄집니다. 50Ω 임피던스 정합, π/L 매칭 네트워크, 발룬과 안테나 Q-factor 튜닝, DC-DC 저전력 전원, EMI/EMC 억제, Wi-Fi·BLE 코엑지스턴스 — 이 원칙들은 칩 벤더가 무엇이든 그대로 적용됩니다.
+            </p>
+          </div>
+
+          <!-- Conclusion Card -->
+          <div class="logic-card magnetic-hover">
+            <div class="logic-card-header" data-i18n="pg24ConclHeader">CONCLUSION // 벤더 불문, 칩 불문</div>
+            <h3 class="logic-card-title" data-i18n="pg24ConclTitle">신규 칩셋 즉각 개발 착수</h3>
+            <p class="logic-card-body" data-i18n="pg24ConclBody">
+              그래서 새로운 벤더의 신규 칩이 출시되어도 데이터시트, 레퍼런스 디자인, SDK를 단기간에 숙지하는 것만으로 즉시 개발에 착수할 수 있습니다. 특정 벤더에 종속되지 않는 진짜 RF 하드웨어 엔지니어링 역량입니다.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-02 // VENDOR MATRIX -->
+    <section class="section-block" id="vendor-matrix" style="padding-top: 60px; padding-bottom: 90px; background: rgba(0, 0, 0, 0.25);">
+      <div class="container">
+        
+        <div class="section-tag-row">
+          <span class="section-kicker-tag" data-i18n="pg24MatrixKicker">VENDOR BENCHMARK</span>
+          <span class="section-num-tag" data-i18n="pg24MatrixNum">2.4-02 // VENDOR MATRIX</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="pg24MatrixTitle">주요 6대 벤더 2.4GHz 칩·모듈 분석</h2>
+        <p class="section-lead-desc" data-i18n="pg24MatrixLead">고객 제품의 원가, 통신 거리, 소비 전력, 인증 요건에 맞춰 가장 이상적인 칩셋 솔루션을 매핑합니다.</p>
+
+        <!-- 6 Vendor Detail Cards -->
+        <div class="vendor-cards-grid">
+          
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">Nordic Semiconductor</div>
+            <div class="vendor-card-chips">nRF52840 · nRF5340 · nRF54L15</div>
+            <p class="vendor-card-desc" data-i18n="pg24NordicDesc">레퍼런스와 생태계의 기준점. 31NS-Tech의 20년 주력 벤더로서 극저전력과 안정성이 검증되었습니다.</p>
+          </div>
+
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">Texas Instruments (TI)</div>
+            <div class="vendor-card-chips">CC2340R5 · CC2652R · CC2652P · CC1354P10</div>
+            <p class="vendor-card-desc" data-i18n="pg24TiDesc">통합 PA로 최대 +20dBm 고출력 달성, 엄격한 자동차 규격(Q1) 및 장수명 산업용 신뢰성 제공.</p>
+          </div>
+
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">Silicon Labs</div>
+            <div class="vendor-card-chips">EFR32BG22 · EFR32MG24 · EFR32BG24</div>
+            <p class="vendor-card-desc" data-i18n="pg24SilabsDesc">Secure Vault 최고 등급 보안, 하드웨어 AI/ML 가속기, Channel Sounding 및 AoA/AoD 정밀 방향탐지 특화.</p>
+          </div>
+
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">Espressif Systems</div>
+            <div class="vendor-card-chips">ESP32-C6 · ESP32-H2</div>
+            <p class="vendor-card-desc" data-i18n="pg24EspDesc">Wi-Fi 6와 BLE, Thread/Zigbee를 원칩에 집적. 초저가 대량 양산 및 글로벌 오픈 커뮤니티 생태계 보유.</p>
+          </div>
+
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">NXP Semiconductors</div>
+            <div class="vendor-card-chips">KW45 · KW47 · MCX W71 · MCX W72</div>
+            <p class="vendor-card-desc" data-i18n="pg24NxpDesc">자동차 등급(AEC-Q100), 고정밀 Channel Sounding 측거, EdgeLock 보안 엔진 및 차량용 CAN FD 통합.</p>
+          </div>
+
+          <div class="vendor-detail-card">
+            <div class="vendor-card-name">Telink Semiconductor</div>
+            <div class="vendor-card-chips">TLSR825x · TLSR827x · TLSR9</div>
+            <p class="vendor-card-desc" data-i18n="pg24TelinkDesc">초저가·초저전력 구조로 스마트 조명, 리모컨, 무선 완구 등 원가 경쟁력이 극히 중요한 소비재 대량 양산 최적화.</p>
+          </div>
+
+        </div>
+
+        <!-- Semantic Comparison Table -->
+        <div class="vendor-table-wrapper">
+          <table class="vendor-table">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="pg24ThVendor">벤더</th>
+                <th scope="col" data-i18n="pg24ThChips">대표 칩 / 모듈</th>
+                <th scope="col" data-i18n="pg24ThMcu">MCU 코어</th>
+                <th scope="col" data-i18n="pg24ThProto">지원 프로토콜</th>
+                <th scope="col" data-i18n="pg24ThRx">RX 감도 (대표)</th>
+                <th scope="col" data-i18n="pg24ThTx">최대 TX (대표)</th>
+                <th scope="col" data-i18n="pg24ThAdv">특화 강점</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="table-vendor-name">Nordic Semiconductor</td>
+                <td class="table-chips-cell">nRF52840 / nRF5340 / nRF54L15</td>
+                <td data-i18n="pg24McuNordic">Arm Cortex-M4F / 듀얼 M33 / M33</td>
+                <td data-i18n="pg24ProtoNordic">BLE 5.x, Thread, Zigbee, Matter, 802.15.4, 독자 2.4GHz</td>
+                <td data-i18n="pg24RxNordic">~ -95 dBm급</td>
+                <td data-i18n="pg24TxNordic">+8 dBm급</td>
+                <td data-i18n="pg24AdvNordic">생태계·문서 최강, 초저전력, 검증된 레퍼런스</td>
+              </tr>
+              <tr>
+                <td class="table-vendor-name">Texas Instruments</td>
+                <td class="table-chips-cell">CC2340R5 / CC2652R / CC2652P / CC1354P10</td>
+                <td>Arm Cortex-M0+ / M4F / M33</td>
+                <td data-i18n="pg24ProtoTi">BLE 5.3, Zigbee, Thread, 802.15.4, 멀티프로토콜(DMM), 독자 2.4GHz</td>
+                <td data-i18n="pg24RxTi">우수 (선택도·차단 특성 강점)</td>
+                <td>+20 dBm (PA 내장, CC2652P)</td>
+                <td data-i18n="pg24AdvTi">통합 PA 고출력, 자동차 등급(Q1), 장수명 산업용</td>
+              </tr>
+              <tr>
+                <td class="table-vendor-name">Silicon Labs</td>
+                <td class="table-chips-cell">EFR32BG22 / EFR32MG24 / EFR32BG24</td>
+                <td data-i18n="pg24McuSilabs">Arm Cortex-M33 (최대 78MHz)</td>
+                <td>BLE 5.x, Bluetooth mesh, Zigbee, Thread, Matter</td>
+                <td>최대 -106.7 dBm (Coded PHY)</td>
+                <td>+20 dBm (xG24)</td>
+                <td data-i18n="pg24AdvSilabs">AI/ML 가속기, Secure Vault 보안, Channel Sounding, AoA/AoD 방향탐지</td>
+              </tr>
+              <tr>
+                <td class="table-vendor-name">Espressif</td>
+                <td class="table-chips-cell">ESP32-C6 / ESP32-H2</td>
+                <td>RISC-V (HP 160MHz + LP)</td>
+                <td>Wi-Fi 6(C6), BLE 5.3, Zigbee 3.0, Thread 1.3, Matter</td>
+                <td data-i18n="pg24RxEsp">산업 표준급</td>
+                <td data-i18n="pg24TxEsp">표준급</td>
+                <td data-i18n="pg24AdvEsp">Wi-Fi+BLE+802.15.4 단일칩, 초저가 양산, 방대한 커뮤니티</td>
+              </tr>
+              <tr>
+                <td class="table-vendor-name">NXP</td>
+                <td class="table-chips-cell">KW45 / KW47 / MCX W71·W72</td>
+                <td data-i18n="pg24McuNxp">Arm Cortex-M33(96MHz) + 전용 라디오 코어</td>
+                <td>BLE 6.x, Channel Sounding, 802.15.4, CAN FD</td>
+                <td>-106 dBm (125kbps LR)</td>
+                <td data-i18n="pg24TxNxp">고출력급</td>
+                <td data-i18n="pg24AdvNxp">자동차 등급(AEC-Q100), Channel Sounding 측거, EdgeLock 보안, CAN FD</td>
+              </tr>
+              <tr>
+                <td class="table-vendor-name">Telink</td>
+                <td class="table-chips-cell">TLSR825x / TLSR827x / TLSR9</td>
+                <td>32-bit MCU(48MHz) / RISC-V(TLSR9)</td>
+                <td data-i18n="pg24ProtoTelink">BLE 5.x, mesh, Zigbee, Thread, RF4CE, HomeKit, 독자 2.4GHz</td>
+                <td>-96 dBm (BLE 1Mbps)</td>
+                <td>+10 dBm</td>
+                <td data-i18n="pg24AdvTelink">초저가·초저전력, 대량 소비재(조명/리모컨/완구)에 최적</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footnote Disclaimer -->
+        <div class="disclaimer-footnote" data-i18n="pg24Footnote">
+          ※ 본 페이지의 벤더별 기술 수치는 각 제조사 공식 자료의 대표값이며, 동작 조건(공급 전압·온도·PHY 설정·안테나 구성)에 따라 달라질 수 있습니다. 벤더명 및 제품명은 각 사의 상표이며, 본 페이지에서는 기술 사실 설명 목적으로만 사용되었습니다.
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-03 // COMMON DESIGN CORE -->
+    <section class="section-block" style="padding-top: 80px; padding-bottom: 80px;">
+      <div class="container">
+        
+        <div class="section-tag-row">
+          <span class="section-kicker-tag" data-i18n="pg24CoreKicker">CORE CAPABILITIES</span>
+          <span class="section-num-tag" data-i18n="pg24CoreNum">2.4-03 // COMMON DESIGN CORE</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="pg24CoreTitle">벤더 무관 공통 무선 하드웨어 설계 역량</h2>
+        <p class="section-lead-desc" data-i18n="pg24CoreLead">칩셋 데이터시트가 바뀌어도 엔지니어링의 본질은 변하지 않습니다. 31NS-Tech가 엄격히 지켜내는 6대 공통 설계 기준입니다.</p>
+
+        <div class="core-design-grid">
+          
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">01</span>
+            <div class="core-design-title" data-i18n="pg24Core1">50Ω 임피던스 매칭 &amp; VNA S11 튜닝</div>
+          </div>
+
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">02</span>
+            <div class="core-design-title" data-i18n="pg24Core2">발룬 · π/L 매칭 네트워크 정밀 설계</div>
+          </div>
+
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">03</span>
+            <div class="core-design-title" data-i18n="pg24Core3">PCB 패턴 안테나 / 칩 안테나 최적화</div>
+          </div>
+
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">04</span>
+            <div class="core-design-title" data-i18n="pg24Core4">DC-DC · LDO 저전력 전원 설계 (µA급 대기전류)</div>
+          </div>
+
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">05</span>
+            <div class="core-design-title" data-i18n="pg24Core5">EMI / EMC 노이즈 억제 및 그라운드 설계</div>
+          </div>
+
+          <div class="core-design-item magnetic-hover">
+            <span class="core-design-num">06</span>
+            <div class="core-design-title" data-i18n="pg24Core6">KC / FCC / CE 인증 대응 및 양산 DFM</div>
+          </div>
+
+        </div>
+
+        <!-- Crosslink row -->
+        <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 20px;">
+          <a href="/rf-faq/" class="card-crosslink">
+            <i class="fas fa-question-circle"></i>
+            <span data-i18n="pg24CoreLinkFaq">31NS-Tech RF 및 무선 하드웨어 실전 Q&amp;A 바로가기 ➔</span>
+          </a>
+          <a href="/#portfolio" class="card-crosslink">
+            <i class="fas fa-layer-group"></i>
+            <span data-i18n="pg24CoreLinkPort">31NS-Tech 2.4GHz 무선 양산 포트폴리오 실적 확인 ➔</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-04 // DEVELOPMENT WORKFLOW -->
+    <section class="section-block" style="padding-top: 60px; padding-bottom: 90px; background: rgba(0, 0, 0, 0.2);">
+      <div class="container">
+        
+        <div class="section-tag-row">
+          <span class="section-kicker-tag" data-i18n="pg24FlowKicker">STANDARDIZED PROCESS</span>
+          <span class="section-num-tag" data-i18n="pg24FlowNum">2.4-04 // DEVELOPMENT WORKFLOW</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="pg24FlowTitle">신규 칩 습득부터 양산까지 5단계 프로세스</h2>
+        <p class="section-lead-desc" data-i18n="pg24FlowLead">체계화된 분석 절차를 통해 처음 접하는 신규 벤더의 IC라도 리스크 없이 빠르게 양산 단계로 진입합니다.</p>
+
+        <div class="workflow-steps-list">
+          
+          <div class="workflow-step-card">
+            <div class="workflow-step-badge">STEP 1</div>
+            <div class="workflow-step-content">
+              <div class="workflow-step-title" data-i18n="pg24Step1Title">벤더 · 칩 선정</div>
+              <p class="workflow-step-desc" data-i18n="pg24Step1Desc">요구 사양(전력, 통신 거리, 지원 프로토콜, 타겟 양산 단가, 필수 규격 인증)에 맞춰 최적 벤더와 칩·모듈을 다각도로 비교 선정합니다.</p>
+            </div>
+          </div>
+
+          <div class="workflow-step-card">
+            <div class="workflow-step-badge">STEP 2</div>
+            <div class="workflow-step-content">
+              <div class="workflow-step-title" data-i18n="pg24Step2Title">데이터시트 · 레퍼런스 숙지</div>
+              <p class="workflow-step-desc" data-i18n="pg24Step2Desc">해당 벤더의 데이터시트, 레퍼런스 회로 디자인, SDK를 단기간 내에 심층 분석하여 하드웨어 설계 제약 조건과 핀아웃을 조기에 확정합니다.</p>
+            </div>
+          </div>
+
+          <div class="workflow-step-card">
+            <div class="workflow-step-badge">STEP 3</div>
+            <div class="workflow-step-content">
+              <div class="workflow-step-title" data-i18n="pg24Step3Title">회로 · 아트워크 설계</div>
+              <p class="workflow-step-desc" data-i18n="pg24Step3Desc">20년간 검증된 2.4GHz RF 고주파 설계 원칙에 입각하여 회로도 작성 및 전원 분리, 임피던스 매칭 선로, 안테나 패턴 아트워크를 정밀 설계합니다.</p>
+            </div>
+          </div>
+
+          <div class="workflow-step-card">
+            <div class="workflow-step-badge">STEP 4</div>
+            <div class="workflow-step-content">
+              <div class="workflow-step-title" data-i18n="pg24Step4Title">시제품 제작 · 실측 튜닝</div>
+              <p class="workflow-step-desc" data-i18n="pg24Step4Desc">시제품 제작 후 VNA(벡터 네트워크 분석기)를 통한 스미스 차트 S11 임피던스 매칭, 수신 감도(RSSI), 송신 출력, 모드별 소비 전류를 정밀 측정 튜닝합니다.</p>
+            </div>
+          </div>
+
+          <div class="workflow-step-card">
+            <div class="workflow-step-badge">STEP 5</div>
+            <div class="workflow-step-content">
+              <div class="workflow-step-title" data-i18n="pg24Step5Title">인증 · 양산 DFM 연계</div>
+              <p class="workflow-step-desc" data-i18n="pg24Step5Desc">KC/FCC/CE 무선 규격 인증 시험 통과 및 조립 공정 DFM(Design for Manufacturing) 최적화, 수율 극대화를 통해 성공적인 양산 라인업을 완성합니다.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-05 // APPLICATION SCOPE -->
+    <section class="section-block" style="padding-top: 80px; padding-bottom: 80px;">
+      <div class="container">
+        
+        <div class="section-tag-row">
+          <span class="section-kicker-tag" data-i18n="pg24ScopeKicker">PRODUCT COVERAGE</span>
+          <span class="section-num-tag" data-i18n="pg24ScopeNum">2.4-05 // APPLICATION SCOPE</span>
+        </div>
+        <h2 class="section-main-title" data-i18n="pg24ScopeTitle">개발 가능 응용 제품군</h2>
+        <p class="section-lead-desc" data-i18n="pg24ScopeLead">초소형 저전력 센서부터 고신뢰성 산업용 게이트웨이까지, 2.4GHz 무선 기술이 적용되는 모든 도메인을 커버합니다.</p>
+
+        <div class="scope-tags-cloud">
+          <span class="scope-tag-item" data-i18n="pg24Scope1">IoT 센서 노드</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope2">웨어러블 디바이스</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope3">자산 추적 (Asset Tracking)</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope4">스마트홈 / 무선 조명</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope5">산업용 무선 모니터링</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope6">의료 · 헬스케어 기기</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope7">스마트 도어락 / 출입통제</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope8">리모컨 / HID 컨트롤러</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope9">비콘 / 실내 측위 솔루션</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope10">저전력 메시 (Mesh) 네트워크</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope11">자동차용 무선 (측거 / Smart Access)</span>
+          <span class="scope-tag-item" data-i18n="pg24Scope12">Matter 표준 대응 차세대 가전</span>
+        </div>
+
+        <div style="margin-top: 36px;">
+          <a href="/blog/" class="card-crosslink">
+            <i class="fas fa-book-open"></i>
+            <span data-i18n="pg24ScopeBlogLink">31NS-Tech 엔지니어링 테크 블로그에서 nRF52805 설계 실전 문서 보기 ➔</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2.4-06 // FINAL CTA SECTION -->
+    <section class="section-block" style="padding-top: 60px; padding-bottom: 120px; background: linear-gradient(180deg, transparent 0%, rgba(232, 93, 36, 0.08) 100%);">
+      <div class="container" style="text-align: center;">
+        
+        <div class="section-tag-row" style="justify-content: center;">
+          <span class="section-kicker-tag" data-i18n="pg24CtaKicker">PROJECT CONSULTATION</span>
+          <span class="section-num-tag" data-i18n="pg24CtaNum">2.4-06 // START DEVELOPMENT</span>
+        </div>
+
+        <h2 class="section-main-title" style="font-size: clamp(2rem, 3.5vw, 2.8rem); margin-top: 14px;" data-i18n="pg24CtaTitle">
+          2.4GHz 프로젝트, 벤더 선택부터 양산까지
+        </h2>
+
+        <p class="section-lead-desc" style="max-width: 820px; margin: 18px auto 36px auto; line-height: 1.85;" data-i18n="pg24CtaLead">
+          어떤 벤더의 어떤 칩으로 시작하든 좋습니다. 요구 사양만 알려주시면 최적 벤더·칩 선정부터 회로 설계, 튜닝, 인증, 양산까지 20년 경력의 31NS-Tech가 함께합니다.
+        </p>
+
+        <a href="/#contact" class="btn-lime-hero magnetic-hover" style="display: inline-flex; font-size: 1.05rem; padding: 16px 36px;">
+          <i class="fas fa-paper-plane"></i>
+          <span data-i18n="pg24CtaBtn">2.4GHz 개발 상담 요청</span>
+          <i class="fas fa-arrow-right arrow-move"></i>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════ -->
+  <footer class="luxury-site-footer" style="padding: 36px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
+    <div class="container">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <p style="color: #94a3b8; font-size: 0.88rem; margin: 0;" data-i18n="pg24FooterCopy">
+          &copy; 2026 31NS-Tech Product Development LAB. All rights reserved.
+        </p>
+        <p style="color: #64748b; font-size: 0.82rem; margin: 0;" data-i18n="pg24FooterAddr">
+          경기도 광명시 광명역로 28 (광명역센트럴자이) &bull; Contact: nskim@31ns.kr
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
