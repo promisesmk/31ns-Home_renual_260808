@@ -2,6 +2,8 @@
 // SPINX DIGITAL ULTRA-LUXE INTERACTIVE JS FOR 31NS-TECH HARDWARE LAB
 // ═════════════════════════════════════════════════════════════════
 
+import { initBottomCatCompanion } from './components/BottomCatCompanion.js';
+
 // 50 RF Engineering Q&A Database (KO & EN)
 
 export const rfFaqData = [
@@ -719,6 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandler();
   initLangSwitcher();
   initScrollAnimations();
+  initBottomCatCompanion();
 
   // Auto-detect English page from URL, localStorage, or <html lang="en">
   let savedLang = null;
