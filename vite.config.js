@@ -11,11 +11,6 @@ export default defineConfig({
         blog: resolve(__dirname, 'blog/index.html'),
         rfFaq: resolve(__dirname, 'rf-faq/index.html'),
       },
-      output: {
-        manualChunks: {
-          three: ['three'],
-        },
-      },
     },
   },
 });
