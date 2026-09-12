@@ -2,8 +2,6 @@
 // SPINX DIGITAL ULTRA-LUXE INTERACTIVE JS FOR 31NS-TECH HARDWARE LAB
 // ═════════════════════════════════════════════════════════════════
 
-import { ThreeRobot } from './components/ThreeRobot.js';
-
 // 50 RF Engineering Q&A Database (KO & EN)
 
 export const rfFaqData = [
@@ -721,16 +719,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initFormHandler();
   initLangSwitcher();
   initScrollAnimations();
-
-  // Initialize 3D RobotExpressive.glb Interactive Mascot (Desktop PC only for 0-lag Mobile performance)
-  if (window.innerWidth > 768) {
-    try {
-      const threeRobot = new ThreeRobot();
-      threeRobot.init();
-    } catch (err) {
-      console.warn('ThreeRobot init warning:', err);
-    }
-  }
 
   // Auto-detect English page from URL, localStorage, or <html lang="en">
   let savedLang = null;
