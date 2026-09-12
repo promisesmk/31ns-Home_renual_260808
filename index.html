@@ -52,31 +52,45 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ResearchOrganization",
-    "name": "31NS-Tech Product Development LAB",
-    "alternateName": "31NS",
-    "url": "https://31ns.kr/",
-    "logo": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
-    "image": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
-    "description": "20년 이상 경력의 RF, BLE, NFC, Mixed-Signal 회로 설계, 초소형 센서보드, 산업용 모터 드라이버 및 글로벌 인증 지원 토털 엔지니어링 연구소",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "28 Gwangmyeongyeok-ro (Gwangmyeong Station Central Xi)",
-      "addressLocality": "Gwangmyeong-si",
-      "addressRegion": "Gyeonggi-do",
-      "addressCountry": "KR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "37.4168",
-      "longitude": "126.8858"
-    },
-    "hasMap": "https://maps.google.com/?q=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EA%B4%94%EB%AA%85%EC%8B%9C+%EA%B4%94%EB%AA%85%EC%97%AD%EB%A1%9C+28",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "email": "nskim@31ns.kr",
-      "contactType": "customer service"
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://31ns.kr/#website",
+        "url": "https://31ns.kr/",
+        "name": "31NS-Tech",
+        "alternateName": ["31ns.kr", "31ns", "31NS", "31NS-Tech Product Development LAB"],
+        "description": "31NS-Tech 공식 웹사이트 | RF·BLE 회로 설계 & 하드웨어 양산 토탈 솔루션",
+        "inLanguage": "ko-KR"
+      },
+      {
+        "@type": "ResearchOrganization",
+        "@id": "https://31ns.kr/#organization",
+        "name": "31NS-Tech Product Development LAB",
+        "alternateName": ["31NS", "31ns.kr", "31NS-Tech"],
+        "url": "https://31ns.kr/",
+        "logo": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
+        "image": "https://31ns.kr/assets/Logo%2031NS-Tech.jpg",
+        "description": "20년 이상 경력의 RF, BLE, NFC, Mixed-Signal 회로 설계, 초소형 센서보드, 산업용 모터 드라이버 및 글로벌 인증 지원 토털 엔지니어링 연구소",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "28 Gwangmyeongyeok-ro (Gwangmyeong Station Central Xi)",
+          "addressLocality": "Gwangmyeong-si",
+          "addressRegion": "Gyeonggi-do",
+          "addressCountry": "KR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "37.4168",
+          "longitude": "126.8858"
+        },
+        "hasMap": "https://maps.google.com/?q=%EA%B2%BD%EA%B8%B0%EB%8F%84+%EA%B4%94%EB%AA%85%EC%8B%9C+%EA%B4%94%EB%AA%85%EC%97%AD%EB%A1%9C+28",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "nskim@31ns.kr",
+          "contactType": "customer service"
+        }
+      }
+    ]
   }
   </script>
 
