@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # 배포 이력 태그(deploy-*) 생성용
   pages: write
   id-token: write
 
@@ -15,6 +15,8 @@ concurrency:
 
 jobs:
   deploy:
+    # main 브랜치에서 실행할 때만 배포 — develop/redesign 브랜치를 실수로 선택해도 실제 사이트는 바뀌지 않습니다.
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -46,3 +48,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 배포 이력 기록 — 배포된 커밋에 deploy-YYYYMMDD-HHMM(KST) 태그를 남겨, 언제 어떤 버전이 올라갔는지 git에서 확인할 수 있습니다.
+      - name: Tag Deployed Commit
+        run: |
+          TAG="deploy-$(TZ=Asia/Seoul date +%Y%m%d-%H%M)"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "31ns.kr 배포 (${GITHUB_ACTOR})"
+          git push origin "$TAG"
+          {
+            echo "### 배포 완료"
+            echo "- 태그: \`$TAG\`"
+            echo "- 커밋: \`${GITHUB_SHA::7}\` $(git log -1 --format=%s)"
+            echo "- 실행자: ${GITHUB_ACTOR}"
+            echo "- 주소: ${{ steps.deployment.outputs.page_url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
