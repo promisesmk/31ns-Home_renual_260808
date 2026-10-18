@@ -5,7 +5,7 @@ window.PCB3D_CONFIG = (() => {
   'use strict';
   const PRODUCTION = {
     api: 'https://pcb3d-api.31ns-tech.workers.dev',
-    turnstileSiteKey: 'REPLACE_ME'
+    turnstileSiteKey: '0x4AAAAAAFZ5LpEmdrUk7dTE'
   };
   const LOCAL = {
     api: 'http://127.0.0.1:8787',
