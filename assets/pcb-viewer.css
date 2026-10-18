@@ -248,7 +248,8 @@
 .pv-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .pv-dlcode { border: 1px solid #1c8585; background: #eef8f8; border-radius: 16px; padding: 22px 24px; display: grid; gap: 6px; max-width: 640px; }
 .pv-dlcode-label { margin: 0; font-size: 13px; font-weight: 600; color: #1c6b6b; }
-.pv-dlcode-value { margin: 0; font: 600 32px/1.2 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; color: #13201f; user-select: all; }
+.pv-dlcode-sent { margin: 0; font-size: 16px; color: #13201f; word-break: break-all; }
+.pv-dlcode .pv-actions { margin-top: 8px; }
 .pv-redeem { border-top: 1px solid #e6e6ec; padding-top: 22px; }
 .pv-redeem input[name="code"] { font-family: ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; max-width: 220px; }
 .pv-qna-links { margin-top: 32px; }

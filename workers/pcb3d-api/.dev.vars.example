@@ -6,3 +6,5 @@ ADMIN_SECRET=local-dev-admin-secret-change-me
 DEV_FAKE_RELEASE=1
 # 시험에서는 같은 PC에서 여러 번 신청하므로 접속 위치별 제한을 늘립니다(운영 기본값 5).
 LIMIT_PER_IP=1000
+# 시험에서는 코드 재발송 간격 제한(운영 30초)을 없앱니다.
+RESEND_INTERVAL_MS=0

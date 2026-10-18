@@ -2,7 +2,8 @@
 //
 // Visitor
 //   GET  /api/release        latest release info from the private GitHub repo (no file URLs)
-//   POST /api/request        leave a question / use case → one-time download code (shown once)
+//   POST /api/request        leave a question / use case → one-time download code sent by email
+//   POST /api/resend-code    send a new code for the same request (old unused codes stop working)
 //   POST /api/code-check     tells whether a code can still be used (does not consume it)
 //   POST /download           form post with the code → consumes it and streams the installer
 //   GET  /manual             user manual PDF (no code needed)
@@ -17,6 +18,8 @@ const CATEGORY_KO = { question: '질문', usecase: '활용 사례', feature: '�
 const CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const LIMIT_PER_EMAIL = 3;
 const LIMIT_PER_IP = 5;
+const MAX_CODES_PER_REQUEST = 3;   // first code + 2 resends
+const RESEND_INTERVAL = 30 * 1000;
 const DAY = 24 * 60 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 
@@ -221,6 +224,47 @@ ${buttons}
   await sendMail(env, { to: env.ADMIN_EMAIL, subject: `[PCB 3D Builder] 새 글: ${row.title}`, html });
 }
 
+function maskEmail(email) {
+  const [user, domain] = String(email).split('@');
+  return `${user.slice(0, 2)}${'*'.repeat(Math.max(1, user.length - 2))}@${domain}`;
+}
+
+async function sendCodeMail(env, row, code, ttlMinutes) {
+  const en = row.lang === 'en';
+  const page = `${env.SITE_ORIGIN}${en ? '/en/pcb-viewer/' : '/pcb-viewer/'}?code=${code}#download`;
+  const t = en
+    ? { subject: `PCB 3D Builder download code: ${code}`, lead: 'Here is your one-time download code for PCB 3D Builder.',
+        valid: `Valid once, for ${ttlMinutes} minutes.`, button: 'Open the download page', how: 'Open the link below on the Windows PC where you will install it, then press "Download installer". The code is already filled in.',
+        ignore: 'If you did not request this, you can ignore this email.' }
+    : { subject: `[31NS-Tech] PCB 3D Builder 다운로드 코드: ${code}`, lead: 'PCB 3D Builder 1회용 다운로드 코드입니다.',
+        valid: `${ttlMinutes}분 동안 한 번만 쓸 수 있습니다.`, button: '다운로드 페이지 열기', how: '설치할 Windows PC에서 아래 버튼으로 다운로드 페이지를 열고 [설치 파일 다운로드]를 누르세요. 코드는 자동으로 입력됩니다.',
+        ignore: '직접 신청하지 않으셨다면 이 메일은 무시하셔도 됩니다.' };
+  const html = `<div style="font-family:system-ui,sans-serif;line-height:1.7;color:#1d1d1f;max-width:560px">
+<p>${t.lead}</p>
+<p style="font:600 30px/1.3 ui-monospace,Menlo,monospace;letter-spacing:.08em;margin:18px 0">${code}</p>
+<p><b>${t.valid}</b><br>${t.how}</p>
+<p><a href="${page}" style="display:inline-block;padding:11px 20px;border-radius:8px;background:#1d1d1f;color:#fff;text-decoration:none">${t.button}</a></p>
+<p style="color:#777;font-size:13px">${t.ignore}<br>31NS-Tech · <a href="${env.SITE_ORIGIN}" style="color:#777">31ns.kr</a></p></div>`;
+  return sendMail(env, { to: row.email, subject: t.subject, html });
+}
+
+// Issues a new code for a request and mails it. Earlier unused codes of the same request stop working.
+async function issueCode(env, row) {
+  const t = now();
+  const ttlMinutes = Number(env.CODE_TTL_MINUTES || 10);
+  const code = newCode();
+  const expiresAt = t + ttlMinutes * 60 * 1000;
+  await env.DB.batch([
+    env.DB.prepare('update codes set expires_at = ?2 where request_id = ?1 and used_at is null and expires_at > ?2').bind(row.id, t),
+    env.DB.prepare('insert into codes (code_hash, request_id, created_at, expires_at) values (?1, ?2, ?3, ?4)')
+      .bind(await sha256(code), row.id, t, expiresAt)
+  ]);
+  // Local test without a mail key: hand the code back so the flow can be tried (never in production).
+  const dev = !env.RESEND_API_KEY && env.DEV_FAKE_RELEASE === '1';
+  const sent = dev || await sendCodeMail(env, row, code, ttlMinutes);
+  return { sent, expiresAt, devCode: dev ? code : undefined };
+}
+
 // ---------- visitor endpoints ----------
 
 async function handleRelease(env) {
@@ -271,22 +315,41 @@ async function handleRequest(request, env, cors, ctx) {
   if (counts.by_email >= LIMIT_PER_EMAIL || counts.by_ip >= Number(env.LIMIT_PER_IP || LIMIT_PER_IP)) return json({ error: 'rate_limited' }, 429, cors);
 
   const id = randomString(10, 'abcdefghijkmnpqrstuvwxyz23456789');
-  const code = newCode();
-  const expiresAt = t + Number(env.CODE_TTL_HOURS || 24) * 60 * 60 * 1000;
   const row = { id, lang, email, company, category, title, body, publish_ok: input.consentPublish === true ? 1 : 0 };
-  await env.DB.batch([
-    env.DB.prepare('insert into requests (id, created_at, lang, email, company, category, title, body, publish_ok, ip_hash) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)')
-      .bind(id, t, lang, email, company, category, title, body, row.publish_ok, ipHash),
-    env.DB.prepare('insert into codes (code_hash, request_id, created_at, expires_at) values (?1, ?2, ?3, ?4)')
-      .bind(await sha256(code), id, t, expiresAt)
-  ]);
+  await env.DB.prepare('insert into requests (id, created_at, lang, email, company, category, title, body, publish_ok, ip_hash) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)')
+    .bind(id, t, lang, email, company, category, title, body, row.publish_ok, ipHash).run();
 
   const origin = new URL(request.url).origin;
   if (env.ADMIN_SECRET) {
     const task = notifyAdmin(env, origin, row).catch((e) => console.log(`[notify failed] ${e}`));
     if (ctx) ctx.waitUntil(task); else await task;
   }
-  return json({ code, expiresAt }, 200, cors);
+  const issued = await issueCode(env, row);
+  const result = { requestId: id, email: maskEmail(email), expiresAt: issued.expiresAt, devCode: issued.devCode };
+  // The post is saved either way; if the mail failed the visitor can press "send again".
+  return issued.sent ? json(result, 200, cors) : json({ ...result, error: 'mail_failed' }, 502, cors);
+}
+
+async function handleResendCode(request, env, cors) {
+  let input;
+  try {
+    input = await request.json();
+  } catch {
+    return json({ error: 'bad_request' }, 400, cors);
+  }
+  const id = String(input.requestId || '');
+  if (!/^[a-z0-9]{10}$/.test(id)) return json({ error: 'not_found' }, 404, cors);
+  const row = await env.DB.prepare(
+    'select r.id, r.lang, r.email, r.created_at, count(c.code_hash) as sent, max(c.created_at) as last_sent ' +
+    'from requests r left join codes c on c.request_id = r.id where r.id = ?1 group by r.id'
+  ).bind(id).first();
+  if (!row || !row.email || row.created_at < now() - DAY) return json({ error: 'not_found' }, 404, cors);
+  if (row.sent >= MAX_CODES_PER_REQUEST) return json({ error: 'resend_limit' }, 429, cors);
+  if (row.last_sent && now() - row.last_sent < Number(env.RESEND_INTERVAL_MS ?? RESEND_INTERVAL)) return json({ error: 'too_soon' }, 429, cors);
+
+  const issued = await issueCode(env, row);
+  const result = { requestId: id, email: maskEmail(row.email), expiresAt: issued.expiresAt, devCode: issued.devCode };
+  return issued.sent ? json(result, 200, cors) : json({ ...result, error: 'mail_failed' }, 502, cors);
 }
 
 async function codeState(env, code) {
@@ -314,9 +377,9 @@ async function handleDownload(request, env) {
   const lang = form?.get('lang') === 'en' ? 'en' : 'ko';
   const code = normalizeCode(form?.get('code'));
   const L = lang === 'en'
-    ? { badTitle: 'This code cannot be used', bad: 'The code is wrong, already used or expired. Leave a new request on the download page to get a new code.',
+    ? { badTitle: 'This code cannot be used', bad: 'The code is wrong, already used or expired (codes are valid for 10 minutes). Request a new code on the download page.',
         failTitle: 'The file could not be prepared', fail: 'Your code has not been used. Please try again in a moment.' }
-    : { badTitle: '사용할 수 없는 코드입니다', bad: '코드가 틀렸거나, 이미 사용했거나, 유효 시간이 지났습니다. 다운로드 페이지에서 다시 신청하면 새 코드를 받을 수 있습니다.',
+    : { badTitle: '사용할 수 없는 코드입니다', bad: '코드가 틀렸거나, 이미 사용했거나, 유효 시간(10분)이 지났습니다. 다운로드 페이지에서 새 코드를 받아 주세요.',
         failTitle: '파일을 준비하지 못했습니다', fail: '코드는 사용되지 않았습니다. 잠시 후 같은 코드로 다시 시도해 주세요.' };
   if (!code) return page(400, L.badTitle, `<p>${L.bad}</p>${backLink(env, lang)}`, { lang });
 
@@ -462,6 +525,7 @@ export default {
         return res;
       }
       if (path === '/api/request' && request.method === 'POST') return await handleRequest(request, env, cors, ctx);
+      if (path === '/api/resend-code' && request.method === 'POST') return await handleResendCode(request, env, cors);
       if (path === '/api/code-check' && request.method === 'POST') return await handleCodeCheck(request, env, cors);
       if (path === '/api/qna' && request.method === 'GET') return await handleQna(env, cors);
       if (path === '/download' && request.method === 'POST') return await handleDownload(request, env);

@@ -1,6 +1,6 @@
 // PCB 3D Builder 다운로드 서버 시험. 로컬 Worker(가짜 설치 파일)를 상대로 실제 HTTP 요청을 보냅니다.
 // 준비: npm run worker (다른 터미널, .dev.vars 필요) → npm test
-// 메일은 RESEND_API_KEY가 없으면 보내지 않고 로그만 남깁니다.
+// 로컬 서버는 RESEND_API_KEY가 없으므로 메일 대신 응답의 devCode로 코드를 받습니다(운영 서버에는 없음).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
@@ -35,11 +35,16 @@ function reviewToken(id) {
   return createHmac('sha256', ADMIN_SECRET).update(`review:${id}`).digest('base64url');
 }
 
-async function newCode(overrides) {
+async function newRequest(overrides) {
   const { res, data } = await post('/api/request', validRequest(overrides));
   assert.equal(res.status, 200, JSON.stringify(data));
-  assert.match(data.code, /^[2-9A-HJ-NP-Z]{4}-[2-9A-HJ-NP-Z]{4}$/);
-  return data.code;
+  assert.match(data.devCode, /^[2-9A-HJ-NP-Z]{4}-[2-9A-HJ-NP-Z]{4}$/);
+  assert.equal('code' in data, false);
+  return data;
+}
+
+async function newCode(overrides) {
+  return (await newRequest(overrides)).devCode;
 }
 
 test('공개 릴리스 정보에 파일 주소가 없다', async () => {
@@ -164,4 +169,34 @@ test('설명서는 코드 없이 받을 수 있다', async () => {
   const res = await fetch(`${BASE}/manual`);
   assert.equal(res.status, 200);
   await res.text();
+});
+
+test('코드는 10분 동안 유효하고, 응답에는 가린 이메일만 돌려준다', async () => {
+  const before = Date.now();
+  const data = await newRequest({ email: 'abcdef@example.com' });
+  assert.equal(data.email, 'ab****@example.com');
+  const minutes = (data.expiresAt - before) / 60000;
+  assert.ok(minutes > 9.9 && minutes < 10.1, String(minutes));
+});
+
+test('코드를 다시 보내면 이전 코드는 쓸 수 없고, 신청 1건당 3번까지만 보낸다', async () => {
+  const first = await newRequest();
+  const second = await post('/api/resend-code', { requestId: first.requestId });
+  assert.equal(second.res.status, 200, JSON.stringify(second.data));
+  assert.notEqual(second.data.devCode, first.devCode);
+  assert.equal((await post('/api/code-check', { code: first.devCode })).data.state, 'expired');
+  assert.equal((await post('/api/code-check', { code: second.data.devCode })).data.state, 'valid');
+
+  const third = await post('/api/resend-code', { requestId: first.requestId });
+  assert.equal(third.res.status, 200);
+  const fourth = await post('/api/resend-code', { requestId: first.requestId });
+  assert.equal(fourth.res.status, 429);
+  assert.equal(fourth.data.error, 'resend_limit');
+  assert.equal((await download(third.data.devCode)).status, 200);
+});
+
+test('없는 신청 번호로는 코드를 보내지 않는다', async () => {
+  const { res, data } = await post('/api/resend-code', { requestId: 'zzzzzzzzzz' });
+  assert.equal(res.status, 404);
+  assert.equal(data.error, 'not_found');
 });
