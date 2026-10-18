@@ -1,3 +1,5 @@
+> **2026-10-18 변경:** 31ns.kr은 GitHub Pages(`promisesmk/31ns-Home_renual_260808`)에서 운영하고, 회원 로그인(Vercel · Supabase)은 제거했습니다. 다운로드 · Q&A는 [PCB3D-DOWNLOAD.md](PCB3D-DOWNLOAD.md)를 보세요. 이 문서의 Vercel · Supabase · 회원 관련 내용은 이전 기록입니다.
+
 # 31NS-Tech 리뉴얼 홈페이지 인계 문서
 
 아빠 Mac의 Antigravity에서 이 저장소를 열어 관리할 때 보는 문서입니다.

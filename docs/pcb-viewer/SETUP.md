@@ -1,3 +1,5 @@
+> **2026-10-18 변경:** 31ns.kr은 GitHub Pages(`promisesmk/31ns-Home_renual_260808`)에서 운영하고, 회원 로그인(Vercel · Supabase)은 제거했습니다. 다운로드 · Q&A는 [PCB3D-DOWNLOAD.md](../PCB3D-DOWNLOAD.md)를 보세요. 이 문서의 Vercel · Supabase · 회원 관련 내용은 이전 기록입니다.
+
 # PCB 3D Builder · 회원 다운로드 운영 안내
 
 이 폴더는 배포되지 않습니다(`.vercelignore`). 운영자용 문서입니다.

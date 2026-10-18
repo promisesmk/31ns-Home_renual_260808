@@ -1,86 +1,167 @@
-// Delivery worker draft (workers/pcb3d-download/worker.js) with fake site + storage. No network.
-import { test, beforeEach } from 'node:test';
+// PCB 3D Builder 다운로드 서버 시험. 로컬 Worker(가짜 설치 파일)를 상대로 실제 HTTP 요청을 보냅니다.
+// 준비: npm run worker (다른 터미널, .dev.vars 필요) → npm test
+// 메일은 RESEND_API_KEY가 없으면 보내지 않고 로그만 남깁니다.
+import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import worker from '../workers/pcb3d-download/worker.js';
+import { createHmac } from 'node:crypto';
 
-const env = { SITE_ORIGIN: 'https://site.example', REDEEM_SECRET: 'worker-secret' };
-const SOURCE = 'https://objects.githubusercontent.example/asset?sig=SECRET-SIGNATURE';
-const SIZE = 5 * 1024 * 1024;
-let calls;
-let ticketState;
+const BASE = process.env.WORKER_URL || 'http://127.0.0.1:8787';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'local-dev-admin-secret-change-me';
+const ORIGIN = 'http://localhost:8000';
+const TURNSTILE_TEST_TOKEN = 'XXXX.DUMMY.TOKEN.XXXX';
 
-beforeEach(() => {
-  calls = [];
-  ticketState = new Map([['11111111-1111-4111-8111-111111111111', 'issued']]);
-  globalThis.fetch = async (url, opts = {}) => {
-    calls.push({ url: String(url), opts });
-    if (String(url) === 'https://site.example/api/download-redeem') {
-      if (opts.headers.Authorization !== 'Bearer worker-secret') return new Response('{}', { status: 401 });
-      const { grant } = JSON.parse(opts.body);
-      if (ticketState.get(grant) !== 'issued') return Response.json({ error: 'ticket_used_or_expired' }, { status: 410 });
-      ticketState.set(grant, 'redeemed');
-      return Response.json({ sourceUrl: SOURCE, fileName: 'PCB3D_Builder_Setup_2.1.exe', size: SIZE });
-    }
-    if (String(url) === SOURCE) {
-      let sent = 0;
-      const body = new ReadableStream({
-        pull(controller) {
-          if (sent >= SIZE) return controller.close();
-          const chunk = new Uint8Array(Math.min(256 * 1024, SIZE - sent)).fill(7);
-          sent += chunk.length;
-          controller.enqueue(chunk);
-        }
-      });
-      return new Response(body, { status: 200, headers: { 'Content-Length': String(SIZE) } });
-    }
-    throw new Error(`unexpected fetch ${url}`);
+const unique = () => `${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
+
+function validRequest(overrides = {}) {
+  return {
+    lang: 'ko', email: `tester-${unique()}@example.com`, company: '시험전자', category: 'question',
+    title: 'PADS ASC 변환 질문', body: 'PADS ASC 파일로 STEP을 만들 때 부품 높이가 어떻게 정해지는지 궁금합니다.',
+    consentPrivacy: true, consentPublish: true, turnstileToken: TURNSTILE_TEST_TOKEN, ...overrides
   };
+}
+
+async function post(path, body, headers = {}) {
+  const res = await fetch(BASE + path, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Origin: ORIGIN, ...headers }, body: JSON.stringify(body)
+  });
+  return { res, data: await res.json() };
+}
+
+function download(code) {
+  return fetch(`${BASE}/download`, { method: 'POST', body: new URLSearchParams({ code, lang: 'ko' }) });
+}
+
+function reviewToken(id) {
+  return createHmac('sha256', ADMIN_SECRET).update(`review:${id}`).digest('base64url');
+}
+
+async function newCode(overrides) {
+  const { res, data } = await post('/api/request', validRequest(overrides));
+  assert.equal(res.status, 200, JSON.stringify(data));
+  assert.match(data.code, /^[2-9A-HJ-NP-Z]{4}-[2-9A-HJ-NP-Z]{4}$/);
+  return data.code;
+}
+
+test('공개 릴리스 정보에 파일 주소가 없다', async () => {
+  const res = await fetch(`${BASE}/api/release`, { headers: { Origin: ORIGIN } });
+  const data = await res.json();
+  assert.equal(data.available, true);
+  assert.ok(data.installer.name);
+  assert.equal(JSON.stringify(data).includes('apiUrl'), false);
+  assert.equal(res.headers.get('access-control-allow-origin'), ORIGIN);
 });
 
-const get = (path, method = 'GET') => worker.fetch(new Request(`https://dl.example.workers.dev${path}`, { method }), env);
+test('허용하지 않은 사이트에는 CORS 허용 헤더를 주지 않는다', async () => {
+  const res = await fetch(`${BASE}/api/release`, { headers: { Origin: 'https://evil.example' } });
+  assert.equal(res.headers.get('access-control-allow-origin'), null);
+});
 
-test('valid ticket: streams the whole file as an attachment', async () => {
-  const res = await get('/d/11111111-1111-4111-8111-111111111111');
+test('입력 검사: 이메일 · 본문 길이 · 개인정보 동의 · 스팸 칸', async () => {
+  const cases = [
+    [{ email: 'not-an-email' }, 'invalid_email'],
+    [{ company: '  ' }, 'invalid_company'],
+    [{ category: 'other' }, 'invalid_category'],
+    [{ title: '짧' }, 'title_too_short'],
+    [{ body: '너무 짧은 글' }, 'body_too_short'],
+    [{ consentPrivacy: false }, 'consent_required'],
+    [{ website: 'http://spam.example' }, 'spam_suspected'],
+    [{ turnstileToken: '' }, 'captcha_failed']
+  ];
+  for (const [override, error] of cases) {
+    const { res, data } = await post('/api/request', validRequest(override));
+    assert.equal(res.status, 400, error);
+    assert.equal(data.error, error);
+  }
+});
+
+test('코드는 한 번만 쓸 수 있다', async () => {
+  const code = await newCode();
+  assert.equal((await post('/api/code-check', { code })).data.state, 'valid');
+  // 소문자 · 하이픈 없이 입력해도 같은 코드로 인식
+  assert.equal((await post('/api/code-check', { code: code.toLowerCase().replace('-', '') })).data.state, 'valid');
+
+  const first = await download(code);
+  assert.equal(first.status, 200);
+  assert.match(first.headers.get('content-disposition'), /^attachment; filename="/);
+  assert.ok((await first.text()).includes('not the real PCB 3D Builder installer'));
+
+  assert.equal((await post('/api/code-check', { code })).data.state, 'used');
+  const second = await download(code);
+  assert.equal(second.status, 410);
+});
+
+test('같은 코드로 동시에 받아도 한 번만 성공한다', async () => {
+  const code = await newCode();
+  const results = await Promise.all(Array.from({ length: 5 }, () => download(code)));
+  const statuses = results.map((r) => r.status).sort();
+  await Promise.all(results.map((r) => r.text()));
+  assert.deepEqual(statuses, [200, 410, 410, 410, 410]);
+});
+
+test('없는 코드 · 형식이 틀린 코드는 거절한다', async () => {
+  assert.equal((await post('/api/code-check', { code: 'ZZZZ-ZZZZ' })).data.state, 'unknown');
+  assert.equal((await download('ZZZZ-ZZZZ')).status, 410);
+  assert.equal((await download('abc')).status, 400);
+});
+
+test('같은 이메일은 하루 3번까지만 신청할 수 있다', async () => {
+  const email = `limit-${unique()}@example.com`;
+  for (let i = 0; i < 3; i++) await newCode({ email });
+  const { res, data } = await post('/api/request', validRequest({ email }));
+  assert.equal(res.status, 429);
+  assert.equal(data.error, 'rate_limited');
+});
+
+async function latestRequestId(title) {
+  // 관리 목록에서 제목으로 찾음 (HTTP Basic)
+  const res = await fetch(`${BASE}/admin`, { headers: { Authorization: `Basic ${btoa(`admin:${ADMIN_SECRET}`)}` } });
   assert.equal(res.status, 200);
-  assert.match(res.headers.get('Content-Disposition'), /attachment; filename="PCB3D_Builder_Setup_2\.1\.exe"/);
-  assert.equal(res.headers.get('Cache-Control'), 'no-store, private');
-  const bytes = new Uint8Array(await res.arrayBuffer());
-  assert.equal(bytes.length, SIZE);
+  const html = await res.text();
+  const m = new RegExp(`/admin/r/([a-z0-9]{10})\\?t=[^"]+">${title}<`).exec(html);
+  assert.ok(m, 'request not found in admin list');
+  return m[1];
+}
+
+test('관리 화면은 비밀번호 없이 열리지 않는다', async () => {
+  assert.equal((await fetch(`${BASE}/admin`)).status, 401);
+  assert.equal((await fetch(`${BASE}/admin`, { headers: { Authorization: `Basic ${btoa('admin:wrong')}` } })).status, 401);
 });
 
-test('the storage URL never reaches the browser (headers or redirect)', async () => {
-  const res = await get('/d/11111111-1111-4111-8111-111111111111');
-  assert.notEqual(res.status, 302);
-  for (const [, v] of res.headers) assert.ok(!v.includes('SECRET-SIGNATURE'), v);
-  assert.equal(res.headers.get('Location'), null);
+test('승인한 글만 Q&A에 공개되고, 이메일 · 회사명은 공개되지 않는다', async () => {
+  const title = `승인 시험 ${unique()}`;
+  await newCode({ title });
+  const id = await latestRequestId(title);
+
+  assert.equal((await fetch(`${BASE}/admin/r/${id}?t=wrong`)).status, 403);
+  // 메일의 [승인] 링크(GET)는 확인 화면만 보여 주고 처리하지 않음 (메일 보안 검사기가 링크를 열어도 안전)
+  const confirm = await fetch(`${BASE}/admin/r/${id}?t=${reviewToken(id)}&a=approve`);
+  assert.equal(confirm.status, 200);
+  let qna = await (await fetch(`${BASE}/api/qna`)).json();
+  assert.equal(qna.items.some((x) => x.id === id), false);
+
+  const form = new URLSearchParams({ action: 'approve', title, body: '본문을 관리자가 다듬었습니다. 부품 높이는 어떻게 정해지나요? 실제 사례가 궁금합니다.', answer: '답변입니다.', author_label: '시험 엔지니어' });
+  const done = await fetch(`${BASE}/admin/r/${id}?t=${reviewToken(id)}`, { method: 'POST', body: form });
+  assert.equal(done.status, 200);
+  qna = await (await fetch(`${BASE}/api/qna`)).json();
+  const item = qna.items.find((x) => x.id === id);
+  assert.ok(item);
+  assert.equal(item.answer, '답변입니다.');
+  assert.equal(item.author_label, '시험 엔지니어');
+  assert.equal('email' in item || 'company' in item, false);
 });
 
-test('same ticket twice: second gets 410 page, no file', async () => {
-  await (await get('/d/11111111-1111-4111-8111-111111111111')).arrayBuffer();
-  const again = await get('/d/11111111-1111-4111-8111-111111111111');
-  assert.equal(again.status, 410);
-  assert.match(again.headers.get('Content-Type'), /text\/html/);
-  assert.ok((await again.text()).includes('다시 로그인'));
-  assert.equal(calls.filter((c) => c.url === SOURCE).length, 1);
+test('공개에 동의하지 않은 글은 승인해도 공개되지 않는다', async () => {
+  const title = `비공개 시험 ${unique()}`;
+  await newCode({ title, consentPublish: false });
+  const id = await latestRequestId(title);
+  const form = new URLSearchParams({ action: 'approve', title, body: 'x'.repeat(40) });
+  await fetch(`${BASE}/admin/r/${id}?t=${reviewToken(id)}`, { method: 'POST', body: form });
+  const qna = await (await fetch(`${BASE}/api/qna`)).json();
+  assert.equal(qna.items.some((x) => x.id === id), false);
 });
 
-test('Range requests are not forwarded (no partial resume with a used ticket)', async () => {
-  const req = new Request('https://dl.example.workers.dev/d/11111111-1111-4111-8111-111111111111', { headers: { Range: 'bytes=100-' } });
-  const res = await worker.fetch(req, env);
+test('설명서는 코드 없이 받을 수 있다', async () => {
+  const res = await fetch(`${BASE}/manual`);
   assert.equal(res.status, 200);
-  const sourceCall = calls.find((c) => c.url === SOURCE);
-  assert.ok(!sourceCall.opts.headers, 'no headers forwarded to storage');
-});
-
-test('unknown paths and other methods: 404, no redeem call', async () => {
-  assert.equal((await get('/')).status, 404);
-  assert.equal((await get('/d/not-a-ticket')).status, 404);
-  assert.equal((await get('/d/11111111-1111-4111-8111-111111111111', 'POST')).status, 404);
-  assert.equal(calls.length, 0);
-});
-
-test('site unreachable: friendly 502 page', async () => {
-  globalThis.fetch = async () => { throw new Error('down'); };
-  const res = await get('/d/11111111-1111-4111-8111-111111111111');
-  assert.equal(res.status, 502);
+  await res.text();
 });

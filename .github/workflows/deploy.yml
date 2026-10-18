@@ -25,17 +25,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
+      # 빌드 도구 없는 정적 사이트 — 공개할 파일만 _site로 모읍니다(문서 · 시험 · 서버 코드 · 도구는 제외).
+      - name: Collect Site Files
+        run: |
+          rsync -a --exclude-from=- ./ _site/ <<'EOF'
+          .git/
+          .github/
+          _site/
+          docs/
+          tests/
+          tools/
+          workers/
+          node_modules/
+          scratch/
+          .gitignore
+          package.json
+          package-lock.json
+          EOF
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Website with Vite
-        run: npm run build
+      # 승인된 PCB 3D Builder Q&A를 정적 페이지로 생성 (저장소 변수 PCB3D_API가 없거나 서버 오류면 건너뜀)
+      - name: Build Q&A Pages
+        env:
+          PCB3D_API: ${{ vars.PCB3D_API }}
+        run: python3 tools/build_qna.py _site
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
@@ -43,7 +55,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: './_site'
 
       - name: Deploy to GitHub Pages
         id: deployment

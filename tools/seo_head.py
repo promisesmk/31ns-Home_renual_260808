@@ -124,6 +124,29 @@ LASTMOD = {
     'en/pcb-viewer/index.html': '2026-10-15',
     'en/pcb-viewer/guide/index.html': '2026-10-15',
 }
+# 블로그 글: 작성일은 본문의 <time>과 같게
+BLOG_PUBLISHED = {
+    'blog/ble-antenna-matching/index.html': '2026-05-15',
+    'en/blog/ble-antenna-matching/index.html': '2026-05-15',
+    'blog/nrf52805-design/index.html': '2026-05-14',
+    'en/blog/nrf52805-design/index.html': '2026-05-14',
+}
+for _path, _published in BLOG_PUBLISHED.items():
+    _url_path, _lang, _title, _desc, _og, _alt = PAGES[_path]
+    STRUCTURED[_path] = {'@context': 'https://schema.org', '@type': 'BlogPosting',
+                         'headline': _title.rsplit(' | ', 1)[0], 'description': _desc,
+                         'url': f'{SITE}{_url_path}', 'mainEntityOfPage': f'{SITE}{_url_path}',
+                         'inLanguage': 'ko-KR' if _lang == 'ko' else 'en', 'image': OG_IMAGE,
+                         'datePublished': _published, 'dateModified': LASTMOD.get(_path, _published),
+                         'author': {'@type': 'Organization', '@id': ORG_ID, 'name': '31NS-Tech'},
+                         'publisher': {'@type': 'Organization', '@id': ORG_ID, 'name': '31NS-Tech',
+                                       'logo': {'@type': 'ImageObject', 'url': f'{SITE}/assets/brand-logo.png'}}}
+
+# Google Analytics 4 — 기존 사이트와 같은 측정 ID(방문 통계가 끊기지 않게). seo 블록 밖에 두어 Q&A 페이지 생성(tools/build_qna.py)에도 그대로 남음
+GA_ID = 'G-M6ZKCVME6D'
+GA = (f'<!-- ga:start --><script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
+      f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script><!-- ga:end -->")
+
 OG_ALT = {'ko': '31NS-Tech — 회로에서 제품까지', 'en': '31NS-Tech — From circuit to product'}
 
 STRIP = [
@@ -135,6 +158,7 @@ STRIP = [
     r'<link rel="alternate" hreflang="[^"]*"[^>]*>',
     r'<meta property="og:[^"]*"[^>]*>',
     r'<meta name="twitter:[^"]*"[^>]*>',
+    r'<!-- ga:start -->.*?<!-- ga:end -->',
     r'<!-- seo:start -->|<!-- seo:end -->',
     r'<script type="application/ld\+json" data-seo>.*?</script>',
 ]
@@ -173,7 +197,7 @@ for path in PAGES:
         head = re.sub(pat, '', head, flags=re.S)
     m = re.search(r'<meta (?:content="width=device-width[^"]*" name="viewport"|name="viewport" content="[^"]*")>', head)
     assert m, path
-    head = head[:m.end()] + build(path) + head[m.end():]
+    head = head[:m.end()] + build(path) + GA + head[m.end():]
     open(full, 'w', encoding='utf-8').write(head + rest)
     print('ok', path)
 

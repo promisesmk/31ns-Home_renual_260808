@@ -241,3 +241,16 @@
 .article-body .pv-guide-label + h2 { margin-top: 8px; }
 .pv-guide-h2 .pv-h2-text { display: block; color: inherit; }
 @media (max-width: 767px) { .pv-update { padding: 20px; } .pv-update-title { font-size: 20px; } }
+
+/* 다운로드 신청 폼 · 1회용 코드 (assets/pcb-viewer.js) */
+.pv-download .pv-form { max-width: 640px; }
+.pv-download .pv-check .pv-help { display: block; margin-top: 2px; }
+.pv-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.pv-dlcode { border: 1px solid #1c8585; background: #eef8f8; border-radius: 16px; padding: 22px 24px; display: grid; gap: 6px; max-width: 640px; }
+.pv-dlcode-label { margin: 0; font-size: 13px; font-weight: 600; color: #1c6b6b; }
+.pv-dlcode-value { margin: 0; font: 600 32px/1.2 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; color: #13201f; user-select: all; }
+.pv-redeem { border-top: 1px solid #e6e6ec; padding-top: 22px; }
+.pv-redeem input[name="code"] { font-family: ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; max-width: 220px; }
+.pv-qna-links { margin-top: 32px; }
+.pv-qna-links ul { margin: 8px 0 12px; padding-left: 18px; line-height: 1.9; }
+.pv-qna-links a { text-decoration: underline; text-underline-offset: 3px; }
