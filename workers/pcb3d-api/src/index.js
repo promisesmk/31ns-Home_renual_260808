@@ -196,7 +196,7 @@ async function sendMail(env, { to, subject, html }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], subject, html })
+    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], reply_to: env.ADMIN_EMAIL, subject, html })
   });
   if (!res.ok) console.log(`[mail failed] ${res.status} ${await res.text()}`);
   return res.ok;

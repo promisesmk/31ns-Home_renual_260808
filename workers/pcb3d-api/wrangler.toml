@@ -20,8 +20,8 @@ SITE_ORIGIN = "https://31ns.kr"
 ALLOWED_ORIGINS = "https://31ns.kr,https://www.31ns.kr,http://localhost:8000,http://127.0.0.1:8000"
 RELEASE_REPO = "promisesmk/PCB3D-Releases"
 ADMIN_EMAIL = "nskim@31ns.kr"
-# 알림 메일 발신 주소. 31ns.kr 도메인을 Resend에 인증하기 전에는 Resend 기본 주소를 쓰며, 이때는 Resend 가입 주소(ADMIN_EMAIL)로만 보낼 수 있습니다.
-MAIL_FROM = "31NS PCB3D 알림 <onboarding@resend.dev>"
+# 메일 발신 주소(Resend에 31ns.kr 도메인 인증, 가비아 DNS 2026-10-18). 받은 사람이 답장하면 ADMIN_EMAIL로 감
+MAIL_FROM = "31NS-Tech <noreply@31ns.kr>"
 CODE_TTL_MINUTES = "10"
 RETENTION_DAYS = "365"
 
