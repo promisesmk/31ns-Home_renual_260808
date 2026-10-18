@@ -147,6 +147,9 @@ GA_ID = 'G-M6ZKCVME6D'
 GA = (f'<!-- ga:start --><script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
       f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script><!-- ga:end -->")
 
+# 검색엔진 소유 확인 (구글 Search Console). 네이버는 루트의 naver*.html 파일 2개로 확인 — 지우지 말 것
+GOOGLE_SITE_VERIFICATION = 'qu5hGjVkZSDNpjMph6IgMP4_tZRvpLXZIqfIaNYNoDo'
+
 OG_ALT = {'ko': '31NS-Tech — 회로에서 제품까지', 'en': '31NS-Tech — From circuit to product'}
 
 STRIP = [
@@ -154,6 +157,10 @@ STRIP = [
     r'<meta name="description"[^>]*>',
     r'<meta name="title"[^>]*>',
     r'<meta name="keywords"[^>]*>',
+    r'<link rel="icon"[^>]*>',
+    r'<link rel="apple-touch-icon"[^>]*>',
+    r'<meta name="google-site-verification"[^>]*>',
+    r'<meta name="naver-site-verification"[^>]*>',
     r'<link rel="canonical"[^>]*>',
     r'<link rel="alternate" hreflang="[^"]*"[^>]*>',
     r'<meta property="og:[^"]*"[^>]*>',
@@ -183,6 +190,8 @@ def build(path):
              '<meta property="og:image:height" content="630">',
              f'<meta property="og:image:alt" content="{OG_ALT[lang]}">',
              '<meta name="twitter:card" content="summary_large_image">']
+    if path == 'index.html':
+        tags.append(f'<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">')
     if path in STRUCTURED:
         tags.append(jsonld(STRUCTURED[path]).replace('<script type="application/ld+json">', '<script type="application/ld+json" data-seo>'))
     return '<!-- seo:start -->' + ''.join(tags) + '<!-- seo:end -->'
