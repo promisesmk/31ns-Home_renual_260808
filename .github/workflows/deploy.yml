@@ -43,6 +43,23 @@ jobs:
           package-lock.json
           EOF
 
+      # 브라우저 캐시 갱신 — 페이지가 부르는 assets/의 .js · .css 주소 끝에 ?v=커밋번호를 붙여, 배포 직후에도 새 파일을 받게 합니다.
+      - name: Version Asset URLs
+        run: |
+          python3 - <<'EOF'
+          import os, re
+          ver = os.environ['GITHUB_SHA'][:7]
+          pattern = re.compile(r'((?:src|href)="(?:\.\./)*/?assets/[^"?#]+\.(?:js|css))"')
+          for root, _, files in os.walk('_site'):
+              for name in files:
+                  if name.endswith('.html'):
+                      path = os.path.join(root, name)
+                      s = open(path, encoding='utf-8').read()
+                      t = pattern.sub(rf'\1?v={ver}"', s)
+                      if t != s:
+                          open(path, 'w', encoding='utf-8').write(t)
+          EOF
+
       # 승인된 PCB 3D Builder Q&A를 정적 페이지로 생성 (저장소 변수 PCB3D_API가 없거나 서버 오류면 건너뜀)
       - name: Build Q&A Pages
         env:

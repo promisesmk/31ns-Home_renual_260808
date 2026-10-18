@@ -33,7 +33,9 @@ def fetch_items():
         print('build_qna: PCB3D_API not set, skipped')
         return []
     try:
-        with urllib.request.urlopen(f'{API}/api/qna', timeout=20) as res:
+        # Cloudflare는 파이썬 기본 User-Agent를 차단하므로 이름을 밝혀 요청
+        req = urllib.request.Request(f'{API}/api/qna', headers={'User-Agent': '31ns-site-build (github-actions)'})
+        with urllib.request.urlopen(req, timeout=20) as res:
             return json.load(res).get('items', [])
     except Exception as e:  # 서버 문제로 홈페이지 배포가 멈추지 않게 함
         print(f'build_qna: could not load Q&A ({e}), skipped')
