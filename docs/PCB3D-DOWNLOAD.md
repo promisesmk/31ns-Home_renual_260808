@@ -36,7 +36,7 @@ PCB 3D Builder 페이지 ──신청(글)────────────�
 | 상황 | 방법 |
 |---|---|
 | 새 글 알림 | `nskim@31ns.kr`로 메일이 옴 → [승인] · [거절] · [답변 쓰기] → 열린 화면에서 확인 버튼 |
-| 글 목록 보기 | `https://pcb3d-api.<계정>.workers.dev/admin` → 사용자 이름은 아무거나, 비밀번호는 `ADMIN_SECRET` |
+| 글 목록 보기 | `https://pcb3d-api.31ns-tech.workers.dev/admin` → 사용자 이름은 아무거나, 비밀번호는 `ADMIN_SECRET` |
 | 승인한 글을 홈페이지에 반영 | GitHub → Actions → Deploy → Run workflow (main) |
 | 새 버전 배포 | `PCB3D-Releases`에 새 릴리스(설치 파일 .exe, 설명서 .pdf) 올리고 Latest로 지정 |
 
@@ -54,7 +54,7 @@ npx wrangler secret put GITHUB_TOKEN              # PCB3D-Releases 읽기 토큰
 npx wrangler secret put TURNSTILE_SECRET          # Cloudflare → Turnstile → 위젯(도메인 31ns.kr) 비밀 키
 npx wrangler secret put RESEND_API_KEY            # Resend → API Keys (31ns.kr 도메인 인증 후)
 npx wrangler secret put ADMIN_SECRET              # 길고 무작위인 값. 관리 화면 비밀번호 겸 링크 서명
-npx wrangler deploy                               # 나온 주소: https://pcb3d-api.<계정>.workers.dev
+npx wrangler deploy                               # 나온 주소: https://pcb3d-api.31ns-tech.workers.dev
 ```
 
 그 다음:
