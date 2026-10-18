@@ -11,8 +11,8 @@ crons = ["0 18 * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "pcb3d"
-# `npx wrangler d1 create pcb3d` 실행 후 나온 값으로 바꿉니다. 로컬 시험(wrangler dev)은 이 값 없이도 동작합니다.
-database_id = "00000000-0000-0000-0000-000000000000"
+# 2026-10-18 생성 (APAC). 로컬 시험(wrangler dev)은 별도의 로컬 DB를 씁니다.
+database_id = "1cf8d412-73cd-4f65-96ad-54b77b4bafac"
 
 [vars]
 SITE_ORIGIN = "https://31ns.kr"
