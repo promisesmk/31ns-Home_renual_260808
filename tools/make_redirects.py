@@ -17,12 +17,14 @@ REDIRECTS = {
     '/services/': '/#capabilities',
     '/services.html/': '/#capabilities',
     '/about.html': '/#philosophy',
+    '/about/': '/#philosophy',
     '/portfolio/': '/#portfolio',
     '/contact/': '/#contact',
     '/contact.html/': '/#contact',
     '/en/services/': '/en/#capabilities',
     '/en/portfolio/': '/en/#portfolio',
     '/en/contact/': '/en/#contact',
+    '/en/blog/rf-antenna-matching-en/': '/en/blog/ble-antenna-matching/',
 }
 
 
