@@ -54,7 +54,7 @@
     invalid_email: 'Please check your email address.',
     invalid_company: 'Please enter your company name (or "Personal").',
     title_too_short: 'Please enter a title of at least 4 characters.',
-    body_too_short: 'Please write at least 30 characters so we can understand your question or use case.',
+    body_too_short: 'Please write at least 20 characters in the message.',
     consent_required: 'Please agree to the collection and use of personal information.',
     captcha_failed: 'The spam check failed. Please wait a moment and try again.',
     rate_limited: 'Too many requests today. Please try again tomorrow or contact us by email.',
@@ -69,7 +69,7 @@
     invalid_email: '이메일 주소를 확인해 주세요.',
     invalid_company: "회사명을 입력해 주세요. 개인이면 '개인'이라고 적어 주세요.",
     title_too_short: '제목을 4자 이상 입력해 주세요.',
-    body_too_short: '질문이나 사용 목적을 30자 이상 적어 주세요.',
+    body_too_short: '내용을 20자 이상으로 적어 주세요.',
     consent_required: '개인정보 수집 · 이용에 동의해 주세요.',
     captcha_failed: '스팸 방지 확인에 실패했습니다. 잠시 후 다시 시도해 주세요.',
     rate_limited: '오늘 신청 가능한 횟수를 넘었습니다. 내일 다시 시도하시거나 이메일로 문의해 주세요.',
@@ -207,7 +207,7 @@
     const local = !payload.email.includes('@') ? 'invalid_email'
       : !payload.company ? 'invalid_company'
         : payload.title.length < 4 ? 'title_too_short'
-          : payload.body.replace(/\s/g, '').length < 30 ? 'body_too_short'
+          : payload.body.replace(/\s/g, '').length < 20 ? 'body_too_short'
             : !payload.consentPrivacy ? 'consent_required' : null;
     if (local) {
       showMessage(ERRORS[local], 'error');

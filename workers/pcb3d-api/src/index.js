@@ -295,7 +295,7 @@ async function handleRequest(request, env, cors, ctx) {
   if (!company) return json({ error: 'invalid_company' }, 400, cors);
   if (!category) return json({ error: 'invalid_category' }, 400, cors);
   if (title.length < 4) return json({ error: 'title_too_short' }, 400, cors);
-  if (body.replace(/\s/g, '').length < 30) return json({ error: 'body_too_short' }, 400, cors);
+  if (body.replace(/\s/g, '').length < 20) return json({ error: 'body_too_short' }, 400, cors);
   if (input.consentPrivacy !== true) return json({ error: 'consent_required' }, 400, cors);
   // Honeypot field: hidden from people, filled in by simple bots.
   if (clean(input.website, 200)) return json({ error: 'spam_suspected' }, 400, cors);
