@@ -262,21 +262,38 @@
   requestForm.addEventListener('submit', submitRequest);
   redeemForm.addEventListener('submit', submitRedeem);
   resendButton.addEventListener('click', resendCode);
+  const releaseReady = loadRelease();
+  loadTurnstile();
   // Opened from the link in the code email: ?code=XXXX-XXXX#download
   const linked = normalizeCode(new URLSearchParams(location.search).get('code'));
   if (linked) {
     redeemForm.elements.code.value = linked;
     showMessage(T.filled, 'ok');
     history.replaceState(null, '', location.pathname + location.hash);
-    // Bring the code field and the download button to the middle of the screen. Wait until images, video and
-    // reveal animations have settled, since they move the page after the browser's own jump to #download.
-    const toCode = () => {
-      redeemForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      redeemForm.querySelector('[type="submit"]').focus({ preventScroll: true });
+    // Bring the code field and the download button to the middle of the screen. The release box above it is
+    // filled in from the server and images / video settle late; both push the form down after the browser's
+    // own jump to #download. So scroll once they are done, then keep the button in view for a few seconds
+    // in case something still moves it — unless the visitor starts scrolling.
+    const button = redeemForm.querySelector('[type="submit"]');
+    let visitorScrolled = false;
+    for (const type of ['wheel', 'touchstart', 'keydown']) {
+      window.addEventListener(type, () => { visitorScrolled = true; }, { once: true, passive: true });
+    }
+    const inView = () => {
+      const r = button.getBoundingClientRect();
+      return r.top >= 0 && r.bottom <= window.innerHeight;
     };
-    if (document.readyState === 'complete') setTimeout(toCode, 300);
-    else window.addEventListener('load', () => setTimeout(toCode, 300), { once: true });
+    const toCode = (behavior) => {
+      if (!visitorScrolled && !inView()) redeemForm.scrollIntoView({ behavior, block: 'center' });
+    };
+    const pageLoaded = document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+    const settled = Promise.all([releaseReady, pageLoaded]);
+    Promise.race([settled, new Promise((resolve) => setTimeout(resolve, 4000))]).then(() => {
+      toCode('smooth');
+      button.focus({ preventScroll: true });
+      for (const ms of [1200, 2500, 4000]) setTimeout(() => toCode('auto'), ms);
+    });
   }
-  loadRelease();
-  loadTurnstile();
 })();
