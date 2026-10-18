@@ -1,0 +1,8 @@
+# 31ns.kr — 공개 페이지는 모두 수집 허용. 서버 API만 수집 제외.
+# 회원 · 관리자 화면(/account/, /admin/)은 robots.txt로 막지 않고 noindex로 검색 결과에서 제외합니다
+# (robots.txt로 막으면 검색엔진이 noindex 지시를 읽지 못하기 때문).
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://31ns.kr/sitemap.xml

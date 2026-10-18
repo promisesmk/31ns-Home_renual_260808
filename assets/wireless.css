@@ -1,0 +1,108 @@
+/* 2.4GHz page only (2.4ghz.html, en/2.4ghz.html): vendor cards with chip comparison panels, two concept diagrams, application icons.
+   Every class starts with w- so other pages are not affected. Motion parts are hidden only under html.w-motion
+   (added by assets/wireless-motion.js); without it the finished diagrams are shown. */
+
+.w-icon { width: 22px; height: 22px; color: #1c8585; flex-shrink: 0; }
+
+/* ① Chip selection: requirements → comparison → several candidates */
+.w-flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, .9fr) auto minmax(0, 1fr); align-items: center; gap: 16px; margin: 34px 0 10px; padding: 26px 28px 20px; background: #fff; border: 1px solid #e0e0e8; border-radius: 18px; }
+.w-flow-label { font: 600 10px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; color: #6b6b76; margin: 0 0 10px; }
+.w-req, .w-cands { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.w-req li { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #dedee6; border-radius: 10px; font-size: 14px; color: #34343b; }
+.w-cands li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 12px; border: 1px dashed #b4b4be; border-radius: 10px; font-size: 14px; color: #34343b; }
+.w-cands small { font: 600 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; color: #85858f; }
+.w-review { margin: 0; padding: 18px 14px; border: 2px solid #1c8585; border-radius: 14px; text-align: center; font-size: 15px; font-weight: 600; line-height: 1.5; color: #1c8585; background: rgba(28, 133, 133, .06); }
+.w-arrow { position: relative; width: 34px; height: 2px; background: #b8b8c0; }
+.w-arrow::after { content: ""; position: absolute; right: -2px; top: -4px; border: 5px solid transparent; border-left-color: #b8b8c0; border-right: 0; }
+.w-flow figcaption { grid-column: 1 / -1; margin-top: 4px; font-size: 12px; color: #80808a; }
+
+/* ② Design scope: concept diagram */
+.w-scope { margin: 34px auto 0; max-width: 560px; padding: 16px 18px 14px; background: #fff; border: 1px solid #e0e0e8; border-radius: 18px; }
+.w-scope-svg { display: block; width: 100%; height: auto; aspect-ratio: 360 / 250; }
+.w-scope-svg text { font-family: system-ui, sans-serif; font-size: 12.5px; font-weight: 500; fill: #4b4b53; text-anchor: middle; }
+.w-scope-svg .w-strong { fill: #1c8585; font-weight: 650; font-size: 13.5px; }
+.w-scope-svg .w-small { font-size: 11px; }
+.w-scope-svg .w-muted { fill: #85858f; }
+.w-scope figcaption { margin-top: 6px; font-size: 12px; color: #6b6b76; text-align: center; }
+.w-scope-text { max-width: 760px; margin: 20px auto 0; font-size: 15px; line-height: 1.85; color: #5f5f69; text-align: center; }
+
+
+/* ④ Applications: small icons in the existing tags */
+.w-apps li { display: inline-flex; align-items: center; gap: 9px; }
+.w-apps .w-icon { width: 20px; height: 20px; }
+.w-apps-note { margin: 4px 0 18px; font-size: 12px; color: #6b6b76; }
+
+@media (max-width: 1023px) {
+  .w-flow { grid-template-columns: minmax(0, 1fr) auto minmax(0, .8fr) auto minmax(0, 1fr); padding: 22px 20px 18px; gap: 12px; }
+  .w-req li, .w-cands li { font-size: 13px; padding: 8px 10px; }
+  .w-arrow { width: 22px; }
+}
+
+@media (max-width: 767px) {
+  .w-flow { grid-template-columns: 1fr; gap: 12px; padding: 20px 18px 16px; }
+  .w-arrow { justify-self: center; width: 2px; height: 22px; }
+  .w-arrow::after { right: auto; left: -4px; top: auto; bottom: -2px; border: 5px solid transparent; border-top-color: #b8b8c0; border-bottom: 0; }
+  .w-req { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .w-scope { padding: 12px 10px 12px; }
+  .w-scope-text { text-align: left; font-size: 14px; }
+}
+
+/* Motion (only while html.w-motion): one run of about 4 s per diagram, again on every re-entry */
+@keyframes w-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes w-pop { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes w-draw { to { stroke-dashoffset: 0; } }
+.w-motion [data-w-diagram] .w-step-in, .w-motion [data-w-diagram] .w-step-pop,
+.w-motion .w-scope .w-fade, .w-motion .w-scope .w-pop { opacity: 0; }
+.w-motion .w-scope .w-draw { stroke-dasharray: var(--len, 100); stroke-dashoffset: var(--len, 100); }
+.w-motion [data-w-diagram].is-playing .w-step-in { animation: w-in 450ms ease-out forwards; animation-delay: var(--d, 0ms); }
+.w-motion [data-w-diagram].is-playing .w-step-pop { animation: w-pop 450ms ease-out forwards; animation-delay: var(--d, 0ms); }
+.w-motion .w-scope.is-playing .w-fade { animation: w-in 400ms ease-out forwards; animation-delay: var(--d, 0ms); }
+.w-motion .w-scope.is-playing .w-pop { transform-box: fill-box; transform-origin: center; animation: w-pop 400ms ease-out forwards; animation-delay: var(--d, 0ms); }
+.w-motion .w-scope.is-playing .w-draw { animation: w-draw 450ms ease-out forwards; animation-delay: var(--d, 0ms); }
+
+/* Vendor cards: "비교하기" opens that vendor's chip comparison right below the card's row (wireless-vendors.js).
+   Without the script every panel is shown below its card. */
+.w-vendors { align-items: stretch; }
+.w-vcard { position: relative; display: flex; flex-direction: column; transition: border-color .2s, box-shadow .2s; }
+.w-vcard .w-vmodels { font: 12px/1.9 ui-monospace, SFMono-Regular, Menlo, monospace; color: #666672; margin: 16px 0 0; }
+.w-vtoggle { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 18px 0 0; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 600; color: #136b6b; cursor: pointer; }
+.w-vtoggle::after { content: ""; position: absolute; inset: 0; border-radius: 15px; }
+.w-vtoggle:focus-visible { outline: none; }
+.w-vtoggle:focus-visible::after { outline: 2px solid #1c8585; outline-offset: 2px; }
+.w-vtoggle-icon { width: 16px; height: 16px; transition: transform .3s ease; }
+.w-vcard:hover { border-color: #b9b9c3; }
+.w-vcard.is-selected { border-color: #1c8585; box-shadow: 0 0 0 1px #1c8585 inset; }
+.w-vcard.is-selected .w-vtoggle-icon { transform: rotate(180deg); }
+.w-vcard.is-selected::before { content: ""; position: absolute; left: 50%; bottom: -9px; width: 16px; height: 16px; margin-left: -8px; background: #fff; border-right: 2px solid #1c8585; border-bottom: 2px solid #1c8585; transform: rotate(45deg); z-index: 1; }
+.w-vpanel { grid-column: 1 / -1; display: grid; grid-template-rows: 1fr; }
+.w-vpanel-inner { min-height: 0; overflow: hidden; background: #fff; border: 1px solid #dedee6; border-radius: 16px; padding: 26px 26px 20px; }
+.w-vendors-js .w-vpanel { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .3s ease, opacity .3s ease; }
+.w-vendors-js .w-vpanel.is-open { grid-template-rows: 1fr; opacity: 1; }
+.w-vendors-js .w-vpanel .w-vpanel-inner { border-color: #1c8585; }
+.w-vpanel-title { font-size: 20px; font-weight: 600; line-height: 1.45; margin: 0 0 6px; }
+.w-vpanel-lead { font-size: 14px; line-height: 1.8; color: #686873; margin: 0 0 18px; }
+.w-vtable-wrap { border: 1px solid #e0e0e8; border-radius: 12px; }
+.w-vtable { min-width: 880px; table-layout: fixed; font-size: 13px; }
+.w-vtable thead th:first-child, .w-vtable tbody th { width: 136px; }
+.w-vtable thead th { font-size: 14px; font-weight: 650; color: #1d1d1f; background: #f3f3f6; }
+.w-vtable th, .w-vtable td { padding: 13px 14px; overflow-wrap: anywhere; }
+.w-vpanel a { text-decoration: underline; text-underline-offset: 3px; }
+.w-vmodels-list { display: none; }
+.w-vnotes { margin: 14px 0 0; padding-left: 18px; list-style: disc; font-size: 12px; line-height: 1.8; color: #74747e; }
+.w-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 767px) {
+  .w-vendors.vendor-grid { grid-template-columns: 1fr; }
+  .w-vcard h3 { min-height: 0; }
+  .w-vpanel-inner { padding: 18px 14px 16px; }
+  .w-vpanel-title { font-size: 18px; }
+  .w-vtable-wrap { display: none; }
+  .w-vmodels-list { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+  .w-vmodel { border: 1px solid #e0e0e8; border-radius: 12px; padding: 14px 14px 16px; }
+  .w-vmodel h5 { font-size: 17px; font-weight: 650; margin: 0 0 10px; }
+  .w-vmodel dl { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px 10px; margin: 0; font-size: 13.5px; line-height: 1.6; }
+  .w-vmodel dt { color: #80808a; font-weight: 600; font-size: 12px; }
+  .w-vmodel dd { margin: 0; color: #34343b; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .w-vendors-js .w-vpanel, .w-vtoggle-icon { transition: none; }
+}

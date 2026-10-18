@@ -1,0 +1,10 @@
+node_modules/
+*.bak
+.DS_Store
+.env*
+*.log
+supabase/
+docs/
+tests/
+workers/
+tools/

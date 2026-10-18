@@ -1,0 +1,15 @@
+# Cloudflare Worker that delivers the PCB 3D Builder installer for a one-time ticket (see worker.js).
+name = "pcb3d-download"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# workers.dev address works without moving 31ns.kr DNS (https://pcb3d-download.<account>.workers.dev)
+workers_dev = true
+
+[vars]
+# Review site only. Change this when the member download moves to the official site.
+SITE_ORIGIN = "https://31ns-website-git-feature-pcb-viewer-k-spotter1.vercel.app"
+
+# Secrets (never in this file), set with `wrangler secret put` from stdin:
+#   REDEEM_SECRET   same value as Vercel DOWNLOAD_WORKER_SECRET
+#   SITE_BYPASS     Vercel "Protection Bypass for Automation" value, only while SITE_ORIGIN is a protected preview

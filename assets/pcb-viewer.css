@@ -1,0 +1,243 @@
+/* PCB 3D viewer, member account and admin pages. Loaded only on those pages; every class is pv- prefixed. */
+
+/* Review markers: anything still to be confirmed before launch */
+.pv-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; line-height: 1; padding: 6px 9px; border-radius: 999px; border: 1px dashed #b38b2d; color: #7a5c12; background: #fbf5e6; white-space: nowrap; vertical-align: middle; letter-spacing: 0; }
+.pv-badge-test { border-style: solid; border-color: #b4443a; color: #8f2b22; background: #fbeceb; }
+
+/* Download entry in the hero */
+.pv-hero-download { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 28px; }
+.pv-download-note { font-size: 13px; color: #686873; }
+.pv-hero-download .button[aria-disabled="true"], .pv-download .button[aria-disabled="true"] { background: #d9d9df; color: #6b6b75; cursor: not-allowed; box-shadow: none; }
+
+/* Screenshot / video slot, replaced once real footage exists */
+.pv-media { margin-top: 48px; }
+.pv-media-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; background: #19191c; color: #a9a9b3; display: grid; place-items: center; overflow: hidden; }
+.pv-media-frame video, .pv-media-frame img { width: 100%; height: 100%; object-fit: cover; }
+.pv-media-empty { text-align: center; padding: 24px; }
+.pv-media-empty p { margin: 0; }
+.pv-media-empty .pv-media-title { color: #f2f2f5; font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+.pv-media-empty .pv-media-sub { font-size: 13px; line-height: 1.8; }
+.pv-media figcaption { margin-top: 12px; font-size: 12px; color: #77777f; }
+
+/* Use cases */
+.pv-uses { list-style: none; padding: 0; margin: 36px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pv-uses li { background: #fff; border: 1px solid #e0e0e8; border-radius: 18px; padding: 26px 24px; display: flex; flex-direction: column; gap: 12px; }
+.pv-uses .eyebrow { margin: 0; }
+.pv-uses h3 { font-size: 19px; font-weight: 600; line-height: 1.45; }
+.pv-uses p { font-size: 14px; line-height: 1.85; color: #686875; margin: 0; }
+.pv-uses .pv-badge { align-self: flex-start; margin-top: auto; }
+
+/* Spec table */
+.pv-spec { width: 100%; border-collapse: collapse; margin-top: 32px; font-size: 14px; color: #3d3d45; background: #fff; border-radius: 14px; overflow: hidden; }
+.pv-spec th, .pv-spec td { text-align: left; padding: 16px 20px; border-bottom: 1px solid #e6e6ec; vertical-align: top; line-height: 1.7; }
+.pv-spec tr:last-child th, .pv-spec tr:last-child td { border-bottom: 0; }
+.pv-spec th { width: 34%; font-weight: 600; color: #26262b; background: #fafafc; }
+.pv-faq { margin-top: 40px; }
+.pv-faq h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+
+/* Download section */
+.pv-download { background: #fff; border: 1px solid #e0e0e8; border-radius: 22px; padding: 36px; margin-top: 32px; display: grid; gap: 22px; }
+.pv-download-status { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.pv-download-title { font-size: 22px; font-weight: 600; }
+.pv-download dl { display: grid; grid-template-columns: 140px 1fr; gap: 12px 20px; margin: 0; font-size: 14px; line-height: 1.8; }
+.pv-download dt { color: #77777f; }
+.pv-download dd { margin: 0; color: #2c2c32; white-space: pre-line; }
+.pv-steps { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: #55555f; }
+.pv-steps li { display: flex; align-items: center; gap: 8px; }
+.pv-steps span { font: 11px ui-monospace, monospace; color: #6b6b76; }
+
+/* Messages */
+.pv-msg { font-size: 14px; line-height: 1.7; padding: 12px 16px; border-radius: 10px; background: #eef0f3; color: #33333b; margin: 0; }
+.pv-msg.is-error { background: #fbeceb; color: #8f2b22; }
+.pv-msg.is-ok { background: #e9f6ee; color: #1f6b3a; }
+
+/* Account / admin cards and forms */
+.pv-shell-narrow { max-width: 620px; }
+.pv-card { background: #fff; border: 1px solid #e0e0e8; border-radius: 20px; padding: 32px; display: grid; gap: 20px; }
+.pv-card h2 { font-size: 24px; font-weight: 600; line-height: 1.4; }
+.pv-card p { margin: 0; font-size: 14px; line-height: 1.8; color: #5f5f69; }
+.pv-form { display: grid; gap: 18px; }
+.pv-field { display: grid; gap: 8px; }
+.pv-field label, .pv-field .pv-label { font-size: 13px; font-weight: 600; color: #2a2a30; }
+.pv-field .pv-optional { font-weight: 400; color: #8a8a95; }
+.pv-field input[type="email"], .pv-field input[type="text"], .pv-field select, .pv-field textarea {
+  width: 100%; border: 1px solid #cfcfd8; border-radius: 10px; padding: 12px 14px; font-size: 15px; background: #fff; color: #1d1d1f; }
+.pv-field textarea { min-height: 96px; line-height: 1.7; }
+.pv-field input:focus-visible, .pv-field textarea:focus-visible, .pv-field select:focus-visible { outline: 2px solid #1c8585; outline-offset: 1px; border-color: #1c8585; box-shadow: none; }
+.pv-field input[readonly] { background: #f3f3f6; color: #55555f; }
+.pv-field .pv-help { font-size: 12px; color: #80808a; line-height: 1.6; margin: 0; }
+.pv-code { letter-spacing: .3em; font: 600 22px ui-monospace, monospace !important; text-align: center; }
+.pv-check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: #33333b; line-height: 1.6; }
+.pv-check input { margin-top: 4px; }
+.pv-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.pv-actions .button { font-size: 13px; }
+.pv-link-button { background: none; border: 0; padding: 0; color: #3f3f48; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.pv-link-button:disabled { color: #a0a0aa; cursor: default; text-decoration: none; }
+.pv-policy { border: 1px dashed #b38b2d; background: #fdf9ef; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #6b5317; line-height: 1.75; }
+.pv-summary { display: grid; grid-template-columns: 110px 1fr; gap: 8px 16px; margin: 0; font-size: 14px; }
+.pv-summary dt { color: #80808a; }
+.pv-summary dd { margin: 0; color: #24242a; word-break: break-all; }
+
+/* Admin */
+.pv-admin-grid { display: grid; gap: 24px; }
+.pv-table-wrap { overflow-x: auto; }
+.pv-releases { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 13px; }
+.pv-releases th, .pv-releases td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #e6e6ec; vertical-align: middle; }
+.pv-releases th { color: #77777f; font-weight: 600; }
+.pv-releases button { font-size: 13px; }
+.pv-status { display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #ececf1; color: #4a4a52; }
+.pv-status.is-published { background: #e1f3e8; color: #1f6b3a; }
+.pv-progress { width: 100%; }
+
+@media (max-width: 1023px) {
+  .pv-uses { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .pv-media { margin-top: 32px; }
+  .pv-media-frame { border-radius: 16px; }
+  .pv-media-empty .pv-media-title { font-size: 16px; }
+  .pv-download { padding: 24px 20px; }
+  .pv-download dl { grid-template-columns: 1fr; gap: 4px; }
+  .pv-download dd { margin-bottom: 10px; }
+  .pv-spec th, .pv-spec td { display: block; width: 100%; }
+  .pv-spec th { border-bottom: 0; padding-bottom: 4px; }
+  .pv-spec td { padding-top: 4px; }
+  .pv-card { padding: 24px 20px; }
+  .pv-summary { grid-template-columns: 1fr; gap: 2px; }
+  .pv-summary dd { margin-bottom: 8px; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.resource-hero .pv-download-note { color: #a1a1ab; }
+
+/* Overview flow (explanatory diagram, not a program screen) */
+.pv-flow { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; counter-reset: none; }
+.pv-flow li { position: relative; background: #fff; border: 1px solid #e0e0e8; border-radius: 18px; padding: 22px 22px 20px; display: grid; gap: 6px; align-content: start; }
+.pv-flow li + li::before { content: ""; position: absolute; left: -22px; top: 50%; width: 16px; height: 2px; background: #b8b8c0; }
+.pv-flow li + li::after { content: ""; position: absolute; left: -10px; top: calc(50% - 4px); border: 5px solid transparent; border-left-color: #b8b8c0; }
+.pv-flow .pv-flow-step { font: 600 11px ui-monospace, monospace; letter-spacing: .08em; color: #8a8a95; }
+.pv-flow h3 { font-size: 18px; font-weight: 600; margin: 2px 0 6px; }
+.pv-flow p { margin: 0; font-size: 14px; color: #5f5f69; line-height: 1.7; }
+.pv-flow li.is-output { border-color: #1c8585; }
+.pv-flow li.is-output .pv-flow-step { color: #1c8585; }
+.pv-guide-link { font-size: 13px; }
+.resource-hero .pv-guide-link { color: #d5d5de; }
+.pv-download-guide { margin: 0; font-size: 13px; color: #686873; }
+.pv-download-guide a, .section-description a, .pv-uses a { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 1023px) {
+  .pv-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pv-flow li:nth-child(3)::before, .pv-flow li:nth-child(3)::after { display: none; }
+}
+@media (max-width: 767px) {
+  .pv-flow { grid-template-columns: 1fr; gap: 22px; }
+  .pv-flow li + li::before { left: 50%; top: -16px; width: 2px; height: 12px; }
+  .pv-flow li + li::after { left: calc(50% - 4px); top: -8px; border: 5px solid transparent; border-top-color: #b8b8c0; border-left-color: transparent; }
+  .pv-flow li:nth-child(3)::before, .pv-flow li:nth-child(3)::after { display: block; }
+}
+
+/* ---------- PCB 3D Builder: icons, process diagrams, scroll motion ---------- */
+
+/* Small line icons (same style as the main page process icons: 2px stroke, #babac3, teal accent) */
+.pv-icon { display: block; width: 32px; height: 32px; color: #9a9aa4; flex-shrink: 0; }
+.pv-uses .pv-icon { margin-bottom: 4px; }
+.pv-icon-sm { width: 22px; height: 22px; }
+.pv-spec th .pv-th { display: flex; align-items: center; gap: 10px; }
+.wireless-workflow h3.pv-step-title, .article-body h2.pv-guide-h2 { display: flex; align-items: center; gap: 12px; }
+.wireless-workflow .pv-icon { width: 28px; height: 28px; }
+.article-body h2.pv-guide-h2 .pv-icon { width: 30px; height: 30px; color: #1c8585; }
+
+/* Three-stage process diagram (explanatory, not a program screen) */
+.pv-process { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.pv-stage { position: relative; background: #fff; border: 1px solid #e0e0e8; border-radius: 18px; padding: 18px 20px 20px; display: grid; gap: 8px; align-content: start; --offset: 0ms; }
+.pv-process > .pv-stage + .pv-stage::before { content: ""; position: absolute; left: -22px; top: 92px; width: 16px; height: 2px; background: #b8b8c0; }
+.pv-process > .pv-stage + .pv-stage::after { content: ""; position: absolute; left: -10px; top: 88px; border: 5px solid transparent; border-left-color: #b8b8c0; }
+.pv-stage svg.pv-diagram { width: 100%; height: auto; aspect-ratio: 320 / 190; display: block; }
+.pv-stage .pv-flow-step { font: 600 11px ui-monospace, monospace; letter-spacing: .08em; color: #8a8a95; margin-top: 4px; }
+.pv-stage h3 { font-size: 18px; font-weight: 600; margin: 0; }
+.pv-stage p { margin: 0; font-size: 14px; color: #5f5f69; line-height: 1.7; }
+.pv-stage.is-output { border-color: #1c8585; }
+.pv-stage.is-output .pv-flow-step { color: #1c8585; }
+.pv-guide-figure { margin: 8px 0 28px; max-width: 520px; }
+.pv-guide-figure.pv-stage { padding: 14px 16px; }
+.pv-diagram text { font-family: system-ui, sans-serif; font-size: 13px; fill: #65656c; text-anchor: middle; font-weight: 500; }
+.pv-diagram .teal-text { fill: #1c8585; font-weight: 650; }
+.pv-diagram .pv-sel { fill: rgba(28, 133, 133, .12); }
+@media (min-width: 768px) {
+  /* Side by side on wider screens: one process unfolds over ~4.5s across the three stages */
+  .pv-process > .pv-stage:nth-child(2) { --offset: 1500ms; }
+  .pv-process > .pv-stage:nth-child(3) { --offset: 3000ms; }
+}
+@media (max-width: 1023px) {
+  .pv-process { grid-template-columns: 1fr; max-width: 560px; gap: 22px; }
+  .pv-process > .pv-stage + .pv-stage::before { left: 50%; top: -16px; width: 2px; height: 12px; }
+  .pv-process > .pv-stage + .pv-stage::after { left: calc(50% - 4px); top: -8px; border: 5px solid transparent; border-top-color: #b8b8c0; border-left-color: transparent; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Stacked: each stage plays on its own when it scrolls in */
+  .pv-process > .pv-stage:nth-child(n) { --offset: 0ms; }
+}
+
+/* Scroll motion — only when assets/pcb-motion.js is running (html.pv-motion) and motion is allowed.
+   Without the script or with reduced motion, everything is shown in its final state. */
+@keyframes pv-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes pv-nudge { from { transform: translate(var(--nx, 18px), var(--ny, 14px)); } to { transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-motion [data-pv-reveal] { opacity: 0; }
+  .pv-motion [data-pv-reveal].is-in { animation: pv-rise 650ms ease-out both; animation-delay: calc(var(--pv-i, 0) * 80ms); }
+  .pv-motion [data-pv-reveal]:focus-within { opacity: 1; }
+
+  .pv-motion .pv-diagram .pv-fade, .pv-motion .pv-diagram .pv-pop, .pv-motion .pv-diagram .pv-move { opacity: 0; }
+  .pv-motion .pv-diagram .pv-draw { stroke-dasharray: var(--len, 100); stroke-dashoffset: var(--len, 100); }
+  .pv-motion .is-playing .pv-diagram .pv-fade { animation: fadeInSlide 400ms ease-out forwards; animation-delay: calc(var(--offset) + var(--d, 0ms)); }
+  .pv-motion .is-playing .pv-diagram .pv-pop { transform-box: fill-box; transform-origin: center; animation: popIn 400ms ease-out forwards; animation-delay: calc(var(--offset) + var(--d, 0ms)); }
+  .pv-motion .is-playing .pv-diagram .pv-draw { animation: drawPathReveal 450ms ease-out forwards; animation-delay: calc(var(--offset) + var(--d, 0ms)); }
+  .pv-motion .is-playing .pv-diagram .pv-move { animation: fadeInSlide 200ms ease-out forwards, pv-nudge 700ms cubic-bezier(.2, .7, .3, 1) both; animation-delay: calc(var(--offset) + var(--d, 0ms)); }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .pv-motion [data-pv-reveal].is-in { animation-name: pv-rise-sm; }
+}
+@keyframes pv-rise-sm { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.pv-figure-note { margin: 0; font-size: 12px !important; color: #8a8a95 !important; line-height: 1.5 !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-motion [data-pv-reveal].pv-instant { animation: none; opacity: 1; }
+}
+
+/* Demo video under the intro title (original 872×652 ratio, nothing cropped) */
+/* Demo video in the Overview section, below the process diagram (original 872×652 ratio, nothing cropped) */
+.pv-diagram-note { margin: 14px 0 0; font-size: 13px; color: #80808a; }
+.pv-demo { margin: 64px auto 0; max-width: 680px; padding-top: 40px; border-top: 1px solid #d8d8e0; }
+.pv-demo-frame { position: relative; aspect-ratio: 872 / 652; border-radius: 18px; overflow: hidden; background: #c9ccd2; }
+.pv-demo-frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pv-demo figcaption { margin-top: 12px; font-size: 14px; color: #5f5f69; text-align: center; }
+.pv-demo-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 767px) { .pv-demo { margin-top: 44px; padding-top: 28px; } .pv-demo-frame { border-radius: 14px; } }
+
+/* Guide subheadings (only the PCB guide pages load this file) */
+.article-body h3 { font-size: 18px; font-weight: 650; line-height: 1.5; color: #1d1d1f; margin: 30px 0 10px; }
+.article-body .pv-guide-figure + h3 { margin-top: 8px; }
+@media (max-width: 767px) { .article-body h3 { font-size: 17px; margin-top: 24px; } }
+
+/* Why section (intro): short lead, three cards, a review note */
+.pv-why-note { margin: 18px 0 0; font-size: 13px; color: #80808a; }
+/* Update note at the end of the download section */
+.pv-update { margin-top: 28px; padding: 24px 26px; border: 1px solid #e0e0e8; border-radius: 16px; background: #fff; }
+.pv-update .eyebrow { font-size: 10px; margin: 0 0 12px; }
+.pv-update-title { font-size: 22px; line-height: 1.45; font-weight: 600; margin: 0 0 10px; }
+.pv-update-title span { color: #80808a; }
+.pv-update p:last-child { margin: 0; font-size: 14px; color: #5f5f69; }
+/* Output: STEP is the main result, PNG and Excel are extras */
+.pv-stage .pv-step-main { color: #2b2b31; font-size: 15px; }
+.pv-stage .pv-step-main strong { color: #1c8585; font-size: 17px; font-weight: 700; }
+.pv-stage .pv-extras { font-size: 13px; color: #7a7a84; }
+.pv-extras > span, .pv-extras-label { display: inline-block; font: 600 10px/1.6 ui-monospace, monospace; letter-spacing: .08em; color: #6d6d79; border: 1px solid #d4d4dc; border-radius: 99px; padding: 1px 8px; margin-right: 6px; }
+.article-body .pv-extras-label { margin: 6px 0 0; }
+.article-body .pv-extras-list { font-size: 14px; color: #5f5f69; margin-top: 10px; }
+.pv-diagram .pv-small { font-size: 11px; }
+.pv-diagram .pv-big { font-size: 26px; font-weight: 750; letter-spacing: .02em; }
+.pv-diagram .pv-muted { fill: #8a8a95; }
+.pv-diagram .pv-step-box { fill: rgba(28, 133, 133, .06); }
+/* Guide: small label above a two-line section title */
+.article-body .pv-guide-label { margin: 45px 0 0; font-size: 10px; }
+.article-body .pv-guide-label + h2 { margin-top: 8px; }
+.pv-guide-h2 .pv-h2-text { display: block; color: inherit; }
+@media (max-width: 767px) { .pv-update { padding: 20px; } .pv-update-title { font-size: 20px; } }

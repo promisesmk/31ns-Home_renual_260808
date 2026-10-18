@@ -1,0 +1,19 @@
+/* Main page capability cards: list layout inside "설계 범위 보기". Loaded only on the main pages. */
+.capability-details .cap-scope-list { list-style: none; margin: 0; padding: 7px 0 12px; color: #6b6b73; line-height: 1.8; }
+.capability-details .cap-scope-list li { position: relative; padding-left: 14px; }
+.capability-details .cap-scope-list li + li { margin-top: 4px; }
+.capability-details .cap-scope-list li::before { content: "–"; position: absolute; left: 0; color: #a0a0a8; }
+.capability-details .cap-scope-list .cap-term { color: #4d4d56; font-weight: 600; }
+.capability-details .cap-case-note { padding: 0 0 16px; color: #86868f; font-size: 12px; }
+.cap-nowrap { white-space: nowrap; }
+
+/* Two columns (tablet and PC): cards in a row share one height, and the bottom line, technology names and
+   consult link sit at the same place. Content keeps its natural height (an opened "설계 범위 보기" is never cut);
+   the card is only stretched, never clipped. One column (mobile) keeps the natural height. */
+@media (min-width: 768px) {
+  .capabilities-grid { align-items: stretch; }
+  .capability-card { display: flex; flex-direction: column; }
+  .capability-card > .text-link { align-self: flex-start; }
+  .capability-card > .capability-bottom { margin-top: auto; }
+  .capability-card > :nth-last-child(2) { margin-bottom: 12px; }
+}

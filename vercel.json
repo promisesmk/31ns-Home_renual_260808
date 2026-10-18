@@ -1,0 +1,17 @@
+{
+  "name": "31ns-website",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    "icn1"
+  ]
+}

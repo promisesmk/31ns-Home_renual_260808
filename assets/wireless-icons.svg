@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<!-- 2.4GHz page icons. Same line style as assets/pcb-icons.svg: 44×44 grid, 2px stroke, round caps/joins,
+     color from currentColor. Decorative only (use aria-hidden). -->
+<defs>
+  <!-- Requirements: radio / protocol -->
+  <symbol id="w-radio" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 22v15M17 37h10"/><circle cx="22" cy="20" r="2.5"/><path d="M15 13a10 10 0 0 0 0 14M29 13a10 10 0 0 1 0 14M10 8a17 17 0 0 0 0 24M34 8a17 17 0 0 1 0 24"/></g></symbol>
+  <!-- Requirements: power consumption (battery) -->
+  <symbol id="w-power" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="14" width="27" height="16" rx="3"/><path d="M34 19.5h3v5h-3"/><path d="M21.5 17.5l-3.5 5h5l-3.5 5"/></g></symbol>
+  <!-- Requirements: size -->
+  <symbol id="w-size" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="13" width="18" height="18" rx="2"/><path d="M13 7h18M13 5v4M31 5v4M7 13v18M5 13h4M5 31h4"/></g></symbol>
+  <!-- Requirements: target cost -->
+  <symbol id="w-cost" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22.5V9h13.5L37 25.5 23.5 39z"/><circle cx="14.5" cy="16.5" r="2.5"/></g></symbol>
+  <!-- Applications -->
+  <symbol id="w-sensor" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="16" width="20" height="20" rx="3"/><circle cx="22" cy="26" r="3.5"/><path d="M17 10a8 8 0 0 1 10 0M14 6a13 13 0 0 1 16 0"/></g></symbol>
+  <symbol id="w-watch" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="13" width="18" height="18" rx="5"/><path d="M16 13l1.5-7h9l1.5 7M16 31l1.5 7h9l1.5-7M22 18v4.5l3 2"/></g></symbol>
+  <symbol id="w-tag" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="12" width="26" height="20" rx="4"/><circle cx="16" cy="22" r="2.5"/><path d="M22 18h8M22 22h8M22 26h5"/></g></symbol>
+  <symbol id="w-home" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21L22 9l14 12M12 18v18h20V18"/><path d="M22 23v4M19 29a4 4 0 0 0 6 0"/></g></symbol>
+  <symbol id="w-factory" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 36V20l9 5v-5l9 5v-5l9 5V8h4v28z"/><path d="M13 31h4M21 31h4M29 31h4"/></g></symbol>
+  <symbol id="w-medical" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="28" height="28" rx="6"/><path d="M22 15v14M15 22h14"/></g></symbol>
+  <symbol id="w-lock" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="19" width="22" height="17" rx="3"/><path d="M15 19v-5a7 7 0 0 1 14 0v5M22 25.5v4"/></g></symbol>
+  <symbol id="w-remote" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="9" width="16" height="28" rx="5"/><circle cx="22" cy="17" r="3"/><path d="M19 25h.01M25 25h.01M19 30h.01M25 30h.01"/></g></symbol>
+  <symbol id="w-beacon" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 37s-10-9-10-17a10 10 0 0 1 20 0c0 8-10 17-10 17z"/><circle cx="22" cy="20" r="3.5"/></g></symbol>
+  <symbol id="w-mesh" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="12" r="3.5"/><circle cx="33" cy="12" r="3.5"/><circle cx="22" cy="23" r="3.5"/><circle cx="11" cy="34" r="3.5"/><circle cx="33" cy="34" r="3.5"/><path d="M14.5 12h15M13.5 14.5l6 6M30.5 14.5l-6 6M19.5 25.5l-6 6M24.5 25.5l6 6M14.5 34h15"/></g></symbol>
+  <symbol id="w-car" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 29v-6l4-9h22l4 9v6z"/><path d="M11 23h22"/><circle cx="14" cy="31" r="3"/><circle cx="30" cy="31" r="3"/></g></symbol>
+  <symbol id="w-appliance" viewBox="0 0 44 44"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="7" width="26" height="30" rx="3"/><path d="M9 15h26"/><circle cx="22" cy="26" r="6"/><path d="M14 11h.01M18 11h.01"/></g></symbol>
+</defs>
+</svg>

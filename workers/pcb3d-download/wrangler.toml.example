@@ -1,0 +1,14 @@
+# Draft — not deployed. Copy to wrangler.toml when a Cloudflare account is approved.
+name = "pcb3d-download"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# workers.dev address works without moving 31ns.kr DNS (e.g. https://pcb3d-download.<account>.workers.dev)
+workers_dev = true
+
+[vars]
+SITE_ORIGIN = "https://31ns-website-git-feature-pcb-viewer-k-spotter1.vercel.app"
+
+# Secrets (never in this file):
+#   npx wrangler secret put REDEEM_SECRET   # same value as Vercel DOWNLOAD_WORKER_SECRET
+#   npx wrangler secret put SITE_BYPASS     # only while SITE_ORIGIN is a protected Vercel preview
