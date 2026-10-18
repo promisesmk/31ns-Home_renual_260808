@@ -220,7 +220,7 @@ async function notifyAdmin(env, origin, row) {
 <div style="white-space:pre-wrap;border:1px solid #ddd;border-radius:10px;padding:14px">${esc(row.body)}</div>
 <p>작성자: ${esc(row.company)} · ${esc(row.email)}<br>공개 동의: ${row.publish_ok ? '예' : '아니요'} · 언어: ${row.lang}</p>
 ${buttons}
-<p style="color:#777;font-size:13px">버튼을 누르면 확인 화면이 열리고, 그 화면의 [확인]을 눌러야 처리됩니다. 처리하지 않은 글은 공개되지 않습니다.</p></div>`;
+<p style="color:#777;font-size:13px">버튼을 누르면 관리 화면이 열리고, 그 화면에서 [승인 · 공개] 또는 [거절]을 한 번 더 눌러야 처리됩니다. 처리하지 않은 글은 공개되지 않습니다.</p></div>`;
   await sendMail(env, { to: env.ADMIN_EMAIL, subject: `[PCB 3D Builder] 새 글: ${row.title}`, html });
 }
 
