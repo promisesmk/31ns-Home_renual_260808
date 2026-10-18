@@ -37,7 +37,7 @@ PCB 3D Builder 페이지 ──신청(글)────────────�
 |---|---|
 | 새 글 알림 | `nskim@31ns.kr`로 메일이 옴 → [승인] · [거절] · [답변 쓰기] → 열린 화면에서 확인 버튼 |
 | 글 목록 보기 | `https://pcb3d-api.31ns-tech.workers.dev/admin` → 사용자 이름은 아무거나, 비밀번호는 `ADMIN_SECRET` |
-| 승인한 글을 홈페이지에 반영 | GitHub → Actions → Deploy → Run workflow (main) |
+| 승인한 글을 홈페이지에 반영 | 자동: 매일 03:00(KST) 배포 때 공개. 바로 올리려면 GitHub → Actions → Deploy → Run workflow (main) |
 | 새 버전 배포 | `PCB3D-Releases`에 새 릴리스(설치 파일 .exe, 설명서 .pdf) 올리고 Latest로 지정 |
 
 메일의 버튼은 바로 처리하지 않고 확인 화면을 엽니다. 회사 메일의 보안 검사기가 링크를 자동으로 열어도 승인 · 거절되지 않게 하기 위해서입니다.

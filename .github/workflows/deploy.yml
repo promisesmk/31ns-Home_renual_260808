@@ -1,8 +1,11 @@
-name: Deploy 31NS Website to GitHub Pages (Manual Dispatch Only)
+name: Deploy 31NS Website to GitHub Pages
 
 on:
-  # push 트리거 제거 — 대표님이 [Run workflow] 버튼을 누르실 때만 배포됩니다.
+  # push로는 배포되지 않습니다. 대표님이 [Run workflow]를 누를 때, 그리고 매일 03:00(KST)에 main을 배포합니다.
   workflow_dispatch:
+  # 매일 자동 배포 — 승인한 PCB 3D Builder Q&A를 다음 날 아침 공개하기 위함 (main에 이미 반영된 내용만 나감)
+  schedule:
+    - cron: '0 18 * * *'
 
 permissions:
   contents: write   # 배포 이력 태그(deploy-*) 생성용
@@ -79,7 +82,9 @@ jobs:
         uses: actions/deploy-pages@v4
 
       # 배포 이력 기록 — 배포된 커밋에 deploy-YYYYMMDD-HHMM(KST) 태그를 남겨, 언제 어떤 버전이 올라갔는지 git에서 확인할 수 있습니다.
+      # 매일 자동 배포는 태그를 남기지 않음(수동 배포만 기록 — 태그가 매일 쌓이지 않게)
       - name: Tag Deployed Commit
+        if: github.event_name == 'workflow_dispatch'
         run: |
           TAG="deploy-$(TZ=Asia/Seoul date +%Y%m%d-%H%M)"
           git config user.name "github-actions[bot]"
