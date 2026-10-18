@@ -60,6 +60,12 @@ PAGES = {
     'en/pcb-viewer/guide/index.html': ('/en/pcb-viewer/guide/', 'en', 'PCB 3D Builder User Guide | From Board Input to STEP Export — 31NS-Tech',
                                        'A step-by-step guide based on the PCB 3D Builder v2.1 user manual and source: design file input, part model check and adjustment, and saving and reviewing the STEP, with the PNG image and Excel report as extras.',
                                        'article', 'pcb-viewer/guide/index.html'),
+    'privacy/index.html': ('/privacy/', 'ko', '개인정보처리방침 — 31NS-Tech (삼일앤에스테크)',
+                           '삼일앤에스테크(31NS-Tech) 홈페이지의 개인정보 수집 항목 · 목적 · 보유 기간, 처리 위탁과 국외 이전, 이용자의 권리와 보호책임자 안내.',
+                           'website', 'en/privacy/index.html'),
+    'en/privacy/index.html': ('/en/privacy/', 'en', 'Privacy Policy — 31NS-Tech',
+                              'What personal information the 31NS-Tech website collects, why, how long it is kept, processors and transfer abroad, and your rights.',
+                              'website', 'privacy/index.html'),
 }
 
 LOCALE = {'ko': 'ko_KR', 'en': 'en_US'}
@@ -123,6 +129,8 @@ LASTMOD = {
     'pcb-viewer/guide/index.html': '2026-10-15',
     'en/pcb-viewer/index.html': '2026-10-15',
     'en/pcb-viewer/guide/index.html': '2026-10-15',
+    'privacy/index.html': '2026-10-19',
+    'en/privacy/index.html': '2026-10-19',
 }
 # 블로그 글: 작성일은 본문의 <time>과 같게
 BLOG_PUBLISHED = {

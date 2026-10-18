@@ -400,3 +400,4 @@ html[lang="en"] .hero h1 { letter-spacing: -.045em; }
 .inquiry-done-summary{white-space:pre-wrap;word-break:break-word;font:13px/1.8 inherit;font-family:inherit;color:#d5d5de;background:#292930;border:1px solid #4d4d59;border-radius:9px;padding:16px;margin:0}
 .inquiry-again{align-self:flex-start;min-height:44px;padding:0 18px;font-size:13px;border:1px solid #4d4d59;border-radius:8px;background:transparent;color:#d5d5de;cursor:pointer}
 .form-feedback.is-error{color:#ffb4ab}
+.form-note a{color:#e8e8ef;text-decoration:underline;text-underline-offset:3px}

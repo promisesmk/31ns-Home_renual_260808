@@ -112,3 +112,8 @@
   .tone-pcb .section-jumps.tone-dark{padding-top:30px}
   .tone-doc .article-related{padding:18px 16px}
 }
+/* 개인정보처리방침 표 */
+.privacy-table{overflow-x:auto;margin:16px 0 20px}
+.privacy-table table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px;line-height:1.7}
+.privacy-table th,.privacy-table td{border:1px solid #dcdce3;padding:10px 12px;text-align:left;vertical-align:top}
+.privacy-table th{background:#f3f3f6;font-weight:600;white-space:nowrap}
