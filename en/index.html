@@ -126,10 +126,10 @@
 <!-- 이전 사이트 주소(#contact) 호환 --><span id="contact" class="anchor-alias" aria-hidden="true"></span><section class="section consultation" id="consultation-section" aria-labelledby="consultation-title"><div class="shell contact-layout"><div class="contact-copy title-group"><p class="eyebrow title-animate-item-1">05 / Start a Conversation</p><h2 id="consultation-title" class="title-animate-item-2">Still just an idea?<br><span>That's enough to start.</span></h2><p class="contact-intro title-animate-item-3">You don't need final specifications yet.<br>Tell us what you want to build and what's on your mind.</p><div class="contact-guide"><span class="eyebrow">Before we talk, just tell us</span><ul><li>The product you want to build, or the problem to solve</li><li>The operating environment and must-have features</li><li>Your target schedule and current stage</li></ul></div><a class="contact-email" href="mailto:nskim@31ns.kr">nskim@31ns.kr <span aria-hidden="true">↗</span></a><p class="contact-response">An engineer reviews and replies within 24 hours</p><p class="contact-location">28 Gwangmyeongyeok-ro, Gwangmyeong-si, Gyeonggi-do, Korea<br>Gwangmyeong Station Central Xi, R&amp;D Engineering Lab</p></div><div class="contact-form-panel">
   <div class="form-heading">
     <h3>Tell us about your project.</h3>
-    <p>Your entries are turned into an email draft.</p>
+    <p>Your inquiry is sent directly to our team.</p>
   </div>
 
-  <form class="inquiry-form" id="inquiry-form" method="dialog" aria-describedby="form-note">
+  <form class="inquiry-form" id="inquiry-form" novalidate aria-describedby="form-note">
     <!-- Context Topic Input (Hidden by default) -->
     <div class="form-field" id="topic-field" hidden>
       <label class="field-label" for="inquiry-context">Related topic</label>
@@ -198,22 +198,25 @@
       </label>
       <textarea class="form-control" id="client-msg" name="message" maxlength="4000" placeholder="What would you like to build?
 Share what you know: operating environment, required features, target schedule." required rows="5"></textarea>
-      <p class="form-note" style="margin-top: 10px; font-size: 12px; color: #a1a1ab; line-height: 1.6;">Please attach specs, block diagrams or schematics in your email app. If you need an NDA, mention it in your inquiry.</p>
+      <p class="form-note" style="margin-top: 10px; font-size: 12px; color: #a1a1ab; line-height: 1.6;">Please send specs, block diagrams or schematics by replying to our email. If you need an NDA, mention it in your inquiry.</p>
     </div>
 
+    <div class="inquiry-hp" aria-hidden="true"><label for="client-website">Leave empty</label><input id="client-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+    <div id="inquiry-turnstile"></div>
+    <p class="form-note">Your company name and email are used only to reply to this inquiry and are deleted after one year.</p>
     <!-- Submit Actions -->
     <div class="form-actions" style="margin-top: 30px; display: flex; flex-direction: column; gap: 14px;">
-      <button class="button button-light submit-button" type="submit" id="btn-mail" style="width: 100%;">Write Inquiry Email <span aria-hidden="true">↗</span></button>
+      <button class="button button-light submit-button" type="submit" id="btn-mail" style="width: 100%;">Send inquiry</button>
 
-      <div class="alt-actions" style="display: flex; gap: 10px;">
-        <button class="button-small button-outline" type="button" id="btn-copy-msg" style="flex: 1; min-height: 44px; font-size: 13px; border: 1px solid #4d4d59; border-radius: 8px; background: transparent; color: #d5d5de; cursor: pointer;">Copy inquiry</button>
-        <button class="button-small button-outline" type="button" id="btn-copy-email" style="flex: 1; min-height: 44px; font-size: 13px; border: 1px solid #4d4d59; border-radius: 8px; background: transparent; color: #d5d5de; cursor: pointer;">Copy email address</button>
-      </div>
 
-      <p class="alt-actions-note" style="font-size: 11.5px; color: #84848e; text-align: center; margin: 0;">If your mail app doesn't open, copy the text and send it from your webmail.</p>
-
-      <p id="form-feedback" class="form-feedback" aria-live="polite" style="font-size: 13px; color: #4ade80; text-align: center; margin: 0;" hidden></p>
+      <p id="form-feedback" class="form-feedback" aria-live="polite" style="font-size: 13px; text-align: center; margin: 0;" hidden></p>
     </div>
   </form>
-</div></div></section></div></main><footer class="site-footer"><div class="shell"><div class="footer-top"><a class="brand" href="#top" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="../assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a><p>Precise design. Products that work.</p><a href="#top" class="text-link">Back to top <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 31NS-Tech. All rights reserved.</span><nav aria-label="Footer menu"><a href="blog/">Technical Blog</a><a href="rf-faq/">RF Q&amp;A</a><a href="mailto:nskim@31ns.kr">Email Us</a></nav></div></div></footer><script id="site-behavior" src="../assets/home.js" defer></script><script src="../assets/main-return.js" defer></script>
+  <div class="inquiry-done" id="inquiry-done" hidden tabindex="-1">
+    <p class="inquiry-done-title">Your inquiry has been sent.</p>
+    <p class="form-note">We will reply to the email you entered. This is what was sent.</p>
+    <pre class="inquiry-done-summary" id="inquiry-done-summary"></pre>
+    <button class="button-small button-outline inquiry-again" type="button" id="inquiry-again">Send another inquiry</button>
+  </div>
+</div></div></section></div></main><footer class="site-footer"><div class="shell"><div class="footer-top"><a class="brand" href="#top" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="../assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a><p>Precise design. Products that work.</p><a href="#top" class="text-link">Back to top <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 31NS-Tech. All rights reserved.</span><nav aria-label="Footer menu"><a href="blog/">Technical Blog</a><a href="rf-faq/">RF Q&amp;A</a><a href="mailto:nskim@31ns.kr">Email Us</a></nav></div></div></footer><script src="../assets/pcb3d-config.js" defer></script><script id="site-behavior" src="../assets/home.js" defer></script><script src="../assets/main-return.js" defer></script>
 </body></html>

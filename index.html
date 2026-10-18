@@ -126,10 +126,10 @@
 <!-- 이전 사이트 주소(#contact) 호환 --><span id="contact" class="anchor-alias" aria-hidden="true"></span><section class="section consultation" id="consultation-section" aria-labelledby="consultation-title"><div class="shell contact-layout"><div class="contact-copy title-group"><p class="eyebrow title-animate-item-1">05 / Start a Conversation</p><h2 id="consultation-title" class="title-animate-item-2">아직 구상이어도.<br><span>시작은 할 수 있으니까.</span></h2><p class="contact-intro title-animate-item-3">아직 사양이 정해지지 않아도 괜찮습니다.<br>만들고 싶은 제품과 지금의 고민부터 들려주세요.</p><div class="contact-guide"><span class="eyebrow">상담 전, 이것만 알려주세요</span><ul><li>만들고 싶은 제품 또는 해결할 문제</li><li>사용 환경과 꼭 필요한 기능</li><li>희망 일정과 현재 개발 단계</li></ul></div><a class="contact-email" href="mailto:nskim@31ns.kr">nskim@31ns.kr <span aria-hidden="true">↗</span></a><p class="contact-response">24시간 이내 엔지니어 검토 후 회신</p><p class="contact-location">경기도 광명시 광명역로 28<br>광명역센트럴자이 R&amp;D 엔지니어링 랩</p></div><div class="contact-form-panel">
   <div class="form-heading">
     <h3>프로젝트를 알려주세요.</h3>
-    <p>입력 내용은 메일 초안으로 작성됩니다.</p>
+    <p>보내 주신 내용은 담당자에게 바로 전달됩니다.</p>
   </div>
   
-  <form class="inquiry-form" id="inquiry-form" method="dialog" aria-describedby="form-note">
+  <form class="inquiry-form" id="inquiry-form" novalidate aria-describedby="form-note">
     <!-- Context Topic Input (Hidden by default) -->
     <div class="form-field" id="topic-field" hidden>
       <label class="field-label" for="inquiry-context">상담 관련 주제</label>
@@ -198,22 +198,25 @@
       </label>
       <textarea class="form-control" id="client-msg" name="message" maxlength="4000" placeholder="어떤 제품을 만들고 싶으신가요?
 사용 환경, 필요한 기능, 희망 일정 등 아는 범위에서 적어주세요." required rows="5"></textarea>
-      <p class="form-note" style="margin-top: 10px; font-size: 12px; color: #a1a1ab; line-height: 1.6;">사양서·블록도·회로도 등 참고 자료는 메일 작성 화면에서 첨부해 주세요. NDA가 필요한 경우 문의 내용에 함께 적어주세요.</p>
+      <p class="form-note" style="margin-top: 10px; font-size: 12px; color: #a1a1ab; line-height: 1.6;">사양서·블록도·회로도 등 참고 자료는 회신 메일에 첨부해 주세요. NDA가 필요한 경우 문의 내용에 함께 적어주세요.</p>
     </div>
     
+    <div class="inquiry-hp" aria-hidden="true"><label for="client-website">비워 두세요</label><input id="client-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+    <div id="inquiry-turnstile"></div>
+    <p class="form-note">보내 주신 회사명 · 이메일은 상담 회신에만 쓰이며 1년 뒤 삭제됩니다.</p>
     <!-- Submit Actions -->
     <div class="form-actions" style="margin-top: 30px; display: flex; flex-direction: column; gap: 14px;">
-      <button class="button button-light submit-button" type="submit" id="btn-mail" style="width: 100%;">문의 메일 작성하기 <span aria-hidden="true">↗</span></button>
+      <button class="button button-light submit-button" type="submit" id="btn-mail" style="width: 100%;">문의 보내기</button>
       
-      <div class="alt-actions" style="display: flex; gap: 10px;">
-        <button class="button-small button-outline" type="button" id="btn-copy-msg" style="flex: 1; min-height: 44px; font-size: 13px; border: 1px solid #4d4d59; border-radius: 8px; background: transparent; color: #d5d5de; cursor: pointer;">문의 내용 복사</button>
-        <button class="button-small button-outline" type="button" id="btn-copy-email" style="flex: 1; min-height: 44px; font-size: 13px; border: 1px solid #4d4d59; border-radius: 8px; background: transparent; color: #d5d5de; cursor: pointer;">이메일 주소 복사</button>
-      </div>
       
-      <p class="alt-actions-note" style="font-size: 11.5px; color: #84848e; text-align: center; margin: 0;">메일 앱이 열리지 않으면 내용을 복사해 사용 중인 웹메일에서 보내주세요.</p>
-      
-      <p id="form-feedback" class="form-feedback" aria-live="polite" style="font-size: 13px; color: #4ade80; text-align: center; margin: 0;" hidden></p>
+      <p id="form-feedback" class="form-feedback" aria-live="polite" style="font-size: 13px; text-align: center; margin: 0;" hidden></p>
     </div>
   </form>
-</div></div></section></div></main><footer class="site-footer"><div class="shell"><div class="footer-top"><a class="brand" href="#top" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a><p>정밀한 설계. 동작하는 제품.</p><a href="#top" class="text-link">맨 위로 <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 31NS-Tech. All rights reserved.</span><nav aria-label="하단 메뉴"><a href="blog/">기술 블로그</a><a href="rf-faq/">RF Q&amp;A</a><a href="mailto:nskim@31ns.kr">이메일 문의</a></nav></div></div></footer><script id="site-behavior" src="assets/home.js" defer></script><script src="assets/main-return.js" defer></script>
+  <div class="inquiry-done" id="inquiry-done" hidden tabindex="-1">
+    <p class="inquiry-done-title">문의가 전달되었습니다.</p>
+    <p class="form-note">입력하신 이메일로 회신드리겠습니다. 아래는 전달된 내용입니다.</p>
+    <pre class="inquiry-done-summary" id="inquiry-done-summary"></pre>
+    <button class="button-small button-outline inquiry-again" type="button" id="inquiry-again">새 문의 작성</button>
+  </div>
+</div></div></section></div></main><footer class="site-footer"><div class="shell"><div class="footer-top"><a class="brand" href="#top" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a><p>정밀한 설계. 동작하는 제품.</p><a href="#top" class="text-link">맨 위로 <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 31NS-Tech. All rights reserved.</span><nav aria-label="하단 메뉴"><a href="blog/">기술 블로그</a><a href="rf-faq/">RF Q&amp;A</a><a href="mailto:nskim@31ns.kr">이메일 문의</a></nav></div></div></footer><script src="assets/pcb3d-config.js" defer></script><script id="site-behavior" src="assets/home.js" defer></script><script src="assets/main-return.js" defer></script>
 </body></html>

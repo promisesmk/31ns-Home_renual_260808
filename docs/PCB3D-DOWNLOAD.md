@@ -79,7 +79,15 @@ cd workers/pcb3d-api
 npx wrangler d1 execute pcb3d --remote --command "update requests set email = null, company = null where email = '요청한주소@example.com'"
 ```
 
-## 7. 한계
+## 7. 개발 상담 문의 (메인 페이지 상담 폼)
+
+- 2026-10-18부터 방문자의 메일 앱을 열지 않고 서버(`POST /api/inquiry`)로 바로 접수합니다. 이전 사이트는 FormSubmit으로 보냈습니다
+- 접수하면 D1 `inquiries`에 저장하고 `ADMIN_EMAIL`(nskim@31ns.kr)로 메일을 보냅니다. **답장하면 문의한 분에게 바로 갑니다**(Reply-To)
+- 메일이 실패해도 관리 화면(`/admin`) 맨 위 "개발 상담 문의"에 남습니다("메일 실패" 표시)
+- 스팸 방지: Turnstile + 숨은 칸, 같은 접속 위치 하루 10건. 회사명 · 이메일은 1년 뒤 자동 삭제
+- 화면: `index.html` · `en/index.html`의 `#inquiry-form`, 동작 `assets/home.js`
+
+## 8. 한계
 
 - 받은 설치 파일을 다른 사람에게 전달하는 것은 막지 못함(사용권 계약도 원본 무상 전달은 허용)
 - 전송이 중간에 끊기면 그 코드는 사용된 것으로 처리됨 → 새로 신청

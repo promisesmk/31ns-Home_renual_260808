@@ -227,12 +227,14 @@
     subject: 'Development Inquiry',
     required: 'Please fill in (or select) this field.',
     invalid: 'Please enter a valid format.',
-    copyMsgPrompt: 'Please copy the text below:',
-    copyMsgDone: 'Your inquiry has been copied.',
-    copyMsgBlocked: 'Clipboard access was blocked. Please copy the text from the window.',
-    copyEmailPrompt: 'Please copy the email address below:',
-    copyEmailDone: 'Email address copied.',
-    copyEmailBlocked: 'Clipboard access was blocked. Please copy the address from the window.'
+    sending: 'Sending…',
+    failed: 'Your inquiry could not be sent. Please try again shortly or email nskim@31ns.kr.',
+    errors: {
+      invalid_email: 'Please check your email address.',
+      captcha_failed: 'The spam check failed. Please wait a moment and try again.',
+      rate_limited: 'Too many inquiries today. Please email nskim@31ns.kr directly.',
+      network_error: 'The inquiry could not be sent because of a network error. Check your connection and try again.'
+    }
   } : {
     company: '회사명 / 담당자명: ',
     email: '회신 이메일: ',
@@ -245,12 +247,14 @@
     subject: '개발 상담',
     required: '이 항목을 입력(선택)해 주세요.',
     invalid: '올바른 형식을 입력해 주세요.',
-    copyMsgPrompt: '아래 텍스트를 복사해주세요:',
-    copyMsgDone: '문의 내용이 복사되었습니다.',
-    copyMsgBlocked: '클립보드 접근이 차단되었습니다. 창에서 내용을 복사해주세요.',
-    copyEmailPrompt: '아래 이메일 주소를 복사해주세요:',
-    copyEmailDone: '이메일 주소가 복사되었습니다.',
-    copyEmailBlocked: '클립보드 접근이 차단되었습니다. 창에서 주소를 복사해주세요.'
+    sending: '보내는 중…',
+    failed: '문의를 보내지 못했습니다. 잠시 후 다시 시도하시거나 nskim@31ns.kr로 메일 주세요.',
+    errors: {
+      invalid_email: '이메일 주소를 확인해 주세요.',
+      captcha_failed: '스팸 방지 확인에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+      rate_limited: '오늘 보낼 수 있는 문의 수를 넘었습니다. nskim@31ns.kr로 직접 메일 주세요.',
+      network_error: '네트워크 오류로 보내지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.'
+    }
   };
   const feedback = document.getElementById('form-feedback');
   const context = document.getElementById('inquiry-context');
@@ -338,78 +342,92 @@
     return form.reportValidity();
   };
 
-  // The form has no server action (method="dialog": a submit outside a dialog sends nothing anywhere).
-  // This handler opens a mail draft in the visitor's mail app; nothing is sent to a server or written to a URL
-  // of this site. A click and an Enter in quick succession open the draft only once.
-  let draftOpenedAt = 0;
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (!validate()) return;
-    if (Date.now() - draftOpenedAt < 1500) return;
-    draftOpenedAt = Date.now();
-    const {subject, body} = getDraft();
-    const mailto = `mailto:nskim@31ns.kr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-  });
+  // Sent straight to the server (workers/pcb3d-api /api/inquiry), which saves it and mails nskim@31ns.kr.
+  // The visitor never needs a mail app; afterwards the form is replaced by what was sent.
+  const config = window.PCB3D_CONFIG || {};
+  const doneBox = document.getElementById('inquiry-done');
+  const doneSummary = document.getElementById('inquiry-done-summary');
+  const submitButton = form.querySelector('[type="submit"]');
+  const turnstileBox = document.getElementById('inquiry-turnstile');
+  let turnstileWidget = null;
+  let sending = false;
 
-  const copyToClipboard = async (text, fallbackMessage) => {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } else {
-        throw new Error('Clipboard API not available');
-      }
-    } catch (err) {
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-999999px';
-      textArea.style.top = '-999999px';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        textArea.remove();
-        return true;
-      } catch (e) {
-        textArea.remove();
-        window.prompt(fallbackMessage, text);
-        return false;
-      }
-    }
+  const showError = (text) => {
+    feedback.textContent = text;
+    feedback.classList.add('is-error');
+    feedback.hidden = false;
   };
 
-  const copyMsgBtn = document.getElementById('btn-copy-msg');
-  if (copyMsgBtn) {
-    copyMsgBtn.addEventListener('click', async () => {
-      if (!validate()) return;
-      const {body} = getDraft();
-      const success = await copyToClipboard(body, T.copyMsgPrompt);
-      if (success) {
-        feedback.textContent = T.copyMsgDone;
-        feedback.hidden = false;
-        setTimeout(() => feedback.hidden = true, 3000);
-      } else {
-        feedback.textContent = T.copyMsgBlocked;
-        feedback.hidden = false;
-      }
-    });
+  if (config.turnstileSiteKey && !config.turnstileSiteKey.includes('REPLACE_ME') && turnstileBox) {
+    window.inquiryTurnstileReady = () => {
+      turnstileWidget = window.turnstile.render(turnstileBox, {
+        sitekey: config.turnstileSiteKey, language: document.documentElement.lang === 'en' ? 'en' : 'ko',
+        appearance: 'interaction-only'
+      });
+    };
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=inquiryTurnstileReady&render=explicit';
+    script.async = true;
+    document.head.appendChild(script);
   }
 
-  const copyEmailBtn = document.getElementById('btn-copy-email');
-  if (copyEmailBtn) {
-    copyEmailBtn.addEventListener('click', async () => {
-      const success = await copyToClipboard('nskim@31ns.kr', T.copyEmailPrompt);
-      if (success) {
-        feedback.textContent = T.copyEmailDone;
-        feedback.hidden = false;
-        setTimeout(() => feedback.hidden = true, 3000);
-      } else {
-        feedback.textContent = T.copyEmailBlocked;
-        feedback.hidden = false;
-      }
-    });
-  }
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!validate() || sending) return;
+    resetFeedback();
+    feedback.classList.remove('is-error');
+    if (!config.api || config.api.includes('REPLACE_ME')) {
+      showError(T.failed);
+      return;
+    }
+    const serviceField = form.elements.namedItem('service');
+    const payload = {
+      lang: document.documentElement.lang === 'en' ? 'en' : 'ko',
+      company: form.elements.namedItem('company').value.trim(),
+      email: form.elements.namedItem('email').value.trim(),
+      service: serviceField.selectedOptions[0]?.textContent || '',
+      stage: form.elements.namedItem('stage')?.value || '',
+      schedule: form.elements.namedItem('schedule')?.value.trim() || '',
+      topic: topicField && !topicField.hidden ? context.value.trim() : '',
+      message: form.elements.namedItem('message').value.trim(),
+      website: form.elements.namedItem('website')?.value || '',
+      turnstileToken: turnstileWidget !== null ? window.turnstile.getResponse(turnstileWidget) : ''
+    };
+
+    sending = true;
+    const label = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = T.sending;
+    let result = { ok: false, data: {} };
+    try {
+      const res = await fetch(`${config.api}/api/inquiry`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      result = { ok: res.ok, data: await res.json().catch(() => ({})) };
+    } catch {
+      result = { ok: false, data: { error: 'network_error' } };
+    }
+    sending = false;
+    submitButton.disabled = false;
+    submitButton.textContent = label;
+    if (turnstileWidget !== null) window.turnstile.reset(turnstileWidget);
+
+    if (!result.ok) {
+      showError(T.errors[result.data.error] || T.failed);
+      return;
+    }
+    doneSummary.textContent = getDraft().body;
+    form.hidden = true;
+    doneBox.hidden = false;
+    doneBox.focus();
+    doneBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  document.getElementById('inquiry-again')?.addEventListener('click', () => {
+    form.reset();
+    setTopic('');
+    doneBox.hidden = true;
+    form.hidden = false;
+    form.elements.namedItem('company').focus();
+  });
 })();

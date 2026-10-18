@@ -32,3 +32,20 @@ create table if not exists codes (
   used_at     integer
 );
 create index if not exists codes_request_idx on codes (request_id);
+
+-- 홈페이지 개발 상담 문의(메인 페이지 상담 폼). 접수와 동시에 관리자 메일로 보내고, 메일이 실패해도 여기 남습니다.
+create table if not exists inquiries (
+  id          text primary key,
+  created_at  integer not null,
+  lang        text not null default 'ko',
+  company     text,                 -- 개인정보: 보유 기간이 지나면 지움
+  email       text,                 -- 개인정보: 위와 같음
+  service     text,
+  stage       text,
+  schedule    text,
+  topic       text,
+  message     text,
+  mailed      integer not null default 0,
+  ip_hash     text
+);
+create index if not exists inquiries_ip_idx on inquiries (ip_hash, created_at);

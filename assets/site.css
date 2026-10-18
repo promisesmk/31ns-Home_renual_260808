@@ -393,3 +393,10 @@ html[lang="en"] .hero h1 { letter-spacing: -.045em; }
 .header-login { font-size: 13px; color: #b8b8c0; line-height: 44px; white-space: nowrap; transition: color .2s; }
 .header-login:hover, .header-login:focus-visible { color: #fff; }
 @media (max-width: 1023px) { .header-actions > .header-login { display: none; } }
+/* 상담 문의 자동 접수 (assets/home.js → 서버 /api/inquiry) */
+.inquiry-hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.inquiry-done{display:flex;flex-direction:column;gap:12px}.inquiry-done:focus{outline:none}
+.inquiry-done-title{font-size:22px;font-weight:600;color:#f1f1f5;margin:0}
+.inquiry-done-summary{white-space:pre-wrap;word-break:break-word;font:13px/1.8 inherit;font-family:inherit;color:#d5d5de;background:#292930;border:1px solid #4d4d59;border-radius:9px;padding:16px;margin:0}
+.inquiry-again{align-self:flex-start;min-height:44px;padding:0 18px;font-size:13px;border:1px solid #4d4d59;border-radius:8px;background:transparent;color:#d5d5de;cursor:pointer}
+.form-feedback.is-error{color:#ffb4ab}

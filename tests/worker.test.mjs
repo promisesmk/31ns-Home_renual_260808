@@ -200,3 +200,36 @@ test('없는 신청 번호로는 코드를 보내지 않는다', async () => {
   assert.equal(res.status, 404);
   assert.equal(data.error, 'not_found');
 });
+
+function validInquiry(overrides = {}) {
+  return {
+    lang: 'ko', company: '시험전자 / 홍길동', email: `inq-${unique()}@example.com`, service: '무선통신 / BLE / NFC 회로 및 안테나 매칭',
+    stage: '구상·요구사항 정리', schedule: '2027년 1분기', topic: '', message: 'BLE 센서 제품 개발을 상담하고 싶습니다.',
+    turnstileToken: TURNSTILE_TEST_TOKEN, ...overrides
+  };
+}
+
+test('상담 문의는 서버에 접수되고 관리 목록에 보인다', async () => {
+  const company = `문의시험 ${unique()}`;
+  const { res, data } = await post('/api/inquiry', validInquiry({ company }));
+  assert.equal(res.status, 200, JSON.stringify(data));
+  assert.equal(data.ok, true);
+  const admin = await fetch(`${BASE}/admin`, { headers: { Authorization: `Basic ${btoa(`admin:${ADMIN_SECRET}`)}` } });
+  assert.ok((await admin.text()).includes(company));
+});
+
+test('상담 문의 입력 검사: 회사명 · 이메일 · 분야 · 내용 · 스팸 칸 · 스팸 방지', async () => {
+  const cases = [
+    [{ company: '' }, 'invalid_company'],
+    [{ email: 'nope' }, 'invalid_email'],
+    [{ service: '' }, 'invalid_service'],
+    [{ message: '   ' }, 'invalid_message'],
+    [{ website: 'x' }, 'spam_suspected'],
+    [{ turnstileToken: '' }, 'captcha_failed']
+  ];
+  for (const [override, error] of cases) {
+    const { res, data } = await post('/api/inquiry', validInquiry(override));
+    assert.equal(res.status, 400, error);
+    assert.equal(data.error, error);
+  }
+});

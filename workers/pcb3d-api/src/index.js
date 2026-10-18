@@ -8,6 +8,7 @@
 //   POST /download           form post with the code → consumes it and streams the installer
 //   GET  /manual             user manual PDF (no code needed)
 //   GET  /api/qna            approved, publish-consented posts for the static Q&A pages
+//   POST /api/inquiry        development inquiry from the main page form → saved and mailed to ADMIN_EMAIL
 // Operator
 //   GET/POST /admin/r/:id?t= review one post (signed link from the notification mail; no password)
 //   GET  /admin              list of posts (HTTP Basic, password = ADMIN_SECRET)
@@ -20,6 +21,7 @@ const LIMIT_PER_EMAIL = 3;
 const LIMIT_PER_IP = 5;
 const MAX_CODES_PER_REQUEST = 3;   // first code + 2 resends
 const RESEND_INTERVAL = 30 * 1000;
+const INQUIRY_LIMIT_PER_IP = 10;
 const DAY = 24 * 60 * 60 * 1000;
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 
@@ -188,7 +190,7 @@ async function turnstileOk(env, token, ip) {
   }
 }
 
-async function sendMail(env, { to, subject, html }) {
+async function sendMail(env, { to, subject, html, replyTo }) {
   if (!env.RESEND_API_KEY) {
     console.log(`[mail skipped: RESEND_API_KEY not set] to=${to} subject=${subject}`);
     return false;
@@ -196,7 +198,7 @@ async function sendMail(env, { to, subject, html }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], reply_to: env.ADMIN_EMAIL, subject, html })
+    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], reply_to: replyTo || env.ADMIN_EMAIL, subject, html })
   });
   if (!res.ok) console.log(`[mail failed] ${res.status} ${await res.text()}`);
   return res.ok;
@@ -415,6 +417,50 @@ async function handleManual(env) {
   return res;
 }
 
+async function handleInquiry(request, env, cors) {
+  let input;
+  try {
+    input = await request.json();
+  } catch {
+    return json({ error: 'bad_request' }, 400, cors);
+  }
+  const lang = input.lang === 'en' ? 'en' : 'ko';
+  const f = {
+    company: clean(input.company, 120), email: clean(input.email, 254).toLowerCase(),
+    service: clean(input.service, 120), stage: clean(input.stage, 60), schedule: clean(input.schedule, 100),
+    topic: clean(input.topic, 200), message: clean(input.message, 4000)
+  };
+  if (!f.company) return json({ error: 'invalid_company' }, 400, cors);
+  if (!EMAIL_RE.test(f.email)) return json({ error: 'invalid_email' }, 400, cors);
+  if (!f.service) return json({ error: 'invalid_service' }, 400, cors);
+  if (!f.message) return json({ error: 'invalid_message' }, 400, cors);
+  if (clean(input.website, 200)) return json({ error: 'spam_suspected' }, 400, cors);
+
+  const ip = request.headers.get('CF-Connecting-IP') || '';
+  if (!(await turnstileOk(env, input.turnstileToken, ip))) return json({ error: 'captcha_failed' }, 400, cors);
+  const t = now();
+  const ipHash = (await sha256(`${ip}|${env.ADMIN_SECRET}`)).slice(0, 32);
+  const recent = await env.DB.prepare('select count(*) as n from inquiries where ip_hash = ?1 and created_at > ?2').bind(ipHash, t - DAY).first();
+  if (recent.n >= Number(env.INQUIRY_LIMIT_PER_IP || INQUIRY_LIMIT_PER_IP)) return json({ error: 'rate_limited' }, 429, cors);
+
+  const id = randomString(10, 'abcdefghijkmnpqrstuvwxyz23456789');
+  await env.DB.prepare('insert into inquiries (id, created_at, lang, company, email, service, stage, schedule, topic, message, ip_hash) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)')
+    .bind(id, t, lang, f.company, f.email, f.service, f.stage, f.schedule, f.topic, f.message, ipHash).run();
+
+  const row = (label, value) => value ? `<tr><td style="padding:6px 12px 6px 0;color:#777;white-space:nowrap;vertical-align:top">${label}</td><td style="padding:6px 0">${esc(value)}</td></tr>` : '';
+  const html = `<div style="font-family:system-ui,sans-serif;line-height:1.7;color:#1d1d1f;max-width:640px">
+<p style="color:#777;margin:0">31ns.kr 개발 상담 문의 · ${new Date(t).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
+<table style="border-collapse:collapse;margin:12px 0">${row('회사명 / 담당자', f.company)}${row('회신 이메일', f.email)}${row('개발 분야', f.service)}${row('현재 단계', f.stage)}${row('희망 일정', f.schedule)}${row('관련 주제', f.topic)}</table>
+<div style="white-space:pre-wrap;border:1px solid #ddd;border-radius:10px;padding:14px">${esc(f.message)}</div>
+<p style="color:#777;font-size:13px">이 메일에 [답장]하면 문의한 분(${esc(f.email)})에게 바로 보내집니다.</p></div>`;
+  const mailed = env.RESEND_API_KEY || env.DEV_FAKE_RELEASE !== '1'
+    ? await sendMail(env, { to: env.ADMIN_EMAIL, replyTo: f.email, subject: `[31NS-Tech 문의] ${f.company} · ${f.topic || f.service}`, html })
+    : true;
+  if (mailed) await env.DB.prepare('update inquiries set mailed = 1 where id = ?1').bind(id).run();
+  // Saved either way; a failed mail is still visible in the admin list, so the visitor is told it was received.
+  return json({ ok: true, id }, 200, cors);
+}
+
 async function handleQna(env, cors) {
   const { results } = await env.DB.prepare(
     "select id, created_at, reviewed_at, lang, category, title, body, answer, author_label from requests " +
@@ -495,8 +541,13 @@ async function handleAdminList(request, env) {
 <td>${new Date(r.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</td><td>${CATEGORY_KO[r.category]}</td>
 <td><a href="${await reviewUrl(env, origin, r.id)}">${esc(r.title)}</a></td><td>${esc(r.company ?? '-')}<br><span class="muted">${esc(r.email ?? '-')}</span></td>
 <td>${{ pending: '대기', approved: '승인', rejected: '거절' }[r.status]}${r.publish_ok ? '' : ' (비공개 희망)'}</td><td>${r.downloaded_at ? '받음' : '-'}</td></tr>`));
-  return page(200, 'PCB 3D Builder 신청 목록',
-    `<p class="muted">최근 300건 · 다운로드 = 코드 사용 여부</p><table><tr><th>시각</th><th>분류</th><th>제목</th><th>작성자</th><th>상태</th><th>다운로드</th></tr>${rows.join('')}</table>`);
+  const inquiries = (await env.DB.prepare('select * from inquiries order by created_at desc limit 100').all()).results;
+  const inquiryRows = inquiries.map((q) => `<tr><td>${new Date(q.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+<td>${esc(q.company ?? '-')}<br><span class="muted">${esc(q.email ?? '-')}</span></td><td>${esc(q.service)}${q.stage ? `<br><span class="muted">${esc(q.stage)}</span>` : ''}${q.schedule ? `<br><span class="muted">${esc(q.schedule)}</span>` : ''}</td>
+<td style="white-space:pre-wrap">${esc(q.message ?? '')}</td><td>${q.mailed ? '보냄' : '<b>메일 실패</b>'}</td></tr>`);
+  return page(200, '31ns.kr 신청 · 문의 목록',
+    `<h2>개발 상담 문의</h2><p class="muted">최근 100건 · 메일 = 관리자 메일 발송 여부</p><table><tr><th>시각</th><th>회사 · 이메일</th><th>분야</th><th>내용</th><th>메일</th></tr>${inquiryRows.join('')}</table>
+<h2>PCB 3D Builder 다운로드 신청</h2><p class="muted">최근 300건 · 다운로드 = 코드 사용 여부</p><table><tr><th>시각</th><th>분류</th><th>제목</th><th>작성자</th><th>상태</th><th>다운로드</th></tr>${rows.join('')}</table>`);
 }
 
 // ---------- scheduled cleanup ----------
@@ -506,6 +557,7 @@ async function cleanup(env) {
   const cutoff = t - Number(env.RETENTION_DAYS || 365) * DAY;
   await env.DB.batch([
     env.DB.prepare('update requests set email = null, company = null, ip_hash = null where created_at < ?1 and (email is not null or company is not null)').bind(cutoff),
+    env.DB.prepare('update inquiries set email = null, company = null, ip_hash = null where created_at < ?1 and (email is not null or company is not null)').bind(cutoff),
     env.DB.prepare('delete from codes where expires_at < ?1').bind(t - 7 * DAY)
   ]);
 }
@@ -527,6 +579,7 @@ export default {
       if (path === '/api/request' && request.method === 'POST') return await handleRequest(request, env, cors, ctx);
       if (path === '/api/resend-code' && request.method === 'POST') return await handleResendCode(request, env, cors);
       if (path === '/api/code-check' && request.method === 'POST') return await handleCodeCheck(request, env, cors);
+      if (path === '/api/inquiry' && request.method === 'POST') return await handleInquiry(request, env, cors);
       if (path === '/api/qna' && request.method === 'GET') return await handleQna(env, cors);
       if (path === '/download' && request.method === 'POST') return await handleDownload(request, env);
       if (path === '/manual' && request.method === 'GET') return await handleManual(env);
