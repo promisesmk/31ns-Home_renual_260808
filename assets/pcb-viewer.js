@@ -268,6 +268,14 @@
     redeemForm.elements.code.value = linked;
     showMessage(T.filled, 'ok');
     history.replaceState(null, '', location.pathname + location.hash);
+    // Bring the code field and the download button to the middle of the screen. Wait until images, video and
+    // reveal animations have settled, since they move the page after the browser's own jump to #download.
+    const toCode = () => {
+      redeemForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      redeemForm.querySelector('[type="submit"]').focus({ preventScroll: true });
+    };
+    if (document.readyState === 'complete') setTimeout(toCode, 300);
+    else window.addEventListener('load', () => setTimeout(toCode, 300), { once: true });
   }
   loadRelease();
   loadTurnstile();
