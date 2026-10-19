@@ -1,0 +1,97 @@
+/* Case study pages (/cases/…, /en/cases/…): built on resources.css (resource-hero, wireless-section, engineering-grid, doc-cta) */
+.case-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:44px 0 0;padding:0;border-top:1px solid #2e2e33}
+.case-stats div{padding:22px 20px 4px 0}
+.case-stats dt{font-size:28px;font-weight:600;color:#f5f5f7;line-height:1.3;letter-spacing:-.01em}
+.case-stats dt small{font-size:14px;font-weight:500;color:#a5a5af;margin-left:4px}
+.case-stats dd{margin:6px 0 0;font-size:13px;line-height:1.6;color:#a5a5af}
+
+.case-figure{margin:32px 0 0}
+.case-figure svg{display:block;width:100%;height:auto}
+.case-figure figcaption,.case-note{margin-top:12px;font-size:12px;line-height:1.7;color:#80808a}
+.tone .tone-dark .case-figure figcaption,.tone .tone-dark .case-note{color:#a5a5af}
+
+.case-photos{display:grid;grid-template-columns:1.43fr 1fr;gap:16px;margin:32px 0 0}
+.case-photos figure{margin:0;border-radius:16px;overflow:hidden;background:#fff}
+.case-photos img{display:block;width:100%;height:100%;object-fit:contain;aspect-ratio:687/291}
+.case-photos figure+figure img{aspect-ratio:auto;max-height:291px}
+
+.engineering-grid li p{margin:6px 0 0;font-size:14px;line-height:1.8;color:#6a6a75}
+.tone .tone-dark .engineering-grid li p{color:#bdbdc6}
+.engineering-grid li h3{margin:0}
+.engineering-grid li>span{flex:none}
+
+.case-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px 0 0;padding:0;list-style:none;counter-reset:step}
+.case-steps li{padding:18px;border:1px solid #d8d8e0;border-radius:14px;font-size:14px;line-height:1.7;color:#4f4f5a}
+.case-steps li::before{counter-increment:step;content:counter(step,decimal-leading-zero);display:block;margin-bottom:8px;font:12px ui-monospace,monospace;color:#888895}
+.case-steps strong{display:block;color:#1d1d1f;font-weight:600}
+
+.case-dsp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0 0}
+.case-dsp section{padding:22px;border-radius:14px;background:#f5f5f7}
+.case-dsp h3{margin:0 0 12px;font-size:16px;font-weight:600}
+.case-dsp ol{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px 0;font-size:13px;line-height:1.6;color:#242428}
+.case-dsp li{display:flex;align-items:center}
+.case-dsp li+li::before{content:"→";margin:0 10px;color:#9a9aa4}
+.case-dsp p{margin:12px 0 0;font-size:13px;line-height:1.7;color:#6a6a75}
+
+.case-spec{width:100%;border-collapse:collapse;font-size:14px;line-height:1.7;color:#4f4f5a;text-align:left}
+.case-spec th,.case-spec td{padding:14px 18px;border-bottom:1px solid #e0e0e8;vertical-align:top}
+.case-spec thead th{background:#ececf1;color:#333;font-weight:600;border-bottom:0}
+.case-spec tbody th{width:28%;color:#242428;font-weight:600}
+
+.case-spec-title{margin:40px 0 16px;font-size:18px;font-weight:600}
+.case-spec-title:first-of-type{margin-top:28px}
+.case-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.case-types-3{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px}
+.case-types li{padding:18px 20px;border:1px solid #d8d8e0;border-radius:14px}
+.case-types strong{display:block;font-size:15px;font-weight:600;color:#1d1d1f}
+.case-types span{display:block;margin-top:6px;font-size:13px;line-height:1.6;color:#6a6a75}
+.case-specgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+.case-specgroup+.case-specgroup{margin-top:28px}
+.case-specgroup h4{margin:0;padding:0 0 10px;border-bottom:2px solid #1d1d1f;font-size:13px;font-weight:600;letter-spacing:.04em;color:#1d1d1f}
+.case-specgroup dl{margin:0}
+.case-specgroup-wide dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px;border-top:2px solid #1d1d1f}
+.case-specgroup dl>div{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;padding:13px 0;border-bottom:1px solid #e0e0e8;font-size:14px;line-height:1.7}
+.case-specgroup dt{font-weight:600;color:#242428}
+.case-specgroup dd{margin:0;color:#4f4f5a}
+.spec-tag{display:inline-block;margin-left:8px;padding:0 8px;border-radius:99px;background:#ececf1;color:#6a6a75;font-size:11px;line-height:20px;vertical-align:1px;white-space:nowrap}
+
+.case-waves{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;margin:28px 0 0;align-items:start}
+.case-waves ol{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.case-waves li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center}
+.case-waves li span{font-size:14px;font-weight:600;color:#1d1d1f}
+.case-waves li span small{display:block;font-weight:400;font-size:12px;color:#80808a}
+.case-waves img{display:block;width:100%;height:auto;border-radius:6px}
+.case-waves figure{margin:0}
+.case-waves figure img{border-radius:14px}
+
+.case-faults{margin-top:40px}
+.case-faults h3{margin:0 0 6px;font-size:18px;font-weight:600}
+.case-faults td:nth-child(2){white-space:nowrap;font-variant-numeric:tabular-nums;color:#1d1d1f;font-weight:600}
+
+.case-detected{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0 0;padding:0;list-style:none}
+.case-detected li{padding:12px 18px;border:1px solid #d8d8e0;border-radius:12px;font-size:13px;color:#4f4f5a}
+.case-detected strong{margin-right:8px;color:#1d1d1f;font-variant-numeric:tabular-nums}
+
+@media(max-width:1023px){
+  .case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-dsp,.case-specgrid{grid-template-columns:1fr}
+  .case-specgrid>div+div{margin-top:28px}
+  .case-specgroup-wide dl{grid-template-columns:1fr}
+  .case-types{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-types-3{grid-template-columns:1fr}
+}
+@media(max-width:767px){
+  .case-stats dt{font-size:22px}
+  .case-figure{overflow-x:auto;overscroll-behavior-inline:contain}
+  .case-figure svg{min-width:600px}
+  .case-figure figcaption{position:sticky;left:0}
+  .case-photos{grid-template-columns:1fr}
+  .case-steps{grid-template-columns:1fr}
+  .case-waves{grid-template-columns:1fr}
+  .case-waves figure{max-width:260px}
+  .case-waves li{grid-template-columns:1fr;gap:6px}
+  .case-spec{font-size:13px}
+  .case-specgroup dl>div{grid-template-columns:110px minmax(0,1fr);gap:12px;font-size:13px}
+  .case-spec th,.case-spec td{padding:12px 10px}
+  }

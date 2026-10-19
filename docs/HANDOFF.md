@@ -56,6 +56,7 @@ npm test                    # 서버 권한 · 다운로드 규칙 자동 테스
 | 기술 블로그 | `blog/…`, `en/blog/…` (새 글을 쓰면 `sitemap.xml`, `rss.xml`에도 추가). **메인 기술 자료 영역의 기술 블로그 항목은 2026-10-15 제거 — 추후 복원 예정이며 기존 블로그 소스(목록 · 글 · 이미지 · 복귀 코드)는 보존.** 복원 시 `index.html` · `en/index.html`의 `#technical-resources-section` 목록에 `blog/` 항목을 다시 넣고 번호를 01~03으로 맞춤. 상단 · 모바일 메뉴의 블로그 탭도 2026-10-16 삭제(하위 16쪽의 `desktop-nav` · `mobile-menu`) — 복원 시 같은 위치에 링크를 다시 넣음 |
 | 하위 페이지의 ‘← 메인으로’ 복귀 | `assets/main-return.js` (메인 · 기술 블로그 · RF Q&A · 2.4GHz 페이지에서 로드, 이전 이름 `blog-return.js`). 같은 탭에서 메인 → 하위 페이지로 왔으면 보던 메인 위치로, 직접 · 새 탭 접속이면 메인의 기술 자료 섹션으로. 새 하위 페이지를 대상에 넣으려면 스크립트의 `TRIP_PAGES`에 주소를 추가하고, 그 페이지의 복귀 버튼 `href`를 `…/#technical-resources-section`으로, 끝에 이 스크립트를 넣음 |
 | RF Q&A | `rf-faq/index.html`, `en/rf-faq/index.html` |
+| 개발 사례 상세 페이지 | 메인 사례 카드의 ‘상세 사례 보기’에서 연결. `cases/industrial-iot/`(산업용 예측진단 센서) · `cases/golf-grip-sensor/`(SGLAB 지그립 그립 센서), 영어는 `en/cases/…`, 스타일 `assets/case.css`, 이미지 `assets/cases/`. 산업용 사례는 고객사를 S사 · L사로만 표기하고 협력사 이름 · 로고는 싣지 않음. 부품은 모델명 대신 기능(RF IC, 24-bit ADC 등)으로 표기. 원본 자료는 `scratch/case-industrial-iot/`(깃 · 배포 제외) |
 | PCB 3D Builder 소개 | `pcb-viewer/index.html`, 영어 `en/pcb-viewer/index.html` (스타일 `assets/pcb-viewer.css`) |
 | PCB 사용 가이드 | `pcb-viewer/guide/index.html`, 영어 `en/pcb-viewer/guide/index.html` |
 | 다운로드 버튼 문구(한 · 영) | `assets/pcb-viewer.js`의 `T`, `ERRORS` |

@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://31ns.kr/</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/"/>
   </url>
   <url>
     <loc>https://31ns.kr/en/</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/"/>
@@ -111,6 +111,34 @@
     <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/pcb-viewer/guide/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/pcb-viewer/guide/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/pcb-viewer/guide/"/>
+  </url>
+  <url>
+    <loc>https://31ns.kr/cases/industrial-iot/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/cases/industrial-iot/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/cases/industrial-iot/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/cases/industrial-iot/"/>
+  </url>
+  <url>
+    <loc>https://31ns.kr/en/cases/industrial-iot/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/cases/industrial-iot/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/cases/industrial-iot/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/cases/industrial-iot/"/>
+  </url>
+  <url>
+    <loc>https://31ns.kr/cases/golf-grip-sensor/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/cases/golf-grip-sensor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/cases/golf-grip-sensor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/cases/golf-grip-sensor/"/>
+  </url>
+  <url>
+    <loc>https://31ns.kr/en/cases/golf-grip-sensor/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/cases/golf-grip-sensor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/cases/golf-grip-sensor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/cases/golf-grip-sensor/"/>
   </url>
   <url>
     <loc>https://31ns.kr/privacy/</loc>

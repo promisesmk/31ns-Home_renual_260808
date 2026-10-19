@@ -1,5 +1,5 @@
-// "Back to main" for the sub pages reached from the main page (KO/EN): technical blog, RF Q&A and
-// 2.4GHz development. Loaded on both main pages and on those sub pages.
+// "Back to main" for the sub pages reached from the main page (KO/EN): technical blog, RF Q&A,
+// 2.4GHz development and case studies. Loaded on both main pages and on those sub pages.
 //
 // A sub-page visit counts as a "trip" only when it was started by a plain same-tab click on a link
 // of the main page to one of these pages (or continued by such a click between them, same language):
@@ -23,7 +23,7 @@
   const EN = location.pathname === '/en/' || location.pathname.startsWith('/en/');
   const MAIN = EN ? '/en/' : '/';
   // pages a trip may visit: '…/' covers the whole folder (blog list and articles), a file name only itself
-  const TRIP_PAGES = [MAIN + 'blog/', MAIN + 'rf-faq/', MAIN + '2.4ghz.html'];
+  const TRIP_PAGES = [MAIN + 'blog/', MAIN + 'rf-faq/', MAIN + '2.4ghz.html', MAIN + 'cases/'];
   const isTripPage = (p) => TRIP_PAGES.some((t) => (t.endsWith('/') ? p.startsWith(t) : p === t));
   const path = location.pathname.replace(/index\.html$/, '');
   const onMain = path === MAIN;
