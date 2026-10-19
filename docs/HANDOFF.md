@@ -57,7 +57,7 @@ npm test                    # 서버 권한 · 다운로드 규칙 자동 테스
 | 하위 페이지의 ‘← 메인으로’ 복귀 | `assets/main-return.js` (메인 · 기술 블로그 · RF Q&A · 2.4GHz 페이지에서 로드, 이전 이름 `blog-return.js`). 같은 탭에서 메인 → 하위 페이지로 왔으면 보던 메인 위치로, 직접 · 새 탭 접속이면 메인의 기술 자료 섹션으로. 새 하위 페이지를 대상에 넣으려면 스크립트의 `TRIP_PAGES`에 주소를 추가하고, 그 페이지의 복귀 버튼 `href`를 `…/#technical-resources-section`으로, 끝에 이 스크립트를 넣음 |
 | RF Q&A | `rf-faq/index.html`, `en/rf-faq/index.html` |
 | 개발 사례 상세 페이지 | 메인 사례 카드의 ‘상세 사례 보기’에서 연결. `cases/industrial-iot/`(산업용 예측진단 센서) · `cases/golf-grip-sensor/`(SGLAB 지그립 그립 센서), 영어는 `en/cases/…`, 스타일 `assets/case.css`, 이미지 `assets/cases/`. 산업용 사례는 고객사를 S사 · L사로만 표기하고 협력사 이름 · 로고는 싣지 않음. 부품은 모델명 대신 기능(RF IC, 24-bit ADC 등)으로 표기. 원본 자료는 `scratch/case-industrial-iot/`(깃 · 배포 제외) |
-| PCB 3D Builder 소개 | `pcb-viewer/index.html`, 영어 `en/pcb-viewer/index.html` (스타일 `assets/pcb-viewer.css`) |
+| PCB 3D Builder 소개 | `pcb-viewer/index.html`, 영어 `en/pcb-viewer/index.html` (스타일 `assets/pcb-viewer.css`). 메인에는 기술 자료 아래 `#pcb-builder-section`(간단 소개 + ‘자세히 보기’)이 있고, 상단 메뉴 ‘PCB 3D Builder’는 이 섹션으로 이동 |
 | PCB 사용 가이드 | `pcb-viewer/guide/index.html`, 영어 `en/pcb-viewer/guide/index.html` |
 | 다운로드 버튼 문구(한 · 영) | `assets/pcb-viewer.js`의 `T`, `ERRORS` |
 | PCB 소개 영상 (‘한눈에 보기’ 섹션, 과정 도식 아래) | `assets/pcb3d-demo.mp4`(배포용 사본: 소리 제거 · faststart · 원본 비율 872×652), 포스터 `assets/pcb3d-demo-poster.webp`(22.5초 장면). 원본은 `~/Desktop/pcb3d-demo.mp4`(저장소에 넣지 않음). 재생 규칙은 `assets/pcb-demo-video.js`. 영상을 바꿀 때는 같은 이름으로 교체하고, 비율이 다르면 `assets/pcb-viewer.css`의 `.pv-demo-frame` `aspect-ratio`와 HTML의 `width` · `height`도 수정 |
