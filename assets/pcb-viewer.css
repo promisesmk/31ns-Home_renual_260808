@@ -209,7 +209,6 @@
 .pv-demo-frame { position: relative; aspect-ratio: 872 / 652; border-radius: 18px; overflow: hidden; background: #c9ccd2; }
 .pv-demo-frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
 .pv-demo figcaption { margin-top: 12px; font-size: 14px; color: #5f5f69; text-align: center; }
-.pv-demo-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 @media (max-width: 767px) { .pv-demo { margin-top: 44px; padding-top: 28px; } .pv-demo-frame { border-radius: 14px; } }
 
 /* Guide subheadings (only the PCB guide pages load this file) */

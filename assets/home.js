@@ -38,74 +38,33 @@
         video.append(fallbackImg);
         slot.append(video);
       }
+      // Always playing, looped, no button: plays while on screen, pauses off screen to save CPU.
+      // If the browser blocks autoplay (e.g. power saving), it starts on the visitor's first tap, click, key or scroll.
       video.muted = true;
       video.playsInline = true;
-      const source = video.querySelector('source');
-
-      const playBtn = document.createElement('button');
-      playBtn.className = 'video-play-btn';
-      playBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>';
-      playBtn.setAttribute('aria-label', EN ? 'Play video' : '영상 재생');
-      playBtn.hidden = true;
-
-      const motionPref = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-      const handlePlay = () => {
-        playBtn.hidden = true;
-        video.currentTime = 0;
-        video.play().catch(() => {
-          if (video.networkState === 3) return;
-          playBtn.hidden = false;
-        });
-      };
-      playBtn.addEventListener('click', handlePlay);
-
-      video.addEventListener('ended', () => {
-        playBtn.hidden = false;
-        playBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 1 0 2-7l5 5"/></svg>';
-        playBtn.setAttribute('aria-label', EN ? 'Replay' : '다시 보기');
-      });
-
-      source.addEventListener('error', () => {
-        playBtn.remove();
-      });
-      // The HTML video may have failed to load before this script ran.
-      if (video.networkState === 3) playBtn.remove();
-
-      slot.append(playBtn);
+      video.loop = true;
+      video.removeAttribute('controls');
       slot.classList.add('has-image');
       slot.removeAttribute('aria-hidden');
 
-      const attemptAutoplay = () => {
-        if (motionPref.matches) {
-          if (video.networkState === 3) return;
-          playBtn.hidden = false;
-          return;
-        }
-        video.play().catch(() => {
-          if (video.networkState === 3) return;
-          playBtn.hidden = false;
-        });
+      let inView = !('IntersectionObserver' in window);
+      const tryPlay = () => {
+        if (!inView || !video.paused || video.networkState === 3) return;
+        video.play().catch(() => {});
       };
-
+      for (const type of ['pointerdown', 'keydown', 'touchstart', 'scroll']) {
+        window.addEventListener(type, tryPlay, { passive: true });
+      }
       if ('IntersectionObserver' in window) {
-        const vidObserver = new IntersectionObserver((entries) => {
+        new IntersectionObserver((entries) => {
           for (const entry of entries) {
-            if (!entry.isIntersecting) {
-              video.pause();
-              video.currentTime = 0;
-              playBtn.hidden = true;
-            } else if (entry.intersectionRatio >= 0.5) {
-              if (video.networkState === 3) return;
-              if (video.paused && !video.ended) {
-                attemptAutoplay();
-              }
-            }
+            inView = entry.isIntersecting;
+            if (inView) tryPlay();
+            else video.pause();
           }
-        }, { threshold: [0, 0.5] });
-        vidObserver.observe(video);
+        }).observe(video);
       } else {
-        attemptAutoplay();
+        tryPlay();
       }
       continue;
     }
