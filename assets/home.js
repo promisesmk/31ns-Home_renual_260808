@@ -6,8 +6,8 @@
   const assetUrl = (file) => new URL(file, ASSET_BASE).href;
   // Keep these four keys for future real photographs. Empty case values retain the schematic.
   const SITE_MEDIA = {
-    hero: 'hero-poster-v3.webp',
-    heroVideo: 'hero-assembly-v3.mp4',
+    hero: 'hero-poster-v4.webp',
+    heroVideo: 'hero-assembly-v4.mp4',
     industrial: '',
     coldchain: '',
     safety: ''

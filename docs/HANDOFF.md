@@ -50,7 +50,7 @@ npm test                    # 서버 권한 · 다운로드 규칙 자동 테스
 | 바꿀 것 | 파일 |
 |---|---|
 | 메인 문구 · 기술 역량 카드 · 사례 · 상담 폼 | `index.html` (영어: `en/index.html`) |
-| 메인 영상 · 포스터 | `assets/hero-assembly-v3.mp4`(1612×972, 6.04초, 24fps, H.264, 소리 없음, faststart), 포스터 · 폴백 `assets/hero-poster-v3.webp`(영상 첫 프레임). 영상 영역 비율은 `assets/site.css`의 `.hero-media{aspect-ratio:1612/972}`, PC(1024px 이상) 표시 폭은 같은 파일의 `.hero .hero-figure`(이전 폭의 95%, 가운데). 한 · 영 메인 HTML의 `#media-hero` 안에 `<video>`가 처음부터 들어 있고(포스터가 스크립트 전에 표시), 재생 규칙은 `assets/home.js`(`SITE_MEDIA`의 파일 이름도 같은 값). 영상을 바꿀 때는 새 이름(예: `-v3`)으로 넣고 두 HTML과 `home.js`의 이름을 함께 바꿈(브라우저 캐시 갱신). 원본 · 이전 영상은 저장소 밖 보관(14장) |
+| 메인 영상 · 포스터 | `assets/hero-assembly-v4.mp4`(1920×934, 6.04초, 24fps, H.264, 소리 없음, faststart, 2026-10-19 교체 · 원본은 HEVC라 H.264로 다시 변환), 포스터 · 폴백 `assets/hero-poster-v4.webp`(영상 첫 프레임). 영상 영역 비율은 `assets/site.css`의 `.hero-media{aspect-ratio:1920/934}`, PC(1024px 이상) 표시 폭은 같은 파일의 `.hero .hero-figure`(이전 폭의 95%, 가운데). 한 · 영 메인 HTML의 `#media-hero` 안에 `<video>`가 처음부터 들어 있고(포스터가 스크립트 전에 표시), 재생 규칙은 `assets/home.js`(`SITE_MEDIA`의 파일 이름도 같은 값). 영상을 바꿀 때는 새 이름(예: `-v3`)으로 넣고 두 HTML과 `home.js`의 이름을 함께 바꿈(브라우저 캐시 갱신). 원본 · 이전 영상은 저장소 밖 보관(14장) |
 | 공통 디자인 | `assets/site.css`, 하위 페이지 `assets/resources.css`, 기술 역량 목록 `assets/capabilities.css` |
 | 2.4GHz 페이지 | `2.4ghz.html`, `en/2.4ghz.html` |
 | 기술 블로그 | `blog/…`, `en/blog/…` (새 글을 쓰면 `sitemap.xml`, `rss.xml`에도 추가). **메인 기술 자료 영역의 기술 블로그 항목은 2026-10-15 제거 — 추후 복원 예정이며 기존 블로그 소스(목록 · 글 · 이미지 · 복귀 코드)는 보존.** 복원 시 `index.html` · `en/index.html`의 `#technical-resources-section` 목록에 `blog/` 항목을 다시 넣고 번호를 01~03으로 맞춤. 상단 · 모바일 메뉴의 블로그 탭도 2026-10-16 삭제(하위 16쪽의 `desktop-nav` · `mobile-menu`) — 복원 시 같은 위치에 링크를 다시 넣음 |
