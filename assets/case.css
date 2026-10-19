@@ -13,7 +13,7 @@
 .case-photos{display:grid;grid-template-columns:1.43fr 1fr;gap:16px;margin:32px 0 0}
 .case-photos figure{margin:0;border-radius:16px;overflow:hidden;background:#fff}
 .case-photos img{display:block;width:100%;height:100%;object-fit:contain;aspect-ratio:687/291}
-.case-photos figure+figure img{aspect-ratio:auto;max-height:291px}
+.case-photos figure+figure{position:relative}.case-photos figure+figure img{position:absolute;inset:0;aspect-ratio:auto;object-fit:cover}
 
 .engineering-grid li p{margin:6px 0 0;font-size:14px;line-height:1.8;color:#6a6a75}
 .tone .tone-dark .engineering-grid li p{color:#bdbdc6}
@@ -87,6 +87,7 @@
   .case-figure svg{min-width:600px}
   .case-figure figcaption{position:sticky;left:0}
   .case-photos{grid-template-columns:1fr}
+  .case-photos figure+figure{aspect-ratio:1200/832}
   .case-steps{grid-template-columns:1fr}
   .case-waves{grid-template-columns:1fr}
   .case-waves figure{max-width:260px}
