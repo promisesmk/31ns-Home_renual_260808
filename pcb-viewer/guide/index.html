@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" id="top"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- seo:start --><title>PCB 3D Builder 사용 가이드 | 보드 입력부터 STEP 저장까지 — 31NS-Tech</title><meta name="description" content="PCB 3D Builder v2.1 사용설명서와 소스를 바탕으로 설계 파일 입력, 부품 모델 확인 · 보정, STEP 저장(PNG · 엑셀 보고서는 부가 기능)과 검토 순서를 정리한 가이드입니다."><link rel="canonical" href="https://31ns.kr/pcb-viewer/guide/"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="alternate" hreflang="ko" href="https://31ns.kr/pcb-viewer/guide/"><link rel="alternate" hreflang="en" href="https://31ns.kr/en/pcb-viewer/guide/"><link rel="alternate" hreflang="x-default" href="https://31ns.kr/pcb-viewer/guide/"><meta property="og:type" content="article"><meta property="og:site_name" content="31NS-Tech"><meta property="og:locale" content="ko_KR"><meta property="og:url" content="https://31ns.kr/pcb-viewer/guide/"><meta property="og:title" content="PCB 3D Builder 사용 가이드 | 보드 입력부터 STEP 저장까지 — 31NS-Tech"><meta property="og:description" content="PCB 3D Builder v2.1 사용설명서와 소스를 바탕으로 설계 파일 입력, 부품 모델 확인 · 보정, STEP 저장(PNG · 엑셀 보고서는 부가 기능)과 검토 순서를 정리한 가이드입니다."><meta property="og:image" content="https://31ns.kr/assets/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="31NS-Tech — 회로에서 제품까지"><meta name="twitter:card" content="summary_large_image"><!-- seo:end --><!-- ga:start --><script async src="https://www.googletagmanager.com/gtag/js?id=G-M6ZKCVME6D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-M6ZKCVME6D');</script><!-- ga:end --><link rel="stylesheet" href="../../assets/site.css"><link rel="stylesheet" href="../../assets/resources.css"><link rel="stylesheet" href="../../assets/pcb-viewer.css"><script src="../../assets/resources.js" defer></script><script src="../../assets/pcb-motion.js" defer></script></head><body class="resource-page tone tone-doc"><a class="skip-link" href="#main-content">본문으로 바로가기</a><header class="site-header">
+<html lang="ko" id="top"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><!-- seo:start --><title>PCB 3D Builder 사용 가이드 | 보드 입력부터 STEP 저장까지 — 31NS-Tech</title><meta name="description" content="PCB 3D Builder 3.0 사용설명서를 바탕으로 설계 파일 입력, 3D 자동 채우기와 부품 확인 · 보정, 위치번호별 설정 · 3D 자유 배치, STEP 저장과 문제 해결을 정리한 가이드입니다."><link rel="canonical" href="https://31ns.kr/pcb-viewer/guide/"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="alternate" hreflang="ko" href="https://31ns.kr/pcb-viewer/guide/"><link rel="alternate" hreflang="en" href="https://31ns.kr/en/pcb-viewer/guide/"><link rel="alternate" hreflang="x-default" href="https://31ns.kr/pcb-viewer/guide/"><meta property="og:type" content="article"><meta property="og:site_name" content="31NS-Tech"><meta property="og:locale" content="ko_KR"><meta property="og:url" content="https://31ns.kr/pcb-viewer/guide/"><meta property="og:title" content="PCB 3D Builder 사용 가이드 | 보드 입력부터 STEP 저장까지 — 31NS-Tech"><meta property="og:description" content="PCB 3D Builder 3.0 사용설명서를 바탕으로 설계 파일 입력, 3D 자동 채우기와 부품 확인 · 보정, 위치번호별 설정 · 3D 자유 배치, STEP 저장과 문제 해결을 정리한 가이드입니다."><meta property="og:image" content="https://31ns.kr/assets/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="31NS-Tech — 회로에서 제품까지"><meta name="twitter:card" content="summary_large_image"><!-- seo:end --><!-- ga:start --><script async src="https://www.googletagmanager.com/gtag/js?id=G-M6ZKCVME6D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-M6ZKCVME6D');</script><!-- ga:end --><link rel="stylesheet" href="../../assets/site.css"><link rel="stylesheet" href="../../assets/resources.css"><link rel="stylesheet" href="../../assets/pcb-viewer.css"><script src="../../assets/resources.js" defer></script><script src="../../assets/pcb-motion.js" defer></script></head><body class="resource-page tone tone-doc"><a class="skip-link" href="#main-content">본문으로 바로가기</a><header class="site-header">
 <div class="shell header-inner">
 <a class="brand" href="../../#top" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="../../assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a>
 <nav class="desktop-nav" aria-label="주 메뉴"><a href="../" aria-current="page">PCB 3D Builder</a></nav>
@@ -7,14 +7,17 @@
 <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu"><svg class="icon-open" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8h16M4 16h16"></path></svg><svg class="icon-close" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"></path></svg></button></div>
 </div>
 <div class="mobile-menu" id="mobile-menu" inert><div><nav class="shell" aria-label="모바일 메뉴"><div role="group" class="lang-switch mobile-lang" aria-label="언어 선택"><a href="./" hreflang="ko" lang="ko" aria-current="true">한국어</a><span class="lang-switch-sep" aria-hidden="true">/</span><a href="../../en/pcb-viewer/guide/" hreflang="en" lang="en">EN</a></div><a class="mobile-menu-link" href="../" aria-current="page">PCB 3D Builder<span aria-hidden="true">↗</span></a><a class="mobile-menu-link header-login-mobile" href="/pcb-viewer/#download">무료 다운로드<span aria-hidden="true">↗</span></a><a class="button button-light mobile-consult" href="../../#consultation-section">프로젝트 상담 ↗</a></nav></div></div>
-</header><main id="main-content" class="site-main"><section class="resource-hero"><div class="shell"><nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span aria-hidden="true">/</span><a href="../">PCB 3D Builder</a></nav><p class="eyebrow">PCB 3D Builder 사용 가이드</p><h1>첫 파일부터.<br><span>첫 STEP까지.</span></h1><p class="resource-lead">설계 파일 입력부터 부품 모델 확인 · 보정, 결과 저장 · 검토까지 순서대로 정리했습니다.</p><div class="article-meta"><span>PCB 3D Builder v2.1 사용설명서 · 소스 기준</span><a href="../">← 프로그램 소개</a></div></div></section><div class="shell resource-content"><div class="article-layout"><aside class="article-toc"><p class="eyebrow">On This Page</p><nav aria-label="가이드 목차"><a href="#before">시작하기 전에</a><a href="#board">1. 설계 파일 입력</a><a href="#parts">2. 부품 모델 확인 · 보정</a><a href="#save">3. 결과 저장 · 검토</a><a href="#library">부품 라이브러리 · KiCad</a></nav><a class="toc-back" href="../">← 프로그램 소개</a></aside><article class="article-body"><div>
+</header><main id="main-content" class="site-main"><section class="resource-hero"><div class="shell"><nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span aria-hidden="true">/</span><a href="../">PCB 3D Builder</a></nav><p class="eyebrow">PCB 3D Builder 사용 가이드</p><h1>첫 파일부터.<br><span>첫 STEP까지.</span></h1><p class="resource-lead">설계 파일 입력부터 부품 모델 확인 · 보정, 결과 저장 · 검토까지 순서대로 정리했습니다.</p><div class="article-meta"><span>PCB 3D Builder 3.0 사용설명서 기준</span><a href="../">← 프로그램 소개</a></div></div></section><div class="shell resource-content"><div class="article-layout"><aside class="article-toc"><p class="eyebrow">On This Page</p><nav aria-label="가이드 목차"><a href="#before">시작하기 전에</a><a href="#board">1. 설계 파일 입력</a><a href="#parts">2. 부품 모델 확인 · 보정</a><a href="#save">3. 결과 저장 · 검토</a><a href="#library">부품 라이브러리 · KiCad</a><a href="#troubleshooting">문제 해결</a></nav><a class="toc-back" href="../">← 프로그램 소개</a></aside><article class="article-body"><div>
 <p class="eyebrow pv-guide-label" data-pv-reveal>시작하기 전에</p><h2 id="before" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-list"></use></svg><span class="pv-h2-text">시작은 가볍게.<br><span>준비는 빠짐없이.</span></span></h2>
-<p>PCB 3D Builder는 PADS ASCII(.asc) 파일 하나로 PCB 3D STEP을 만드는 Windows 프로그램입니다. ASC가 없으면 DXF와 좌표 파일, 또는 보드 치수로도 만들 수 있습니다. 이 가이드는 v2.1 사용설명서와 프로그램 소스를 바탕으로 하며, 버튼 이름은 프로그램 표기를 그대로 [ ] 안에 적었습니다.</p>
+<p>PCB 3D Builder는 PADS ASCII(.asc) 파일 하나로 부품까지 올라간 PCB 3D 모델(STEP)을 만드는 Windows 프로그램입니다. ASC가 없으면 DXF와 좌표 파일로도 만들 수 있습니다. 이 가이드는 3.0 사용설명서를 바탕으로 하며, 버튼 이름은 프로그램 표기를 그대로 [ ] 안에 적었습니다.</p>
 <ul>
-  <li><strong>실행 환경:</strong> Windows 10 / 11, 64비트</li>
-  <li><strong>꼭 필요한 것(하나):</strong> PADS ASCII(.asc) 파일, 또는 DXF(필요하면 좌표 파일 함께), 또는 보드 치수</li>
-  <li><strong>있으면 좋은 것(선택):</strong> BOM(부품 명세서, 엑셀 · CSV), 부품 STEP · ZIP, 데이터시트 패키지 도면 PDF</li>
-  <li><strong>파일 넣는 법:</strong> 모든 파일은 창 어디에나 끌어다 놓으면 알맞은 곳으로 들어갑니다. 엑셀 · CSV는 내용을 보고 좌표 파일인지 BOM인지 판단하고, 부품 목록의 특정 행 위에 놓으면 그 부품에 바로 들어갑니다.</li>
+  <li><strong>실행 환경:</strong> Windows 10 / 11, 64비트 (설치 용량 약 1.5~1.8GB)</li>
+  <li><strong>꼭 필요한 것(하나):</strong> PADS ASCII(.asc) 파일, 또는 DXF(필요하면 좌표 파일 함께)</li>
+  <li><strong>있으면 좋은 것(선택):</strong> BOM(부품 명세서, 엑셀 · CSV), 부품 STEP · ZIP</li>
+  <li><strong>파일 넣는 법:</strong> 파일은 창 어디에 끌어다 놓아도 알맞은 곳으로 들어갑니다. .asc는 보드 입력, .dxf는 보드 외형(파일명에 BOT이 있으면 Bottom), 엑셀 · CSV는 내용을 보고 좌표 파일인지 BOM인지 판단하고(잘못 읽었으면 [열 지정]), .step · .stp · .zip은 부품 3D로 등록합니다. 목록의 특정 행 위에 놓으면 그 부품에 바로 들어갑니다.</li>
+  <li><strong>화면 구성:</strong> 위쪽 명령 막대, 가운데 3D 미리보기, 오른쪽 패널(보드 Alt+1 · 부품 3D Alt+2 · 검사 Alt+3 · 저장 Alt+4)과 아이콘 레일, 아래 상태 막대. 명령 막대 오른쪽의 <strong>보드 → 부품 3D → 저장</strong> 칩이 남은 일을 개수로 보여 줍니다.</li>
+  <li><strong>2.x에서 업데이트:</strong> 이전 버전을 지우지 말고 3.0 설치 파일을 그대로 실행하면 덮어 설치되며, 부품 라이브러리 · 설정 · 프로젝트 파일은 그대로 유지됩니다. 업데이트 후 ASC를 열고 [3D 자동 채우기]를 한 번 누르면 2.x가 자동으로 만든 부품을 새 규칙으로 다시 찾습니다(직접 지정 · 보정한 부품은 그대로). 3.0에서는 ‘PDF로 3D 만들기’가 빠졌습니다.</li>
+</ul>
 </ul>
 
 <h2 id="board" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-board"></use></svg>1. 설계 파일 입력</h2><div class="pv-stage pv-guide-figure" data-pv-reveal data-pv-diagram><svg class="pv-diagram" viewBox="0 0 320 190" role="img" aria-label="보드 입력 도식: ASC 또는 DXF(필요하면 좌표 파일 추가) 중 하나로 시작해 보드 외형을 확인함. BOM은 선택"><g fill="none" stroke="#dcdce2" stroke-width="2"><path d="M20 14h40l12 12v32H20z M60 14v12h12"/><path d="M20 110h40l12 12v32H20z M60 110v12h12"/><rect x="124" y="40" width="176" height="104" rx="10"/><rect x="230" y="6" width="70" height="22" rx="11" stroke-dasharray="4 3"/></g>
@@ -29,21 +32,28 @@
 <text class="pv-small pv-fade" style="--d:450ms" x="46" y="170"><tspan x="46" dy="0">+ 좌표 파일</tspan><tspan x="46" dy="13">(필요시)</tspan></text>
 <text class="pv-small pv-fade" style="--d:1300ms" x="265" y="21">BOM (선택)</text>
 <text class="pv-fade" style="--d:1000ms" x="212" y="97">보드 외형</text><text class="teal-text pv-fade" style="--d:1250ms" x="212" y="174">외형 · 두께 확인</text></svg><p class="pv-figure-note">설명용 도식 · 실제 프로그램 화면이 아님</p></div>
-<p>처음 실행하면 <strong>작업 방식</strong>을 먼저 고릅니다. ASC와 DXF는 함께 넣어야 하는 조합이 아니라 <strong>둘 중 하나로 시작하는 입력 경로</strong>입니다(ASC로 시작할 때 보드 외형용 DXF를 더할 수는 있습니다). 고르기 전에는 다음 단계로 진행되지 않습니다.</p>
+<p>처음 화면에서 [ASC 열기] 또는 [DXF + 좌표 열기]를 누르거나, 파일을 창에 끌어다 놓습니다. ASC와 DXF는 함께 넣어야 하는 조합이 아니라 <strong>둘 중 하나로 시작하는 입력 경로</strong>입니다(ASC로 시작할 때 보드 외형용 DXF를 더할 수는 있습니다). 가능하면 파일 하나로 실크 · 동박 · 배선까지 들어가는 ASC 방식을 쓰세요. PADS에서는 File → Export → ASCII로 내보냅니다.</p>
 <div class="table-scroll"><table class="pv-spec"><tbody>
-  <tr><th scope="row">① ASC 파일</th><td><strong>넣는 파일:</strong> ASC 1개 (+ 보드 외형용 DXF 선택)<br><strong>장점:</strong> 파일 1개, STEP에 실크 · 동박 · 배선까지, 보드 두께 참고값 자동<br><strong>단점:</strong> PADS 전용</td></tr>
-  <tr><th scope="row">② DXF (+ 좌표 파일)</th><td><strong>넣는 파일:</strong> DXF Top · Bottom(하나 이상) + 필요하면 좌표 파일<br><strong>장점:</strong> 기구 외형 그대로, PADS 외 CAD도 가능, PADS DXF는 좌표 파일 없이도 가능<br><strong>단점:</strong> STEP에 실크 · 동박 없음(보드 판만)</td></tr>
+  <tr><th scope="row">① ASC 파일</th><td><strong>넣는 파일:</strong> ASC 1개 (+ 보드 외형용 DXF 선택)<br><strong>STEP 내용:</strong> 보드 + 부품 + 실크 · 동박 · 배선<br><strong>보드 두께:</strong> 도면 문구(1.6T, 1.0T/2Layer 등)에서 참고값 자동<br><strong>읽는 버전:</strong> PADS PowerPCB V4 ~ 최신(좌표 단위 BASIC · MILS · METRIC · INCHES)</td></tr>
+  <tr><th scope="row">② DXF (+ 좌표 파일)</th><td><strong>넣는 파일:</strong> DXF Top · Bottom 하나 이상 + 좌표 파일(필요할 때)<br><strong>STEP 내용:</strong> 보드 판 + 부품<br><strong>보드 두께:</strong> 직접 입력<br><strong>읽는 파일:</strong> PADS DXF(위치번호 · Footprint · 회전 · 면 정보가 있어 좌표 파일 없이도 가능), 기구 CAD DXF</td></tr>
 </tbody></table></div>
 <ol>
-  <li>방식을 고르면 <strong>파일 넣기</strong> 창이 열립니다. 파일을 한꺼번에 끌어다 놓으면 종류를 자동으로 구분하고, 필요한 파일이 다 들어오면 [확인]이 켜집니다.</li>
-  <li><strong>ASC</strong>를 넣으면 보드 외곽 · 장착홀 · 부품 배치(Top/Bottom) · 패드 · 실크 · 배선 · 동박을 읽고 3D 자동 채우기까지 진행한 뒤 <strong>보드 확인</strong> 창을 띄웁니다.</li>
-  <li><strong>DXF</strong>를 넣으면 <strong>DXF 입력</strong> 창에서 Top · Bottom을 고르고, 다른 면 DXF와 좌표 파일을 함께 넣습니다. 프로그램이 DXF 내용을 확인해, 위치번호 · Footprint가 들어 있는 PADS DXF면 좌표 파일을 선택으로, 아니면 필수로 바꿉니다. 좌표 파일 없이 진행하면 정확하지 않을 수 있는 부분을 알려 줍니다.</li>
-  <li><strong>BOM</strong>(선택)은 이때 함께 넣거나 2단계에서 넣습니다. 넣으면 품번으로 부품 모델을 찾는 정확도가 올라갑니다.</li>
-  <li><strong>보드 확인</strong> 창에서 외형 기준(ASC · DXF · 직접 입력)과 <strong>보드 두께</strong>를 확인합니다. 두께는 필수 확인 항목이라, 확인하기 전에는 다음 단계로 넘어가지 않습니다. ASC와 DXF가 모두 있으면 DXF가 외형 기준으로 우선합니다.</li>
-  <li>필요하면 <strong>높이 제한</strong>(케이스 내부 높이)을 넣습니다. 초과 부품은 빨간 테두리로 표시되고 보고서에도 정리됩니다.</li>
-  <li><strong>PCB 색상</strong>을 견본(그린 · 블루 · 레드 · 블랙 · 화이트 · 옐로 · 퍼플 · 매트 그린)이나 [직접…]으로 고른 뒤 [다음 단계: 부품 3D →]로 진행합니다.</li>
+  <li>ASC를 넣으면 보드 외곽 · 장착홀 · 부품 배치 · 패드 · 실크 · 배선을 읽고, 이미 받아 둔 모델로 부품 3D를 채웁니다. 처음 열 때는 수십 초~1분 걸립니다.</li>
+  <li><strong>보드 확인</strong> 창에서 외형 기준(ASC · DXF · 직접 입력)과 <strong>보드 두께</strong>를 확인하고 [확인]을 누릅니다. 두께는 참고값이 들어 있어도 확인해야 다음 단계로 넘어갑니다. ASC와 DXF가 모두 있으면 DXF가 우선하며, DXF 외곽은 ASC 부품을 얼마나 감싸는지로 원점 · 단위를 확인합니다.</li>
+  <li>필요하면 <strong>높이 제한</strong>(Top/Bottom, mm, 케이스 내부 높이)을 넣습니다. 넘는 부품은 빨간 테두리로 표시됩니다(0 = 검사 안 함).</li>
+  <li><strong>PCB 색상</strong>은 보드 패널에서 견본(그린 · 블루 · 레드 · 블랙 · 화이트 · 옐로 · 퍼플 · 매트 그린)이나 스포이트(직접)로 고릅니다. 미리보기와 STEP에 모두 적용됩니다.</li>
+  <li><strong>BOM</strong>(선택)은 [BOM 넣기]나 끌어다 놓기로 넣습니다. 넣으면 품번으로 부품 모델을 찾는 정확도가 올라갑니다.</li>
 </ol>
-<p>[파일 다시 넣기…] · [↺ 처음부터 다시 선택]으로 언제든 다시 시작할 수 있고, [보드 확인 · 변경…]으로 두께 · 높이 제한 · 외형 기준을 다시 열 수 있습니다.</p>
+<p>보드 확인 창은 명령 막대의 [보드 확인 · 변경]으로 다시 열 수 있고, [처음부터 다시]로 새로 시작할 수 있습니다.</p>
+<h3>추정 외곽 (빨간 점멸)</h3>
+<p>ASC나 DXF에 PADS 보드 외곽선(Board Outline)이 없으면, 프로그램이 그림 선(2D Line) 조각을 이어 부품을 감싸는 외곽을 추정합니다. 이때 미리보기의 외곽선이 빨간색으로 깜빡이고 ‘추정 외곽 · PADS 보드 외곽선 없음’ 이름표가 붙으며, 보드 패널과 보드 확인 창에 안내가 나옵니다. 추정 외곽으로도 작업은 계속할 수 있지만, 모양이 실제와 다르면 높이 · 보드 밖 검사가 틀릴 수 있습니다. 설계를 고칠 수 있으면 PADS Layout에서 다음처럼 외곽을 만들어 주세요.</p>
+<ol>
+  <li>외곽 그림 선(DXF로 가져온 2D Line)이 있는 층을 켜고, 끊어진 곳이 없는지 확인합니다.</li>
+  <li>[Drafting] 도구 모음 → [Board Outline and Cut Out]을 고르고, 그림 선을 따라 외곽을 끊김 없이 하나로 닫히게 그립니다. 모서리 곡선은 Arc로 그립니다.</li>
+  <li>기존 외곽 그림 선은 지우거나 다른 층으로 옮깁니다.</li>
+  <li>[File] → [Export] → ASCII(*.asc)로 다시 내보내 프로그램에 넣습니다.</li>
+</ol>
+<p>설계를 고칠 수 없으면 추정 외곽으로 진행하거나, 외형 기준을 [직접 입력]으로 바꿉니다.</p>
 
 <h2 id="parts" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-adjust"></use></svg>2. 부품 모델 확인 · 보정</h2><div class="pv-stage pv-guide-figure" data-pv-reveal data-pv-diagram><svg class="pv-diagram" viewBox="0 0 320 190" role="img" aria-label="부품 확인 · 보정 도식: 부품이 배치되고 선택한 부품이 패드 위치로 보정됨"><g fill="none" stroke="#dcdce2" stroke-width="2"><rect x="20" y="30" width="280" height="122" rx="10"/></g>
 <g stroke="#515159" stroke-width="2" fill="none"><rect class="pv-fade" style="--d:0ms" x="20" y="30" width="280" height="122" rx="10"/><rect class="pv-pop" style="--d:150ms" x="44" y="50" width="42" height="24" rx="2" fill="#f3f3f6"/><rect class="pv-pop" style="--d:250ms" x="102" y="96" width="30" height="20" rx="2" fill="#f3f3f6"/><rect class="pv-pop" style="--d:350ms" x="148" y="50" width="50" height="30" rx="2" fill="#f3f3f6"/><rect class="pv-pop" style="--d:450ms" x="40" y="106" width="26" height="16" rx="2" fill="#f3f3f6"/><rect class="pv-pop" style="--d:550ms" x="150" y="104" width="36" height="22" rx="2" fill="#f3f3f6"/>
@@ -51,39 +61,59 @@
 <rect class="pv-move pv-sel" style="--d:800ms;--nx:20px;--ny:26px" x="222" y="62" width="50" height="32" rx="2" stroke="#1c8585"/></g>
 <text class="pv-fade" style="--d:400ms" x="108" y="176">부품 배치</text><text class="teal-text pv-fade" style="--d:900ms" x="236" y="20">선택 부품 위치 보정</text></svg><p class="pv-figure-note">설명용 도식 · 실제 프로그램 화면이 아님</p></div>
 <h3>3D 자동 채우기와 자동 정렬</h3>
-<p>[3D 자동 채우기]는 라이브러리에 이미 등록된 부품은 그대로 쓰고, 나머지는 KiCad 3D 라이브러리의 실제 모델 → 표준 형상 → 패드 기반 간이 모델 순으로 채웁니다. STEP 모델은 여러 축 방향 가운데 핀이 패드와 가장 잘 맞는 방향으로 자동 정렬되고, ASC 입력이면 핀 번호를 알 수 있어 IC 1번 핀 · 다이오드 극성까지 맞춥니다. 자동 결과가 모두 정확하지는 않으므로, 아래 순서로 확인합니다.</p>
+<p>ASC를 열 때는 이미 받아 둔 모델만 쓰고, 부품 3D 패널의 [자동 채우기](F5)를 누르면 인터넷에서 KiCad 모델과 부품 정보를 더 찾습니다. 채우는 순서는 다음과 같습니다.</p>
+<ol>
+  <li><strong>KiCad 실제 모델:</strong> Footprint · PartType · BOM 품번, 품번 끝 패키지 코드(TI DBV · DBQ · PW 등), 온라인 부품 정보의 패키지 이름, 패드 배치(핀 수 · 간격 · 몸체 크기 · 노출패드)로 찾고, 패드와 실제로 맞는 모델을 고릅니다. 이름에 패키지가 없어도 찾습니다(예: LMR51606XF → SOT-23-6).</li>
+  <li><strong>칩 부품 표준 생성:</strong> 0402~2512 칩 저항 · 커패시터 · 인덕터 등</li>
+  <li><strong>패키지 생성:</strong> KiCad에 없으면 패키지 사전(SOIC · SOP · SSOP · QSOP · TSSOP · MSOP · SOT · SC-70 · PowerSSO · HSOP · QFN · DFN · LQFP · TQFP · SOD · SMA/SMB/SMC · PowerPAK · 전해 커패시터 · 파워 인덕터 · 수정/발진기 · 칩 어레이)에서 패드에 맞는 패키지를 골라 패드 위치에 리드를 붙여 만듭니다(예: L9733XP → PowerSSO-28).</li>
+  <li><strong>간이 생성:</strong> 그래도 없으면 패드 모양으로 대략적인 형상을 만듭니다.</li>
+</ol>
+<p>ASC 입력이면 핀 번호까지 읽어 IC 1번 핀과 다이오드 극성도 자동으로 맞춥니다. 커넥터 · 스위치처럼 패키지가 아닌 부품은 STEP을 넣어 주세요.</p>
 <h3>3D 상태로 확인하기</h3>
-<ul>
-  <li>부품 목록은 기본으로 <strong>3D 상태별</strong>로 모아서 보여 줍니다. 3D 상태 머리글을 누르면 상태별로 골라 볼 수 있고, 빨간색은 3D 없음, 주황색은 확인 필요입니다.</li>
-  <li>3D 상태(프로그램 표기): <strong>사용자 3D추가 · KiCad 3D</strong>(실제 모델), <strong>직접 만든 3D · 표준 자동생성 · 간이 생성</strong>(치수나 패드로 만든 모델), <strong>임시 박스</strong>(크기만 나타내는 상자), <strong>없음</strong>, 그리고 확인이 필요한 <strong>확인 필요 · 1번핀 확인</strong>.</li>
-  <li>목록에서 고른 부품은 미리보기에서 검은 점선으로 깜빡이며, Bottom 부품을 고르면 Bottom 보기로 바뀝니다. 검색칸으로 Footprint · 위치번호 · 품번을 찾을 수 있습니다.</li>
-</ul>
+<p>목록 왼쪽의 점 색이 할 일을 알려 줍니다. 목록 위 필터 칩 <strong>전체 · 없음 · 확인 · 완료</strong>로 골라 볼 수 있고, 점에 마우스를 올리면 자세한 상태가 나옵니다.</p>
+<div class="table-scroll"><table class="pv-spec"><tbody>
+  <tr><th scope="row">빨강</th><td><strong>없음 · 임시 박스</strong> — 3D를 찾지 못했거나 상자로 대신 채운 부품. STEP/ZIP을 넣어 실제 3D로 바꿉니다.</td></tr>
+  <tr><th scope="row">주황</th><td><strong>확인 필요 · 1번핀 확인 · 극성 확인</strong> — 패드에 자동으로 맞추지 못했거나, 모양이 대칭이라 방향을 확정하지 못한 부품. 확인/보정에서 위치 · 회전을 맞추고, 1번 패드(분홍)와 비교해 틀리면 180° 돌립니다.</td></tr>
+  <tr><th scope="row">파랑</th><td><strong>간이 생성 · 표준 자동생성 · 패키지 생성</strong> — 만들어 넣은 형상. 대부분 그대로 쓰되, 간이 생성은 높이 · 모양이 중요하면 STEP으로 바꾸고 전해 커패시터는 높이를 확인합니다.</td></tr>
+  <tr><th scope="row">회색</th><td><strong>KiCad 3D · 사용자 3D추가 · 3D 제외 · 자유 배치</strong> — 실제 모델이거나 사용자가 정한 부품. 할 일이 없습니다.</td></tr>
+</tbody></table></div>
+<p>미리보기에서 부품을 누르면 목록에서 그 부품이 골라지고 하늘색 점선으로 깜빡이며, 상태 막대에 위치번호 · 높이 · 면이 표시됩니다.</p>
 <h3>3D가 없는 부품 채우기</h3>
 <ul>
-  <li><strong>[온라인 검색] → 끌어다 놓기:</strong> 3D가 없는 부품을 고르고 [온라인 검색]으로 받은 STEP · ZIP을 그 행에 끌어다 놓습니다.</li>
-  <li><strong>[STEP/ZIP 일괄추가]:</strong> 여러 파일을 한 번에 넣으면 파일명 · 품번으로 부품을 자동 매칭합니다. <strong>일괄 매칭을 위해 Footprint 명칭과 각 STEP 파일명을 일치시켜 주세요.</strong> ZIP을 넣을 때는 ZIP 파일 이름이 아니라 압축 안에 들어 있는 각 STEP 파일의 이름이 기준입니다. 파일명은 확장자(.step · .stp)를 뺀 이름으로 비교하며, 대소문자와 기호(- _ 공백 등)는 구분하지 않습니다. 예: Footprint가 <code>SOT-23</code>이면 <code>SOT-23.step</code> 또는 <code>sot23.stp</code>. 매칭되지 않은 파일은 등록 결과 창에 표시되니 [STEP/ZIP 개별지정]이나 해당 행에 끌어다 놓기로 지정합니다.</li>
-  <li><strong>[STEP/ZIP 개별지정]:</strong> 선택한 부품 하나에 파일을 지정합니다.</li>
-  <li><strong>[등록 삭제]:</strong> 잘못 연결된 모델을 지웁니다. 지우면 다음 자동 채우기 때 다시 찾습니다.</li>
-  <li><strong>색상:</strong> 목록 맨 왼쪽 칸을 클릭해 그 Footprint의 3D 몸체 색을 정합니다(우클릭 → 해제). 라이브러리에 저장됩니다.</li>
+  <li><strong>BOM:</strong> 엑셀 · CSV(형식 자유)를 넣으면 품번으로 찾는 정확도가 올라갑니다.</li>
+  <li><strong>[3D 없으면 임시 박스]</strong>(기본 켜짐): 3D가 없는 부품을 옆 칸의 높이(기본 1.0mm) 상자로 채웁니다.</li>
+  <li><strong>[온라인 검색]:</strong> 부품을 고르고 SnapMagic · SamacSys · Ultra Librarian · Octopart에서 STEP/ZIP을 받아 그 행에 끌어다 놓습니다.</li>
+  <li><strong>[STEP/ZIP 일괄 추가]:</strong> 여러 파일을 한 번에 넣으면 파일명 · 품번으로 부품을 자동 매칭합니다.</li>
+  <li><strong>[STEP/ZIP 지정]:</strong> 선택한 부품 하나에 파일을 지정합니다.</li>
+  <li><strong>[간이 3D]:</strong> 패드 모양으로 간이 3D를 만듭니다.</li>
 </ul>
-<h3>데이터시트 PDF로 3D 만들기 ([PDF로 3D 만들기])</h3>
-<ol>
-  <li>패키지 형태를 7가지 중에서 고릅니다: 양쪽 리드형, 4면 리드형, 리드 없는형, 칩형 2단자, 몰드 다이오드형, 원통형, 박스형.</li>
-  <li>[PDF 열기…]를 누르거나 창에 PDF를 끌어다 놓고 [PDF 치수 읽기]로 치수표를 읽습니다. PDF가 없으면 [패드에서 추정]을 쓰거나 치수를 직접 입력합니다.</li>
-  <li>치수 칸에 들어온 값을 도면과 비교해 확인 · 수정하고 [미리보기]로 모양을 봅니다.</li>
-  <li>[3D 등록]을 누르면 패드에 자동으로 맞춰 등록됩니다.</li>
-</ol>
-<p>치수표를 글자로 읽기 때문에 그림으로만 된 도면은 자동 인식되지 않을 수 있고, 7가지 밖의 형상은 만들 수 없습니다. 그런 부품은 STEP · ZIP으로 등록합니다.</p>
-<h3>확인 · 보정 ([확인 / 보정] 또는 부품 더블클릭)</h3>
-<p>선택한 부품 하나를 STEP 실제 색으로 음영 처리한 <strong>위(Top) · 고정 각도 3D · 앞(Front)</strong> 보기로 열어, 패드(금색, 하늘색 테두리) · 1번 패드(분홍) · 실크(흰색)와 비교합니다. 보드 전체가 아닌 부품 하나를 보는 화면입니다.</p>
+<p>부품 행을 오른쪽 클릭하면 확인/보정 · 온라인 검색 · STEP/ZIP 지정 · 간이 3D · 3D 몸체 색 지정 · 미리보기에서 숨기기 · 위치번호별 설정 · 등록 삭제 메뉴가 열립니다. 숨기기는 미리보기에서만 숨기고 STEP에는 그대로 들어가며, 등록 삭제는 공유 라이브러리에서도 지워집니다.</p>
+<h3>확인 · 보정 (부품 더블클릭 또는 Enter)</h3>
+<p>3D 모델을 패드(금색) · 패드 위치(하늘색 테두리) · 1번 패드(분홍) · PCB 윗면(초록선)과 비교합니다.</p>
 <ul>
-  <li>Z ±90° / 180°, X / Y 90° 회전</li>
-  <li>좌표 입력(0.05 ~ 1mm 단위), 마우스로 끌어 이동</li>
-  <li>[⇊ 바닥을 PCB면(Z=0)에 맞춤]: 부품 바닥을 보드 면에 맞춥니다.</li>
-  <li>[자동 정렬 다시] · [임시 박스로] · [↺ 처음 상태로]로 다시 맞추고, [저장 및 완료]로 저장합니다.</li>
+  <li>Z −90°(Q) · Z +90°(E) · 180° 1번핀 반전(R) · X축 / Y축 90° 회전</li>
+  <li>좌표 입력 또는 마우스로 끌어 이동, 바닥을 PCB 면에 맞춤(F)</li>
+  <li>[자동 정렬 다시] · [처음 상태로] · [임시 박스로]</li>
 </ul>
+<p>보정 내용과 3D 등록은 Footprint 단위로 라이브러리에 저장되어, 같은 Footprint를 쓰는 모든 부품과 다음 보드에 적용됩니다. 한 부품만 다르게 하려면 위치번호별 설정을 씁니다.</p>
+<h3>위치번호별 설정</h3>
+<p>같은 Footprint를 쓰는 부품 중 한 부품만 따로 3D를 지정 · 보정하거나 3D에서 뺄 수 있습니다. ASC를 고치지 않고 프로그램 안에서만 바뀝니다. 예를 들어 테스트 패드 Footprint가 Top(TP11)과 Bottom(TP12)의 같은 자리에 있고 여기에 SUB 보드 3D를 넣으면 SUB 보드가 위아래로 두 번 나타나는데, 이때 Bottom 쪽(TP12)만 빼면 됩니다.</p>
+<ol>
+  <li>목록에서 그 Footprint 행을 오른쪽 클릭합니다.</li>
+  <li>[위치번호별 설정] → 위치번호(Top/Bottom 표시)를 고릅니다.</li>
+  <li><strong>이 부품만 3D 빼기</strong> 또는 <strong>이 부품만 따로 설정</strong>을 누릅니다. 되돌릴 때는 [3D 다시 넣기] 또는 [분리 해제]를 씁니다.</li>
+</ol>
+<p>3D 화면에서 부품을 누른 뒤 오른쪽 클릭해 바로 고를 수도 있습니다. 설정은 보드(ASC 파일 이름)별로 저장되어 다시 열어도 유지되며, [3D 자동 채우기]는 따로 설정한 부품을 건드리지 않습니다.</p>
+<h3>3D 자유 배치</h3>
+<p>ASC에 없는 부품(STEP · ZIP)을 보드 위 원하는 자리에 놓아 컨셉과 간섭을 확인합니다. 설계가 끝난 보드에 다른 부품을 올려 보거나, SUB 보드를 MAIN 보드에 조립해 볼 때 씁니다.</p>
+<ul>
+  <li><strong>놓기:</strong> 미리보기 도구 막대의 보라색 <strong>F</strong> 버튼(단축키 F)이나 부품 3D 패널의 [3D 자유 배치] → 파일 선택 → 보드 중앙에 놓입니다. 3D 화면의 빈 곳을 오른쪽 클릭해 [여기에 3D 자유 배치]를 고르면 클릭한 자리에 놓입니다(Bottom 보기에서는 Bottom 면).</li>
+  <li><strong>옮기기:</strong> 자유 배치 부품을 눌러 그대로 끌면 보라색 점선 윤곽이 따라오며 옮겨집니다. 확대 · 이동 도구가 켜져 있으면 먼저 끄세요.</li>
+  <li><strong>[자유 배치 편집]:</strong> 이름(위치번호), X · Y(mm), 회전(15°씩, 직접 입력 가능), 면(Top/Bottom), 띄움 높이(스페이서 · 적층 확인용), 복제(X +5mm 옆에 하나 더) · 삭제. 세밀한 회전 · 이동은 확인/보정 창에서 합니다.</li>
+</ul>
+<p>자유 배치 부품도 높이 초과 · 보드 밖 검사와 STEP 저장에 함께 들어갑니다. 보드별로 저장되어 다음에 열어도 그대로 있고, 다른 보드에는 나타나지 않습니다.</p>
 <h3>높이 확인</h3>
-<p>1단계에서 넣은 높이 제한을 넘는 부품은 빨간 테두리로 표시되고, 엑셀 보고서의 높이초과 시트에도 정리됩니다.</p>
+<p>1단계에서 넣은 높이 제한을 넘는 부품은 빨간 테두리, 보드 밖 부품은 노란 테두리로 표시되고, 엑셀 리포트에도 정리됩니다.</p>
 
 <h2 id="save" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-save"></use></svg>3. 결과 저장 · 검토</h2><div class="pv-stage pv-guide-figure" data-pv-reveal data-pv-diagram><svg class="pv-diagram" viewBox="0 0 320 190" role="img" aria-label="결과 저장 도식: 핵심 결과물은 기구 설계에 쓰는 STEP 3D 모델이고, PNG 이미지와 Excel 보고서는 부가 기능"><g fill="none" stroke="#dcdce2" stroke-width="2"><rect x="20" y="62" width="96" height="66" rx="8"/><rect x="150" y="16" width="154" height="88" rx="12"/><rect x="150" y="116" width="154" height="62" rx="10" stroke-dasharray="4 3"/></g>
 <g fill="none" stroke="#515159" stroke-width="2" stroke-linejoin="round"><g class="pv-fade" style="--d:0ms"><rect x="20" y="62" width="96" height="66" rx="8"/><rect x="34" y="76" width="26" height="18" rx="2"/><rect x="72" y="96" width="30" height="20" rx="2"/></g>
@@ -96,32 +126,49 @@
 <text class="pv-small pv-muted pv-fade" style="--d:1000ms" x="227" y="134">부가 기능</text>
 <text class="pv-small pv-fade" style="--d:1200ms" x="193" y="160">PNG</text><text class="pv-small pv-fade" style="--d:1300ms" x="261" y="160">Excel</text></svg><p class="pv-figure-note">설명용 도식 · 실제 프로그램 화면이 아님</p></div>
 <h3>미리보기로 확인</h3>
-<p>보드 전체는 위에서 본 모습(Top)과 아래에서 본 모습(Bottom, 좌우 반전)을 전환하고, 앞(Front) · 옆(Side)에서 본 모습을 함께 봅니다. 영역을 끌어 확대하고, 끌지 않고 클릭하거나 Esc를 누르면 확대가 풀립니다. 부품명 표시(없음 · 선택 · 전체, 위치번호 또는 품번)를 고를 수 있고, 부품을 클릭하면 정보가 표시됩니다.</p>
-<h3>목적에 맞게 저장하기</h3>
+<p>미리보기는 기본으로 위(Top) · 앞(Front) · 옆(Side) 보기를 함께 보여 줍니다. 범례 색은 회색 = 3D 모델, 파랑 = 생성 3D, 주황 = 임시 박스, 보라 = 자유 배치, 빨간 테두리 = 높이 초과, 노란 테두리 = 보드 밖입니다.</p>
 <ul>
-  <li class="pv-step-main"><strong>[3D STEP 저장]</strong> — <strong>핵심 결과물.</strong> 기구 설계에 활용하는 3D 모델입니다. 보드 표면 표현(ASC 입력 시: 없음 / 실크 / 실크 + 동박)과 부품명 각인(없음 / 선택 / 전체)을 고릅니다. 기본값은 모든 옵션이며, 사용설명서의 예로 130 × 100mm 보드는 약 150MB · 40초입니다. 저장은 별도로 진행되어 그동안 다른 작업을 계속할 수 있습니다.</li>
+  <li>[전체 보기](Home) · [확대](+) · [축소](−) · 마우스 휠, [이동](가운데 버튼으로 끌어도 됨)</li>
+  <li>[영역 확대](Z): 끌어서 고른 영역을 크게 봅니다. ESC 또는 한 번 클릭하면 풀립니다.</li>
+  <li>[Top / Bottom](B): 위에서 본 모습과 아래에서 본 모습(좌우 반전)을 전환합니다.</li>
+  <li>[부품명 표시](L): 없음 · 선택 · 전체, 위치번호 또는 품번</li>
+  <li>[앞 · 옆 단면](V): 끄면 위 보기 하나만 크게 봅니다(기본: 켜짐).</li>
+</ul>
+<h3>검사 패널 (Alt+3)</h3>
+<p>배치 부품 수와 실제 3D · 생성 3D · 임시 박스 개수, 보드 외형 · 두께, 최대 높이(Top/Bottom), 높이 초과 · 보드 밖 부품을 보여 줍니다. 확인할 부품 목록을 누르면 그 부품으로 바로 갑니다. 추정 외곽이면 보드 외형 항목이 빨간 느낌표로 표시됩니다.</p>
+<h3>목적에 맞게 저장하기 (저장 패널, Alt+4)</h3>
+<ul>
+  <li class="pv-step-main"><strong>[3D STEP 저장]</strong>(Ctrl+E) — <strong>핵심 결과물.</strong> 기구 설계에 활용하는 3D 모델입니다(기본 파일명 &lt;보드&gt;_3D.step). <strong>보드 표면</strong>(ASC 입력 시: 없음 / 실크 / 실크 + 동박, 기본은 실크 + 동박)과 <strong>부품명 각인</strong>(없음 / 선택 / 전체, 기본은 전체)을 고릅니다. 130 × 100mm 보드를 기본값으로 저장하면 약 150MB · 40초이며, 가벼운 파일이 필요하면 표면과 각인을 ‘없음’으로 바꾸세요. 저장은 따로 진행되어 상태 막대의 초록 진행바가 올라가는 동안에도 다른 작업을 할 수 있습니다. 저장 중에 프로그램을 닫으면 저장이 취소됩니다.</li>
   </ul>
 <p class="pv-extras-label">부가 기능</p>
 <ul class="pv-extras-list">
-  <li><strong>[미리보기 이미지 (PNG)]</strong> — 이미지 저장(검토 · 공유용)</li>
-  <li><strong>[배치 리포트 (엑셀)]</strong> — 배치 · 검토 항목 보고서</li>
+  <li><strong>PNG</strong> — 현재 미리보기 그림(&lt;보드&gt;_preview.png, 검토 · 공유용)</li>
+  <li><strong>엑셀 리포트</strong> — 배치 목록, 3D 없음, 높이 초과, 보드 밖 부품(&lt;보드&gt;_report.xlsx)</li>
 </ul>
-<h3>보고서로 확인할 항목</h3>
-<div class="table-scroll"><table class="pv-spec"><tbody>
-  <tr><th scope="row">배치목록</th><td>모든 부품의 위치번호 · Footprint · 품번 · 면 · X · Y · 회전 · 3D 상태 · 높이</td></tr>
-  <tr><th scope="row">3D없음</th><td>3D 모델이 없거나 임시 박스로 남은 부품</td></tr>
-  <tr><th scope="row">높이초과</th><td>높이 제한을 넘는 부품</td></tr>
-  <tr><th scope="row">외곽이탈</th><td>보드 외곽을 벗어난 부품</td></tr>
-</tbody></table></div>
+<p>다음에 이어서 하려면 [프로젝트 저장](Ctrl+S)으로 .p3d 파일을 남깁니다. 넣은 파일 · 보드 설정 · PCB 색상을 다시 열 수 있습니다.</p>
 <p>보고서는 모델을 만든 뒤 확인할 항목을 모아 설계 검토를 돕는 목록이며, 3D 간섭 검사나 제조 적합성 검증을 대신하지 않습니다.</p>
 <h3>제조 전에 확인하세요</h3>
 <p>만들어진 3D 모델 · STEP · 보고서는 설계 검토를 돕는 참고 자료입니다. 부품 형상 · 방향 · 높이 · 보드 외형이 실제와 다를 수 있으니, 기구 설계 · 제작 · 양산에 쓰기 전에 원본 설계와 치수 · 방향을 직접 비교하세요.</p>
 
 <p class="eyebrow pv-guide-label" data-pv-reveal>부품 라이브러리 · KiCad 3D</p><h2 id="library" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-library"></use></svg><span class="pv-h2-text">한 번 채운 모델.<br><span>다음 설계에도.</span></span></h2>
 <ul>
-  <li><strong>팀 공유 라이브러리:</strong> 등록한 부품(정렬 정보, STEP, KiCad에서 받은 모델)은 라이브러리 폴더에 저장되어 다음 보드부터 자동으로 쓰입니다. 왼쪽 아래에 표시된 라이브러리 폴더 경로를 눌러 NAS · 공유 폴더로 바꾸면 팀이 함께 씁니다. 기본 위치: 문서\PCB3D_Library</li>
-  <li><strong>KiCad 3D 모델:</strong> PC에 KiCad가 설치돼 있으면 설치 폴더의 모델을 씁니다. 없으면 필요한 모델만 인터넷(gitlab.com, raw.githubusercontent.com)에서 받아 라이브러리 폴더에 저장합니다.</li>
-  <li><strong>인터넷 연결:</strong> 보드 파일은 내 PC에서 처리합니다. 공개 KiCad 모델의 목록 · 파일을 받을 때와 [온라인 검색]으로 웹 브라우저를 열 때 인터넷을 사용합니다.</li>
+  <li><strong>팀 공유 라이브러리:</strong> 등록한 3D(정렬 정보, STEP, KiCad에서 받은 모델), 위치번호별 설정, 자유 배치, 온라인 확인 결과가 라이브러리 폴더에 저장되어 다음 보드부터 자동으로 쓰입니다. 환경설정의 <strong>부품 라이브러리 폴더</strong>에서 [변경…]으로 NAS · 공유 폴더를 지정하면 팀이 함께 씁니다. 기본 위치: 문서\PCB3D_Library</li>
+  <li><strong>KiCad 3D 모델:</strong> PC에 KiCad가 설치돼 있으면 설치 폴더의 모델을 씁니다. 없으면 필요한 모델만 인터넷(gitlab.com, raw.githubusercontent.com)에서 받습니다.</li>
+  <li><strong>인터넷 연결:</strong> 보드 파일과 설계 정보는 외부로 보내지 않습니다. KiCad 모델을 받을 때, [온라인 검색]으로 웹 브라우저를 열 때, <strong>부품 정보 온라인 확인</strong>(기본 켜짐, 품번만 JLCPCB/LCSC 부품 검색으로 보냄)에 인터넷을 씁니다. 온라인 확인은 환경설정에서 끌 수 있고, 끄면 이름과 패드 배치만으로 찾습니다.</li>
+  <li><strong>도움말:</strong> 버튼에 마우스를 올리면 뜨는 <strong>?</strong> 배지를 누르거나, F1(마우스가 올라간 버튼 설명) · Shift+F1(누르는 버튼마다 설명)을 씁니다. 처음 쓰는 분은 환경설정에서 <strong>아이콘 아래 이름 표시</strong>를 켜 두면 편합니다.</li>
 </ul>
+
+<p class="eyebrow pv-guide-label" data-pv-reveal>문제 해결</p><h2 id="troubleshooting" class="pv-guide-h2" data-pv-reveal><svg class="pv-icon" aria-hidden="true" focusable="false"><use href="../../assets/pcb-icons.svg#i-report"></use></svg><span class="pv-h2-text">막히는 곳에서.<br><span>바로 다음 단계로.</span></span></h2>
+<div class="table-scroll"><table class="pv-spec"><tbody>
+  <tr><th scope="row">설치 시 ‘Windows의 PC 보호’ 창</th><td>[추가 정보] → [실행]. 코드 서명이 없는 프로그램에 뜨는 정상 경고입니다.</td></tr>
+  <tr><th scope="row">보드 모양이 다르고 부품이 보드 밖에 뜸</th><td>ASC에 보드 외곽선이 없는 경우입니다. 3.0은 그림 선으로 추정 외곽을 만듭니다. 추정이 틀리면 위 <a href="#board">1. 설계 파일 입력</a>의 PADS 수정 방법을 따르거나 외형 기준을 [직접 입력]으로 바꾸세요.</td></tr>
+  <tr><th scope="row">DXF를 넣었는데 외곽이 안 잡힘</th><td>DXF의 원점 · 단위가 ASC와 다르면 부품을 감싸지 못해 쓰지 않습니다. 같은 설계에서 내보낸 DXF인지 확인하세요.</td></tr>
+  <tr><th scope="row">다음 단계로 안 넘어감</th><td>보드 두께를 확인하지 않은 상태입니다. [보드 확인 · 변경]에서 두께를 확인하세요.</td></tr>
+  <tr><th scope="row">같은 3D가 위아래로 두 번 나옴</th><td>같은 Footprint를 Top · Bottom에 쓰는 경우입니다. 위치번호별 설정으로 한쪽만 3D에서 빼세요.</td></tr>
+  <tr><th scope="row">KiCad 모델 · 부품 정보를 못 받음</th><td>회사 방화벽에서 gitlab.com, raw.githubusercontent.com, jlcpcb.com 접속을 허용하거나 PC에 KiCad를 설치하세요.</td></tr>
+  <tr><th scope="row">STEP 파일이 너무 큼</th><td>보드 표면을 ‘없음’ 또는 ‘실크’로, 부품명 각인을 ‘없음’으로 바꾸세요.</td></tr>
+  <tr><th scope="row">처음 열 때 느림</th><td>계산한 형상은 %LOCALAPPDATA%\PCB3D\cache에 저장되어 같은 보드는 다음부터 빨리 열립니다.</td></tr>
+  <tr><th scope="row">프로젝트를 열 때 “ASC 파일을 찾을 수 없습니다”</th><td>.p3d는 원본 파일 위치를 기억합니다. 파일을 원래 자리에 두거나 다시 넣으세요.</td></tr>
+</tbody></table></div>
 </div><div class="article-related"><p class="eyebrow">Related</p><a href="../">PCB 3D Builder 소개 · 다운로드 안내 ↗</a><a href="../../rf-faq/">RF &amp; BLE 실무 Q&amp;A 50선 ↗</a></div></article></div>
 </div></main><footer class="site-footer"><div class="shell"><div class="footer-top"><a class="brand" href="../../" aria-label="31NS-Tech"><span class="brand-lockup"><img class="brand-logo" src="../../assets/brand-logo.png" alt="31NS-Tech" width="252" height="74"></span></a><p>정밀한 설계. 동작하는 제품.</p><a href="#top" class="text-link">맨 위로 <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 31NS-Tech. All rights reserved.</span><nav aria-label="하단 메뉴"><a href="../../blog/">기술 블로그</a><a href="../../rf-faq/">RF Q&amp;A</a><a href="mailto:nskim@31ns.kr">이메일 문의</a><a href="../../privacy/">개인정보처리방침</a></nav></div></div></footer></body></html>
