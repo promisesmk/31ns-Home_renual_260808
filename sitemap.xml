@@ -29,48 +29,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/2.4ghz.html"/>
   </url>
   <url>
-    <loc>https://31ns.kr/blog/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/"/>
-  </url>
-  <url>
-    <loc>https://31ns.kr/en/blog/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/"/>
-  </url>
-  <url>
-    <loc>https://31ns.kr/blog/ble-antenna-matching/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/ble-antenna-matching/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/ble-antenna-matching/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/ble-antenna-matching/"/>
-  </url>
-  <url>
-    <loc>https://31ns.kr/en/blog/ble-antenna-matching/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/ble-antenna-matching/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/ble-antenna-matching/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/ble-antenna-matching/"/>
-  </url>
-  <url>
-    <loc>https://31ns.kr/blog/nrf52805-design/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/nrf52805-design/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/nrf52805-design/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/nrf52805-design/"/>
-  </url>
-  <url>
-    <loc>https://31ns.kr/en/blog/nrf52805-design/</loc>
-    <lastmod>2026-10-15</lastmod>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/blog/nrf52805-design/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://31ns.kr/en/blog/nrf52805-design/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://31ns.kr/blog/nrf52805-design/"/>
-  </url>
-  <url>
     <loc>https://31ns.kr/rf-faq/</loc>
     <lastmod>2026-10-15</lastmod>
     <xhtml:link rel="alternate" hreflang="ko" href="https://31ns.kr/rf-faq/"/>

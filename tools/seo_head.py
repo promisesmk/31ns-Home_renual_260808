@@ -24,24 +24,6 @@ PAGES = {
     'en/2.4ghz.html': ('/en/2.4ghz.html', 'en', '2.4GHz Wireless Product Development | Multi-Vendor Chips & Modules — 31NS-Tech',
                        'From evaluating 2.4GHz chips and modules from Nordic, TI, Silicon Labs, Espressif, NXP and Telink to circuit and antenna design, VNA tuning, certification and production.',
                        'website', '2.4ghz.html'),
-    'blog/index.html': ('/blog/', 'ko', '기술 블로그 | BLE 안테나 정합 · nRF52805 설계 문서 — 31NS-Tech',
-                        'BLE 안테나 정합과 nRF52805 모듈 설계를 그림 · 회로 · 측정 과정과 함께 정리한 31NS-Tech 기술 문서입니다.',
-                        'website', 'en/blog/index.html'),
-    'en/blog/index.html': ('/en/blog/', 'en', 'Technical Blog | BLE Antenna Matching · nRF52805 Design Notes — 31NS-Tech',
-                           'Technical notes with circuits, figures and measurements on BLE antenna matching and nRF52805 module design.',
-                           'website', 'blog/index.html'),
-    'blog/ble-antenna-matching/index.html': ('/blog/ble-antenna-matching/', 'ko', 'BLE 안테나 정합(매칭)과 RF 회로 최적화 실무 기술자료 | 31NS-Tech',
-                                             'BLE 제품의 50Ω 임피던스 매칭, IFA · 칩 · 휩 안테나 비교, VNA S11 스미스 차트 튜닝 절차를 그림과 함께 정리한 실무 기술자료입니다.',
-                                             'article', 'en/blog/ble-antenna-matching/index.html'),
-    'en/blog/ble-antenna-matching/index.html': ('/en/blog/ble-antenna-matching/', 'en', 'BLE Antenna Matching and RF Circuit Optimization: A Practical Guide | 31NS-Tech',
-                                                'A look at 50Ω impedance matching, IFA, chip and whip antenna comparison, and hands-on VNA S11 Smith chart tuning.',
-                                                'article', 'blog/ble-antenna-matching/index.html'),
-    'blog/nrf52805-design/index.html': ('/blog/nrf52805-design/', 'ko', 'nRF52805 BLE 모듈 회로 설계 및 개발 기술 참고문서 | 31NS-Tech',
-                                        'nRF52805 WLCSP 패키지 아트워크, Build-up PCB와 쉴드캔, 레퍼런스 BOM, 시제품 RF 튜닝 검토 항목을 정리한 기술 참고문서입니다.',
-                                        'article', 'en/blog/nrf52805-design/index.html'),
-    'en/blog/nrf52805-design/index.html': ('/en/blog/nrf52805-design/', 'en', 'nRF52805 BLE Module Circuit Design and Development Reference | 31NS-Tech',
-                                           'Review points for nRF52805 WLCSP layout, build-up PCB and shield can, reference BOM, and prototype RF tuning.',
-                                           'article', 'blog/nrf52805-design/index.html'),
     'rf-faq/index.html': ('/rf-faq/', 'ko', 'RF·BLE 실무 Q&A 50선 | 안테나 · 저전력 · 인증 · 양산 — 31NS-Tech',
                           'RF · 안테나, BLE 저전력, 노이즈 · 신뢰성, 인증 · 규격, 양산 · 개발 관리에 대한 50개 실무 질문과 답변.',
                           'website', 'en/rf-faq/index.html'),
@@ -129,12 +111,6 @@ LASTMOD = {
     'en/index.html': '2026-10-20',
     '2.4ghz.html': '2026-10-16',
     'en/2.4ghz.html': '2026-10-16',
-    'blog/index.html': '2026-10-15',
-    'en/blog/index.html': '2026-10-15',
-    'blog/ble-antenna-matching/index.html': '2026-10-15',
-    'en/blog/ble-antenna-matching/index.html': '2026-10-15',
-    'blog/nrf52805-design/index.html': '2026-10-15',
-    'en/blog/nrf52805-design/index.html': '2026-10-15',
     'rf-faq/index.html': '2026-10-15',
     'en/rf-faq/index.html': '2026-10-15',
     'pcb-viewer/index.html': '2026-10-20',
@@ -148,13 +124,8 @@ LASTMOD = {
     'privacy/index.html': '2026-10-19',
     'en/privacy/index.html': '2026-10-19',
 }
-# 블로그 글: 작성일은 본문의 <time>과 같게
-BLOG_PUBLISHED = {
-    'blog/ble-antenna-matching/index.html': '2026-05-15',
-    'en/blog/ble-antenna-matching/index.html': '2026-05-15',
-    'blog/nrf52805-design/index.html': '2026-05-14',
-    'en/blog/nrf52805-design/index.html': '2026-05-14',
-}
+# 블로그 글: 작성일은 본문의 <time>과 같게 (기술 블로그는 2026-10-20 삭제 — 다시 만들면 여기에 추가)
+BLOG_PUBLISHED = {}
 for _path, _published in BLOG_PUBLISHED.items():
     _url_path, _lang, _title, _desc, _og, _alt = PAGES[_path]
     STRUCTURED[_path] = {'@context': 'https://schema.org', '@type': 'BlogPosting',

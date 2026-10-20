@@ -24,7 +24,14 @@ REDIRECTS = {
     '/en/services/': '/en/#capabilities',
     '/en/portfolio/': '/en/#portfolio',
     '/en/contact/': '/en/#contact',
-    '/en/blog/rf-antenna-matching-en/': '/en/blog/ble-antenna-matching/',
+    # 기술 블로그 삭제(2026-10-20): 옛 블로그 주소는 관련 페이지로 이동
+    '/blog/': '/#technical-resources-section',
+    '/blog/ble-antenna-matching/': '/rf-faq/',
+    '/blog/nrf52805-design/': '/2.4ghz.html',
+    '/en/blog/': '/en/#technical-resources-section',
+    '/en/blog/ble-antenna-matching/': '/en/rf-faq/',
+    '/en/blog/nrf52805-design/': '/en/2.4ghz.html',
+    '/en/blog/rf-antenna-matching-en/': '/en/rf-faq/',
 }
 
 
