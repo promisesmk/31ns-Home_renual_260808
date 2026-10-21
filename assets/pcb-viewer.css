@@ -123,7 +123,7 @@
 .pv-guide-link { font-size: 13px; }
 .resource-hero .pv-guide-link { color: #d5d5de; }
 .pv-download-guide { margin: 0; font-size: 13px; color: #686873; }
-.pv-download-guide a, .section-description a, .pv-uses a { text-decoration: underline; text-underline-offset: 3px; }
+.pv-download-guide a, .section-description a, .pv-uses a, .pv-faq .faq-answer-copy a { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 1023px) {
   .pv-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pv-flow li:nth-child(3)::before, .pv-flow li:nth-child(3)::after { display: none; }
@@ -250,6 +250,32 @@
 .pv-dlcode-sent { margin: 0; font-size: 16px; color: #13201f; word-break: break-all; }
 .pv-dlcode .pv-actions { margin-top: 8px; }
 .pv-redeem { border-top: 1px solid #e6e6ec; padding-top: 22px; }
+/* Hint next to "email me a code": request problems show where the visitor is looking */
+.pv-hint { font-size: 14px; font-weight: 600; color: #b3261e; line-height: 1.5; }
+.pv-hint::before { content: "!"; display: inline-grid; place-items: center; width: 18px; height: 18px; margin-right: 7px; border-radius: 50%; background: #b3261e; color: #fff; font-size: 12px; vertical-align: 1px; }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-hint.is-blinking { animation: pv-hint-blink .45s ease-in-out 4 alternate; }
+  @keyframes pv-hint-blink { from { opacity: 1; } to { opacity: .15; } }
+}
+/* User manual: its own block with a button, below the download forms */
+.pv-manual { border-top: 1px solid #e6e6ec; padding-top: 22px; display: grid; gap: 14px; max-width: 640px; }
+.pv-manual .pv-download-note { margin: 0; }
+.pv-manual-label { margin: 0; font-size: 14px; font-weight: 600; color: #1d1d1f; }
+/* Help for blocked installs (SmartScreen, company policy, browser, antivirus) */
+.pv-install { border: 1px solid #e0e0e8; border-radius: 16px; background: #fafafc; max-width: 760px; }
+.pv-install summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; align-items: center; padding: 18px 22px; font-size: 16px; font-weight: 600; color: #1d1d1f; }
+.pv-install summary::-webkit-details-marker { display: none; }
+.pv-install-sub { grid-column: 1; font-size: 13px; font-weight: 400; color: #686873; }
+.pv-install .faq-plus { grid-column: 2; grid-row: 1 / span 2; font-size: 20px; transition: transform .2s; }
+.pv-install[open] .faq-plus { transform: rotate(45deg); }
+.pv-install-body { padding: 0 22px 22px; font-size: 14px; line-height: 1.85; color: #3a3a42; }
+.pv-install-body h4 { margin: 18px 0 6px; font-size: 14px; font-weight: 600; color: #1d1d1f; }
+.pv-install-body p { margin: 0 0 8px; }
+.pv-install-body ol, .pv-install-body ul { margin: 0 0 8px; padding-left: 22px; }
+.pv-install-body ol { list-style: decimal; }
+.pv-install-body ul { list-style: disc; }
+.pv-install-body li + li { margin-top: 4px; }
+.pv-install-warn { color: #8f2b22; }
 .pv-redeem input[name="code"] { font-family: ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; max-width: 220px; }
 .pv-qna-links { margin-top: 32px; }
 .pv-qna-links ul { margin: 8px 0 12px; padding-left: 18px; line-height: 1.9; }

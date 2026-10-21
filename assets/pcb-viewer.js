@@ -11,9 +11,11 @@
   if (!area) return;
   const title = area.querySelector('[data-release-title]');
   const details = area.querySelector('[data-release-details]');
-  const manualLink = area.querySelector('[data-manual-link]');
+  const manualArea = area.querySelector('[data-manual-area]');
+  const installHelp = area.querySelector('[data-install-help]');
   const requestForm = area.querySelector('[data-request-form]');
   const submitButton = area.querySelector('[data-request-submit]');
+  const hint = area.querySelector('[data-request-hint]');
   const codeResult = area.querySelector('[data-code-result]');
   const codeEmail = area.querySelector('[data-code-email]');
   const codeTimer = area.querySelector('[data-code-timer]');
@@ -92,6 +94,23 @@
     message.hidden = !text;
   }
 
+  // Problems with the request form are shown right next to its button (blinking a few times), where the
+  // visitor is looking, and the field to fix gets the focus. Cleared as soon as the form is edited.
+  const FIELD = { invalid_email: 'email', invalid_company: 'company', title_too_short: 'title', body_too_short: 'body', consent_required: 'consentPrivacy' };
+  function showHint(code) {
+    hint.textContent = ERRORS[code] || ERRORS.server_error;
+    hint.hidden = false;
+    hint.classList.remove('is-blinking');
+    void hint.offsetWidth; // restart the animation on repeated errors
+    hint.classList.add('is-blinking');
+    const field = FIELD[code] && requestForm.elements[FIELD[code]];
+    if (field) field.focus({ preventScroll: true });
+  }
+  function clearHint() {
+    hint.hidden = true;
+    hint.textContent = '';
+  }
+
   function formatSize(bytes) {
     if (!bytes) return '-';
     const mb = bytes / (1024 * 1024);
@@ -131,8 +150,10 @@
     title.textContent = `PCB 3D Builder ${version}`.trim();
     details.querySelector('[data-release="version"]').textContent = version || '-';
     details.querySelector('[data-release="size"]').textContent = formatSize(data.installer?.size);
-    if (data.manual) manualLink.href = `${API}/manual`;
-    else manualLink.closest('dd').textContent = '-';
+    if (data.manual) {
+      manualArea.querySelector('[data-manual-link]').href = `${API}/manual`;
+      manualArea.hidden = false;
+    }
     details.hidden = false;
   }
 
@@ -210,9 +231,10 @@
           : payload.body.replace(/\s/g, '').length < 20 ? 'body_too_short'
             : !payload.consentPrivacy ? 'consent_required' : null;
     if (local) {
-      showMessage(ERRORS[local], 'error');
+      showHint(local);
       return;
     }
+    clearHint();
 
     submitButton.disabled = true;
     const label = submitButton.textContent;
@@ -226,7 +248,7 @@
       showSent(data, T.issued);
       return;
     }
-    showMessage(ERRORS[data.error] || ERRORS.server_error, 'error');
+    showHint(data.error);
   }
 
   async function submitRedeem(event) {
@@ -249,6 +271,7 @@
       return;
     }
     showMessage(T.starting, 'ok');
+    if (installHelp) installHelp.open = true; // the next step is installing: show how to get past the Windows warning
     // A regular form post: the browser downloads the file and stays on this page.
     redeemForm.action = `${API}/download`;
     redeemForm.submit();
@@ -260,6 +283,8 @@
     return;
   }
   requestForm.addEventListener('submit', submitRequest);
+  requestForm.addEventListener('input', clearHint);
+  requestForm.addEventListener('change', clearHint);
   redeemForm.addEventListener('submit', submitRedeem);
   resendButton.addEventListener('click', resendCode);
   const releaseReady = loadRelease();
