@@ -14,8 +14,11 @@
 //   GET/POST /admin/r/:id?t= review one post (signed link from the notification mail; no password)
 //   GET  /admin              list of posts (HTTP Basic, password = ADMIN_SECRET)
 //   GET/POST /admin/notify   send the new-version notice to subscribers, once per release tag (HTTP Basic)
+//   GET/POST /admin/cancel-notice?tag=&t= stop the automatic notice for one release (signed link in the preview mail)
 // Cron: personal data (email, company) is cleared after RETENTION_DAYS; old codes are deleted.
 //   Update-notice subscribers (opt-in) are kept until they unsubscribe.
+//   New release: the first daily run mails a preview to ADMIN_EMAIL; a run at least NOTICE_DELAY_HOURS later
+//   sends the notice to subscribers unless it was cancelled or already sent by hand.
 
 const CATEGORIES = ['question', 'usecase', 'feature'];
 const CATEGORY_KO = { question: '질문', usecase: '활용 사례', feature: '기능 요청' };
@@ -95,7 +98,7 @@ function page(status, title, bodyHtml, { lang = 'ko' } = {}) {
 h1{font-size:22px}p,li{color:#3a3a42}.box{border:1px solid #ddd;border-radius:10px;padding:16px 18px;margin:16px 0;white-space:pre-wrap;word-break:break-word}
 label{display:block;font-weight:600;margin:14px 0 6px}input[type=text],textarea{width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #ccc;border-radius:8px}
 textarea{min-height:140px}button{font:inherit;padding:10px 18px;border-radius:8px;border:1px solid #1d1d1f;background:#1d1d1f;color:#fff;cursor:pointer;margin:6px 6px 0 0}
-button.secondary{background:#fff;color:#1d1d1f}.muted{color:#777;font-size:14px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid #eee;padding:8px 6px;text-align:left;vertical-align:top}
+button.secondary{background:#fff;color:#1d1d1f}button:disabled{background:#ccc;border-color:#ccc;color:#666;cursor:not-allowed}.muted{color:#777;font-size:14px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid #eee;padding:8px 6px;text-align:left;vertical-align:top}
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:#eee}.ok{background:#d9f2e3}.no{background:#f6dcdc}a{color:#0b5cad}</style>
 <h1>${esc(title)}</h1>${bodyHtml}</html>`;
   return new Response(html, {
@@ -638,6 +641,89 @@ ${notes ? `<p style="margin:0;font-weight:600">${t.changes}</p><div style="white
   return { subject: t.subject, html };
 }
 
+// Release notes are written in Markdown on GitHub; mails get plain text with simple bullets.
+function plainNotes(markdown) {
+  return String(markdown || '').replace(/\r/g, '').split('\n').map((line) => line
+    .replace(/^\s{0,3}#{1,6}\s*/, '')
+    .replace(/^\s*[-*+]\s+/, '• ')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/(\*\*|__|`)/g, '')
+    .trimEnd()).join('\n').replace(/\n{3,}/g, '\n\n').trim().slice(0, 3000);
+}
+
+// Default notes per language. Korean-only notes are not sent to English subscribers (they get the plain notice).
+function defaultNotes(release) {
+  const text = plainNotes(release.notes);
+  return { ko: text, en: /[\uac00-\ud7a3]/.test(text) ? '' : text };
+}
+
+// Sends the notice for `release` to every subscriber. The caller must have claimed the tag in `notices`.
+// Records the result; if nothing went out the claim is released so it can be tried again.
+async function deliverNotice(env, origin, release, notes) {
+  const { results } = await env.DB.prepare('select email, lang from subscribers').all();
+  const mails = await Promise.all(results.map(async (r) => {
+    const unsub = `${await unsubscribeUrl(env, origin, r.email)}&l=${r.lang}`;
+    const mail = noticeMail(env, release, r.lang === 'en' ? notes.en : notes.ko, r.lang, unsub);
+    return { from: env.MAIL_FROM, to: [r.email], reply_to: env.ADMIN_EMAIL, subject: mail.subject, html: mail.html,
+      headers: { 'List-Unsubscribe': `<${unsub}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } };
+  }));
+  const { ok, failed } = await sendBatch(env, mails);
+  if (ok === 0 && failed > 0) await env.DB.prepare('delete from notices where tag = ?1').bind(release.tag).run();
+  else await env.DB.prepare('update notices set recipients = ?2, failed = ?3 where tag = ?1').bind(release.tag, ok, failed).run();
+  return { ok, failed };
+}
+
+const noticeDelay = (env) => Number(env.NOTICE_DELAY_HOURS ?? 20) * 60 * 60 * 1000;
+const workerOrigin = (env) => env.WORKER_ORIGIN || 'https://pcb3d-api.31ns-tech.workers.dev';
+const kst = (ms) => new Date(ms).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+// The daily run after `ms` + the delay, as a KST date (e.g. "10월 25일").
+const sendDay = (env, ms) => new Date(ms + noticeDelay(env) + 4 * 60 * 60 * 1000).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric' });
+
+// Daily (cron): announce a new release to subscribers with a one-day grace period.
+// 1st run after the release: record it and mail the operator a preview with a cancel link.
+// A later run, NOTICE_DELAY_HOURS after that: send, unless cancelled or already sent by hand.
+async function autoNotice(env) {
+  const release = await latestRelease(env);
+  if (!release || !env.ADMIN_SECRET) return;
+  const tag = release.tag;
+  if (await env.DB.prepare('select 1 from notices where tag = ?1').bind(tag).first()) return;
+  const plan = await env.DB.prepare('select * from notice_plans where tag = ?1').bind(tag).first();
+  const subs = (await env.DB.prepare('select count(*) as n from subscribers').first())?.n || 0;
+  const notes = defaultNotes(release);
+
+  if (!plan) {
+    await env.DB.prepare('insert into notice_plans (tag, detected_at) values (?1, ?2) on conflict(tag) do nothing').bind(tag, now()).run();
+    if (!subs) return; // nobody to tell; checked again on the next run
+    const cancel = `${workerOrigin(env)}/admin/cancel-notice?tag=${encodeURIComponent(tag)}&t=${await hmac(env.ADMIN_SECRET, `cancel:${tag}`)}`;
+    const sample = noticeMail(env, release, notes.ko, 'ko', '#');
+    const html = `<div style="font-family:system-ui,sans-serif;line-height:1.7;color:#1d1d1f;max-width:600px">
+<p><b>${esc(release.name)}</b> 안내 메일이 <b>${sendDay(env, now())} 새벽 3시쯤</b> 알림 동의자 <b>${subs}명</b>에게 자동으로 나갑니다.</p>
+<p><a href="${cancel}" style="display:inline-block;padding:10px 18px;border-radius:8px;background:#a33;color:#fff;text-decoration:none">자동 발송하지 않기</a>
+&nbsp;<a href="${workerOrigin(env)}/admin/notify" style="color:#0b5cad">문구를 고쳐 지금 보내기</a></p>
+<p style="color:#777;font-size:13px">아래는 받는 분께 갈 메일입니다(한국어). 영어 수신자에게는 ${notes.en ? '같은 바뀐 점이' : '바뀐 점 없이 새 버전 소식과 다운로드 링크만'} 갑니다.</p>
+<div style="border:1px solid #ddd;border-radius:10px;padding:16px">${sample.html}</div></div>`;
+    await sendMail(env, { to: env.ADMIN_EMAIL, subject: `[PCB 3D Builder] ${release.name} 안내 메일 자동 발송 예정 (${subs}명)`, html });
+    return;
+  }
+  if (plan.cancelled_at || now() - plan.detected_at < noticeDelay(env) || !subs) return;
+  const claimed = await env.DB.prepare('insert into notices (tag, sent_at, recipients, failed) values (?1, ?2, 0, 0) on conflict(tag) do nothing').bind(tag, now()).run();
+  if (claimed.meta.changes) await deliverNotice(env, workerOrigin(env), release, notes);
+}
+
+async function handleCancelNotice(request, env) {
+  const url = new URL(request.url);
+  const tag = url.searchParams.get('tag') || '';
+  if (!tag || !env.ADMIN_SECRET || !safeEqual(url.searchParams.get('t') || '', await hmac(env.ADMIN_SECRET, `cancel:${tag}`))) {
+    return page(403, '권한이 없습니다', '<p>메일의 링크로 다시 열어 주세요.</p>');
+  }
+  if (request.method === 'POST') {
+    await env.DB.prepare('insert into notice_plans (tag, detected_at, cancelled_at) values (?1, ?2, ?2) on conflict(tag) do update set cancelled_at = ?2').bind(tag, now()).run();
+    return page(200, '자동 발송을 취소했습니다', `<p>${esc(tag)} 안내 메일은 자동으로 나가지 않습니다. 보내려면 <a href="/admin/notify">관리 화면</a>에서 직접 보내 주세요.</p>`);
+  }
+  return page(200, '자동 발송을 취소할까요?', `<p>${esc(tag)} 안내 메일을 알림 동의자에게 자동으로 보내지 않습니다. 나중에 관리 화면에서 직접 보낼 수는 있습니다.</p>
+<form method="post"><button>자동 발송하지 않기</button></form>`);
+}
+
 async function handleNotify(request, env) {
   if (!basicAuthOk(request, env)) {
     return new Response('관리자 비밀번호가 필요합니다.', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="pcb3d-admin", charset="UTF-8"', 'X-Robots-Tag': 'noindex' } });
@@ -666,23 +752,10 @@ async function handleNotify(request, env) {
         notice = '<p class="box">다른 창에서 이미 보내고 있습니다.</p>';
       } else {
         const notes = { ko: clean(form.get('notes_ko'), 3000), en: clean(form.get('notes_en'), 3000) };
-        const origin = new URL(request.url).origin;
-        const { results } = await env.DB.prepare('select email, lang from subscribers').all();
-        const mails = await Promise.all(results.map(async (r) => {
-          const unsub = `${await unsubscribeUrl(env, origin, r.email)}&l=${r.lang}`;
-          const mail = noticeMail(env, release, r.lang === 'en' ? notes.en : notes.ko, r.lang, unsub);
-          return { from: env.MAIL_FROM, to: [r.email], reply_to: env.ADMIN_EMAIL, subject: mail.subject, html: mail.html,
-            headers: { 'List-Unsubscribe': `<${unsub}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } };
-        }));
-        const { ok, failed } = await sendBatch(env, mails);
-        if (ok === 0 && failed > 0) {
-          // Nothing went out: release the tag so the operator can try again.
-          await env.DB.prepare('delete from notices where tag = ?1').bind(tag).run();
-          notice = `<p class="box">메일을 보내지 못했습니다(${failed}명). 잠시 후 다시 보내 주세요.</p>`;
-        } else {
-          await env.DB.prepare('update notices set recipients = ?2, failed = ?3 where tag = ?1').bind(tag, ok, failed).run();
-          notice = `<p class="box">보냈습니다: ${ok}명${failed ? ` · 실패 ${failed}명` : ''}</p>`;
-        }
+        const { ok, failed } = await deliverNotice(env, new URL(request.url).origin, release, notes);
+        notice = ok === 0 && failed > 0
+          ? `<p class="box">메일을 보내지 못했습니다(${failed}명). 잠시 후 다시 보내 주세요.</p>`
+          : `<p class="box">보냈습니다: ${ok}명${failed ? ` · 실패 ${failed}명` : ''}</p>`;
       }
     }
   }
@@ -691,15 +764,22 @@ async function handleNotify(request, env) {
   const history = (await env.DB.prepare('select * from notices order by sent_at desc limit 20').all()).results
     .map((n) => `<tr><td>${esc(n.tag)}</td><td>${when(n.sent_at)}</td><td>${n.recipients}${n.failed ? ` · 실패 ${n.failed}` : ''}</td></tr>`).join('');
   const total = counts?.n || 0;
+  const defaults = defaultNotes(release);
+  const plan = await env.DB.prepare('select * from notice_plans where tag = ?1').bind(tag).first();
+  const auto = after ? '' : plan?.cancelled_at
+    ? `<p class="box">자동 발송: <b>취소됨</b> (${kst(plan.cancelled_at)}). 보내려면 아래에서 직접 보내 주세요.</p>`
+    : plan
+      ? `<p class="box">자동 발송: <b>${sendDay(env, plan.detected_at)} 새벽 3시쯤</b> 릴리스 설명 그대로 나갑니다(동의자가 있을 때). 지금 보내도 되고, 미리보기 메일의 [자동 발송하지 않기]로 멈출 수 있습니다.</p>`
+      : '<p class="box">자동 발송: 다음 새벽 3시 점검 때 새 버전을 확인하고 관리자에게 미리보기 메일을 보낸 뒤, 그다음 날 새벽 3시에 자동으로 보냅니다.</p>';
   const form = after
     ? `<p class="box">${esc(tag)} 안내는 ${when(after.sent_at)}에 보냈습니다. 다음 버전이 올라오면 이 화면에서 다시 보낼 수 있습니다.</p>`
     : `<form method="post"><input type="hidden" name="token" value="${formToken}"><input type="hidden" name="tag" value="${esc(tag)}">
-<label>바뀐 점 (한국어 수신자) · 릴리스 설명에서 가져왔습니다. 고쳐서 보낼 수 있습니다.</label><textarea name="notes_ko" maxlength="3000">${esc(release.notes)}</textarea>
-<label>바뀐 점 (영어 수신자 ${counts?.en || 0}명)</label><textarea name="notes_en" maxlength="3000">${esc(release.notes)}</textarea>
+<label>바뀐 점 (한국어 수신자) · 릴리스 설명에서 가져왔습니다. 고쳐서 보낼 수 있습니다.</label><textarea name="notes_ko" maxlength="3000">${esc(defaults.ko)}</textarea>
+<label>바뀐 점 (영어 수신자 ${counts?.en || 0}명) · 비워 두면 바뀐 점 없이 새 버전 소식과 다운로드 링크만 갑니다.</label><textarea name="notes_en" maxlength="3000">${esc(defaults.en)}</textarea>
 <p class="muted">메일에는 다운로드 페이지 · 사용 가이드 링크와 수신 거부 링크가 함께 들어갑니다. 같은 버전은 한 번만 보낼 수 있습니다.</p>
 <button ${total ? '' : 'disabled'}>${esc(release.name)} 안내 메일 보내기 (${total}명)</button></form>`;
   return page(200, '새 버전 안내 메일',
-    `${notice}<p>최신 릴리스: <b>${esc(release.name)}</b> (${esc(tag)}) · 알림 받기 동의: <b>${total}명</b></p>${form}
+    `${notice}<p>최신 릴리스: <b>${esc(release.name)}</b> (${esc(tag)}) · 알림 받기 동의: <b>${total}명</b></p>${auto}${form}
 <h2>보낸 기록</h2><table><tr><th>버전</th><th>보낸 시각</th><th>받은 사람</th></tr>${history || '<tr><td colspan="3" class="muted">아직 없습니다</td></tr>'}</table>
 <p><a href="/admin">← 신청 · 문의 목록</a></p>`);
 }
@@ -742,6 +822,7 @@ export default {
       if (path === '/admin' && request.method === 'GET') return await handleAdminList(request, env);
       if (path === '/admin/notify' && (request.method === 'GET' || request.method === 'POST')) return await handleNotify(request, env);
       if (path === '/unsubscribe' && (request.method === 'GET' || request.method === 'POST')) return await handleUnsubscribe(request, env);
+      if (path === '/admin/cancel-notice' && (request.method === 'GET' || request.method === 'POST')) return await handleCancelNotice(request, env);
       if (path === '/robots.txt') return new Response('User-agent: *\nDisallow: /\n');
       return new Response('Not found', { status: 404 });
     } catch (e) {
@@ -751,5 +832,6 @@ export default {
   },
   async scheduled(_event, env, ctx) {
     ctx.waitUntil(cleanup(env));
+    ctx.waitUntil(autoNotice(env).catch((e) => console.log(`[auto notice failed] ${e?.stack || e}`)));
   }
 };

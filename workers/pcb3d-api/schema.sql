@@ -65,3 +65,11 @@ create table if not exists notices (
   recipients  integer not null default 0,
   failed      integer not null default 0
 );
+
+-- 새 버전 자동 안내 일정. 매일 03:00(KST) 점검에서 새 릴리스를 처음 보면 기록하고 관리자에게 미리보기를 보내며,
+-- 하루 뒤 점검에서 취소(cancelled_at)되지 않았으면 notices에 기록하고 보냅니다.
+create table if not exists notice_plans (
+  tag           text primary key,
+  detected_at   integer not null,
+  cancelled_at  integer
+);

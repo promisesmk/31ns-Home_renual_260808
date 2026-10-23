@@ -24,6 +24,10 @@ ADMIN_EMAIL = "nskim@31ns.kr"
 MAIL_FROM = "31NS-Tech <noreply@31ns.kr>"
 CODE_TTL_MINUTES = "10"
 RETENTION_DAYS = "365"
+# 새 버전 안내: 관리자 미리보기 메일 뒤 이 시간이 지난 다음 새벽 점검 때 자동 발송(매일 03:00 점검이라 실제로는 하루 뒤)
+NOTICE_DELAY_HOURS = "20"
+# 자동 발송 메일의 수신 거부 · 취소 링크에 쓰는 이 서버 주소
+WORKER_ORIGIN = "https://pcb3d-api.31ns-tech.workers.dev"
 
 # 비밀값(이 파일에 쓰지 않음) — `npx wrangler secret put <이름>`으로 입력
 #   GITHUB_TOKEN      비공개 저장소 PCB3D-Releases 읽기 토큰

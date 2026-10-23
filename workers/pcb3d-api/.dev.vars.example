@@ -8,3 +8,5 @@ DEV_FAKE_RELEASE=1
 LIMIT_PER_IP=1000
 # 시험에서는 코드 재발송 간격 제한(운영 30초)을 없앱니다.
 RESEND_INTERVAL_MS=0
+# 시험에서는 새 버전 자동 안내의 유예(운영 20시간)를 없앱니다.
+NOTICE_DELAY_HOURS=0

@@ -279,3 +279,29 @@ test('안내 메일 화면은 비밀번호가 필요하고, 화면의 서명 없
   });
   assert.equal(res.status, 403);
 });
+
+// Automatic notice: the daily run is triggered by hand (wrangler dev --test-scheduled, NOTICE_DELAY_HOURS=0).
+const runDaily = () => fetch(`${BASE}/__scheduled?cron=0+18+*+*+*`);
+const cancelToken = (tag) => createHmac('sha256', ADMIN_SECRET).update(`cancel:${tag}`).digest('base64url');
+const notifyPage = async () => (await fetch(`${BASE}/admin/notify`, { headers: adminAuth })).text();
+
+test('새 버전 자동 안내: 첫 점검에 일정이 잡히고, 취소 링크로 멈추면 자동 발송 대상이 아니다', async () => {
+  await newRequest({ email: `auto-${unique()}@example.com`, consentUpdates: true });
+  await runDaily();
+  await new Promise((r) => setTimeout(r, 300));
+  assert.match(await notifyPage(), /자동 발송: <b>(\d+월 \d+일 새벽 3시쯤|취소됨)/);
+
+  const tag = 'v0.0-dev';
+  assert.equal((await fetch(`${BASE}/admin/cancel-notice?tag=${tag}&t=forged`, { method: 'POST' })).status, 403);
+  const link = `${BASE}/admin/cancel-notice?tag=${tag}&t=${cancelToken(tag)}`;
+  assert.match(await (await fetch(link)).text(), /자동 발송하지 않기/);   // opening the link only asks
+  assert.equal((await fetch(link, { method: 'POST' })).status, 200);
+  assert.match(await notifyPage(), /자동 발송: <b>취소됨<\/b>/);
+});
+
+test('릴리스 설명의 마크다운 기호는 안내 문구에서 빠진다', async () => {
+  const html = await notifyPage();
+  if (!html.includes('name="notes_ko"')) return; // already sent in this local DB
+  const notes = /name="notes_ko"[^>]*>([^<]*)</.exec(html)[1];
+  assert.equal(/(^|\n)#|\*\*/.test(notes), false);
+});
