@@ -49,3 +49,19 @@ create table if not exists inquiries (
   ip_hash     text
 );
 create index if not exists inquiries_ip_idx on inquiries (ip_hash, created_at);
+
+-- 새 버전 알림(선택 동의). 다운로드 신청의 1년 삭제와 별개로, 수신 거부(메일의 링크)할 때까지 보관합니다.
+create table if not exists subscribers (
+  email       text primary key,
+  lang        text not null default 'ko',
+  created_at  integer not null,
+  request_id  text                         -- 동의를 받은 신청(신청이 지워져도 남음)
+);
+
+-- 버전별 안내 메일 발송 기록. 같은 버전(tag)은 한 번만 보냅니다.
+create table if not exists notices (
+  tag         text primary key,
+  sent_at     integer not null,
+  recipients  integer not null default 0,
+  failed      integer not null default 0
+);

@@ -233,3 +233,49 @@ test('상담 문의 입력 검사: 회사명 · 이메일 · 분야 · 내용 ·
     assert.equal(data.error, error);
   }
 });
+
+// ---------- new-version notices (opt-in) ----------
+
+const b64url = (text) => Buffer.from(text).toString('base64url');
+const unsubToken = (email) => createHmac('sha256', ADMIN_SECRET).update(`unsub:${email}`).digest('base64url');
+const adminAuth = { Authorization: `Basic ${Buffer.from(`admin:${ADMIN_SECRET}`).toString('base64')}` };
+const subscriberCount = async () => {
+  const html = await (await fetch(`${BASE}/admin/notify`, { headers: adminAuth })).text();
+  return Number(/알림 받기 동의: <b>(\d+)명<\/b>/.exec(html)[1]);
+};
+
+test('알림 받기에 동의한 신청만 명단에 들어가고, 링크로 수신 거부하면 지워진다', async () => {
+  const before = await subscriberCount();
+  await newRequest();                                        // not opted in
+  assert.equal(await subscriberCount(), before);
+  const email = `notify-${unique()}@example.com`;
+  await newRequest({ email, consentUpdates: true });
+  assert.equal(await subscriberCount(), before + 1);
+
+  const link = `${BASE}/unsubscribe?e=${b64url(email)}&t=${unsubToken(email)}`;
+  // Opening the link (as a mail scanner would) only asks for confirmation.
+  assert.match(await (await fetch(link)).text(), /수신 거부/);
+  assert.equal(await subscriberCount(), before + 1);
+  // One-click unsubscribe from a mail app (RFC 8058) or the confirm button.
+  const res = await fetch(link, { method: 'POST', body: 'List-Unsubscribe=One-Click', headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+  assert.equal(res.status, 200);
+  assert.equal(await subscriberCount(), before);
+});
+
+test('서명이 틀린 수신 거부 링크는 아무것도 지우지 않는다', async () => {
+  const email = `notify-${unique()}@example.com`;
+  await newRequest({ email, consentUpdates: true });
+  const before = await subscriberCount();
+  const res = await fetch(`${BASE}/unsubscribe?e=${b64url(email)}&t=${unsubToken('someone@else.example')}`, { method: 'POST' });
+  assert.equal(res.status, 403);
+  assert.equal(await subscriberCount(), before);
+});
+
+test('안내 메일 화면은 비밀번호가 필요하고, 화면의 서명 없이는 보내지 않는다', async () => {
+  assert.equal((await fetch(`${BASE}/admin/notify`)).status, 401);
+  const res = await fetch(`${BASE}/admin/notify`, {
+    method: 'POST', headers: { ...adminAuth, 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ tag: 'v0.0-dev', token: 'forged', notes_ko: 'x', notes_en: 'x' })
+  });
+  assert.equal(res.status, 403);
+});

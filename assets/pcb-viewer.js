@@ -222,6 +222,7 @@
       website: String(form.get('website') || ''),
       consentPrivacy: form.get('consentPrivacy') === 'on',
       consentPublish: form.get('consentPublish') === 'on',
+      consentUpdates: form.get('consentUpdates') === 'on',
       turnstileToken: turnstileWidget !== null ? window.turnstile.getResponse(turnstileWidget) : ''
     };
     // Same checks as the server, so most mistakes are caught before sending.

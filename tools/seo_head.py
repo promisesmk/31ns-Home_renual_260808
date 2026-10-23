@@ -121,8 +121,8 @@ LASTMOD = {
     'en/cases/industrial-iot/index.html': '2026-10-19',
     'cases/golf-grip-sensor/index.html': '2026-10-19',
     'en/cases/golf-grip-sensor/index.html': '2026-10-19',
-    'privacy/index.html': '2026-10-19',
-    'en/privacy/index.html': '2026-10-19',
+    'privacy/index.html': '2026-10-23',
+    'en/privacy/index.html': '2026-10-23',
 }
 # 블로그 글: 작성일은 본문의 <time>과 같게 (기술 블로그는 2026-10-20 삭제 — 다시 만들면 여기에 추가)
 BLOG_PUBLISHED = {}

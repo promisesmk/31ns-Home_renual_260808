@@ -9,10 +9,13 @@
 //   GET  /manual             user manual PDF (no code needed)
 //   GET  /api/qna            approved, publish-consented posts for the static Q&A pages
 //   POST /api/inquiry        development inquiry from the main page form → saved and mailed to ADMIN_EMAIL
+//   GET/POST /unsubscribe?e=&t= stop update notices (signed link in every notice; POST also serves one-click unsubscribe)
 // Operator
 //   GET/POST /admin/r/:id?t= review one post (signed link from the notification mail; no password)
 //   GET  /admin              list of posts (HTTP Basic, password = ADMIN_SECRET)
+//   GET/POST /admin/notify   send the new-version notice to subscribers, once per release tag (HTTP Basic)
 // Cron: personal data (email, company) is cleared after RETENTION_DAYS; old codes are deleted.
+//   Update-notice subscribers (opt-in) are kept until they unsubscribe.
 
 const CATEGORIES = ['question', 'usecase', 'feature'];
 const CATEGORY_KO = { question: '질문', usecase: '활용 사례', feature: '기능 요청' };
@@ -135,7 +138,7 @@ async function latestRelease(env) {
     return a ? { name: a.name, size: a.size, apiUrl: a.url } : null;
   };
   const release = { tag: rel.tag_name, name: rel.name || rel.tag_name, publishedAt: rel.published_at,
-    installer: pick(/\.exe$/i), manual: pick(/\.pdf$/i) };
+    notes: rel.body || '', installer: pick(/\.exe$/i), manual: pick(/\.pdf$/i) };
   if (!release.installer) return null;
   await cache.put(cacheKey, new Response(JSON.stringify(release), { headers: { 'Cache-Control': 'max-age=600' } }));
   return release;
@@ -220,7 +223,7 @@ async function notifyAdmin(env, origin, row) {
 <p style="color:#777;margin:0">PCB 3D Builder 다운로드 신청 · ${CATEGORY_KO[row.category]}</p>
 <h2 style="margin:6px 0 12px">${esc(row.title)}</h2>
 <div style="white-space:pre-wrap;border:1px solid #ddd;border-radius:10px;padding:14px">${esc(row.body)}</div>
-<p>작성자: ${esc(row.company)} · ${esc(row.email)}<br>공개 동의: ${row.publish_ok ? '예' : '아니요'} · 언어: ${row.lang}</p>
+<p>작성자: ${esc(row.company)} · ${esc(row.email)}<br>공개 동의: ${row.publish_ok ? '예' : '아니요'} · 업데이트 알림: ${row.updates_ok ? '받음' : '안 받음'} · 언어: ${row.lang}</p>
 ${buttons}
 <p style="color:#777;font-size:13px">버튼을 누르면 관리 화면이 열리고, 그 화면에서 [승인 · 공개] 또는 [거절]을 한 번 더 눌러야 처리됩니다. 처리하지 않은 글은 공개되지 않습니다.</p></div>`;
   await sendMail(env, { to: env.ADMIN_EMAIL, subject: `[PCB 3D Builder] 새 글: ${row.title}`, html });
@@ -317,9 +320,17 @@ async function handleRequest(request, env, cors, ctx) {
   if (counts.by_email >= LIMIT_PER_EMAIL || counts.by_ip >= Number(env.LIMIT_PER_IP || LIMIT_PER_IP)) return json({ error: 'rate_limited' }, 429, cors);
 
   const id = randomString(10, 'abcdefghijkmnpqrstuvwxyz23456789');
-  const row = { id, lang, email, company, category, title, body, publish_ok: input.consentPublish === true ? 1 : 0 };
+  const row = { id, lang, email, company, category, title, body, publish_ok: input.consentPublish === true ? 1 : 0,
+    updates_ok: input.consentUpdates === true ? 1 : 0 };
   await env.DB.prepare('insert into requests (id, created_at, lang, email, company, category, title, body, publish_ok, ip_hash) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)')
     .bind(id, t, lang, email, company, category, title, body, row.publish_ok, ipHash).run();
+
+  // Optional: new-version notices. Kept apart from the request so it outlives the 1-year deletion,
+  // until the person unsubscribes.
+  if (input.consentUpdates === true) {
+    await env.DB.prepare('insert into subscribers (email, lang, created_at, request_id) values (?1, ?2, ?3, ?4) ' +
+      'on conflict(email) do update set lang = excluded.lang').bind(email, lang, t, id).run();
+  }
 
   const origin = new URL(request.url).origin;
   if (env.ADMIN_SECRET) {
@@ -545,9 +556,152 @@ async function handleAdminList(request, env) {
   const inquiryRows = inquiries.map((q) => `<tr><td>${new Date(q.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
 <td>${esc(q.company ?? '-')}<br><span class="muted">${esc(q.email ?? '-')}</span></td><td>${esc(q.service)}${q.stage ? `<br><span class="muted">${esc(q.stage)}</span>` : ''}${q.schedule ? `<br><span class="muted">${esc(q.schedule)}</span>` : ''}</td>
 <td style="white-space:pre-wrap">${esc(q.message ?? '')}</td><td>${q.mailed ? '보냄' : '<b>메일 실패</b>'}</td></tr>`);
+  const subs = await env.DB.prepare('select count(*) as n from subscribers').first();
   return page(200, '31ns.kr 신청 · 문의 목록',
-    `<h2>개발 상담 문의</h2><p class="muted">최근 100건 · 메일 = 관리자 메일 발송 여부</p><table><tr><th>시각</th><th>회사 · 이메일</th><th>분야</th><th>내용</th><th>메일</th></tr>${inquiryRows.join('')}</table>
+    `<p class="box">새 버전 알림 받기 동의: <b>${subs?.n || 0}명</b> · <a href="/admin/notify">새 버전 안내 메일 보내기 →</a></p>
+<h2>개발 상담 문의</h2><p class="muted">최근 100건 · 메일 = 관리자 메일 발송 여부</p><table><tr><th>시각</th><th>회사 · 이메일</th><th>분야</th><th>내용</th><th>메일</th></tr>${inquiryRows.join('')}</table>
 <h2>PCB 3D Builder 다운로드 신청</h2><p class="muted">최근 300건 · 다운로드 = 코드 사용 여부</p><table><tr><th>시각</th><th>분류</th><th>제목</th><th>작성자</th><th>상태</th><th>다운로드</th></tr>${rows.join('')}</table>`);
+}
+
+// ---------- update notices (opt-in subscribers) ----------
+
+const b64url = (text) => btoa(String.fromCharCode(...new TextEncoder().encode(text))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const fromB64url = (value) => new TextDecoder().decode(Uint8Array.from(atob(value.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0)));
+
+async function unsubscribeUrl(env, origin, email) {
+  return `${origin}/unsubscribe?e=${b64url(email)}&t=${await hmac(env.ADMIN_SECRET, `unsub:${email}`)}`;
+}
+
+// GET shows a confirm button (mail scanners that open links do not unsubscribe anyone);
+// POST removes the address — from that button, or from a mail app's one-click unsubscribe (RFC 8058).
+async function handleUnsubscribe(request, env) {
+  const url = new URL(request.url);
+  let email = '';
+  try { email = fromB64url(url.searchParams.get('e') || ''); } catch { email = ''; }
+  const t = url.searchParams.get('t') || '';
+  const lang = url.searchParams.get('l') === 'en' ? 'en' : 'ko';
+  const en = lang === 'en';
+  if (!email || !env.ADMIN_SECRET || !safeEqual(t, await hmac(env.ADMIN_SECRET, `unsub:${email}`))) {
+    return page(403, en ? 'Invalid link' : '링크가 올바르지 않습니다', `<p>${en ? 'Please use the link in the email again.' : '메일의 링크로 다시 열어 주세요.'}</p>`, { lang });
+  }
+  if (request.method === 'POST') {
+    await env.DB.prepare('delete from subscribers where email = ?1').bind(email).run();
+    return page(200, en ? 'Unsubscribed' : '수신을 거부했습니다',
+      `<p>${en ? `${esc(maskEmail(email))} will no longer receive PCB 3D Builder update notices. The address has been deleted from the list.` : `${esc(maskEmail(email))}로 더 이상 PCB 3D Builder 업데이트 알림을 보내지 않습니다. 알림 명단에서 이메일을 삭제했습니다.`}</p>${backLink(env, lang)}`, { lang });
+  }
+  return page(200, en ? 'Stop update notices?' : '업데이트 알림을 그만 받으시겠어요?',
+    `<p>${en ? `Stop sending PCB 3D Builder update notices to ${esc(maskEmail(email))}.` : `${esc(maskEmail(email))}로 보내는 PCB 3D Builder 업데이트 알림을 중단합니다.`}</p>
+<form method="post"><button>${en ? 'Unsubscribe' : '수신 거부'}</button></form>`, { lang });
+}
+
+// Resend batch API: up to 100 separate emails per call (each recipient gets only their own copy and link),
+// which stays within the per-second rate limit that one call per email would hit.
+async function sendBatch(env, mails) {
+  let ok = 0;
+  let failed = 0;
+  for (let i = 0; i < mails.length; i += 100) {
+    const chunk = mails.slice(i, i + 100);
+    if (!env.RESEND_API_KEY) {
+      console.log(`[mail skipped: RESEND_API_KEY not set] notice x${chunk.length}`);
+      failed += chunk.length;
+      continue;
+    }
+    const res = await fetch('https://api.resend.com/emails/batch', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(chunk)
+    });
+    if (res.ok) ok += chunk.length;
+    else { failed += chunk.length; console.log(`[notice batch failed] ${res.status} ${await res.text()}`); }
+  }
+  return { ok, failed };
+}
+
+function noticeMail(env, release, notes, lang, unsubscribe) {
+  const en = lang === 'en';
+  const version = String(release.tag || '').replace(/^v/i, '');
+  const pageUrl = `${env.SITE_ORIGIN}${en ? '/en/pcb-viewer/' : '/pcb-viewer/'}`;
+  const t = en
+    ? { subject: `PCB 3D Builder ${version} is available`, lead: `PCB 3D Builder ${version} has been released.`, changes: 'What changed',
+        how: 'Run the new installer over the current version; your parts library, settings and projects are kept. To download it, leave a short note on the download page and you will receive a one-time code.',
+        button: 'Open the download page', guide: 'User guide', why: 'You are receiving this because you asked to be notified of new versions when you downloaded PCB 3D Builder.', unsub: 'Unsubscribe' }
+    : { subject: `[31NS-Tech] PCB 3D Builder ${version} 업데이트 안내`, lead: `PCB 3D Builder ${version}이 나왔습니다.`, changes: '바뀐 점',
+        how: '지금 쓰는 버전 위에 새 설치 파일을 그대로 설치하면 부품 라이브러리 · 설정 · 프로젝트 파일은 유지됩니다. 다운로드 페이지에서 짧은 글을 남기면 1회용 다운로드 코드를 받을 수 있습니다.',
+        button: '다운로드 페이지 열기', guide: '사용 가이드', why: 'PCB 3D Builder를 받을 때 새 버전 알림 받기에 동의하셔서 보내 드리는 메일입니다.', unsub: '수신 거부' };
+  const html = `<div style="font-family:system-ui,sans-serif;line-height:1.7;color:#1d1d1f;max-width:560px">
+<p style="font-size:18px;font-weight:600;margin:0 0 12px">${esc(t.lead)}</p>
+${notes ? `<p style="margin:0;font-weight:600">${t.changes}</p><div style="white-space:pre-wrap;border:1px solid #ddd;border-radius:10px;padding:14px;margin:6px 0 14px">${esc(notes)}</div>` : ''}
+<p>${t.how}</p>
+<p><a href="${pageUrl}#download" style="display:inline-block;padding:11px 20px;border-radius:8px;background:#1d1d1f;color:#fff;text-decoration:none">${t.button}</a>
+&nbsp;<a href="${pageUrl}guide/" style="color:#0b5cad">${t.guide}</a></p>
+<p style="color:#777;font-size:13px;margin-top:24px">${t.why}<br><a href="${unsubscribe}" style="color:#777">${t.unsub}</a> · 31NS-Tech · <a href="${env.SITE_ORIGIN}" style="color:#777">31ns.kr</a></p></div>`;
+  return { subject: t.subject, html };
+}
+
+async function handleNotify(request, env) {
+  if (!basicAuthOk(request, env)) {
+    return new Response('관리자 비밀번호가 필요합니다.', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="pcb3d-admin", charset="UTF-8"', 'X-Robots-Tag': 'noindex' } });
+  }
+  const release = await latestRelease(env);
+  if (!release) return page(503, '릴리스 정보를 읽지 못했습니다', '<p>잠시 후 다시 열어 주세요.</p>');
+  const tag = release.tag;
+  const formToken = await hmac(env.ADMIN_SECRET, `notify:${tag}`);
+  const counts = await env.DB.prepare("select count(*) as n, sum(lang = 'en') as en from subscribers").first();
+  const sent = await env.DB.prepare('select * from notices where tag = ?1').bind(tag).first();
+  const when = (ms) => new Date(ms).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  let notice = '';
+
+  if (request.method === 'POST') {
+    const form = await request.formData();
+    // The form token stops another site from making the browser post here with the saved password.
+    if (!safeEqual(String(form.get('token') || ''), formToken) || form.get('tag') !== tag) {
+      return page(403, '다시 시도해 주세요', '<p>화면을 새로 고친 뒤 다시 보내 주세요.</p>');
+    }
+    if (sent) {
+      notice = `<p class="box">${esc(tag)} 안내는 이미 ${when(sent.sent_at)}에 보냈습니다. 같은 버전은 다시 보내지 않습니다.</p>`;
+    } else {
+      // Claim the tag first, so a double click cannot send twice.
+      const claimed = await env.DB.prepare('insert into notices (tag, sent_at, recipients, failed) values (?1, ?2, 0, 0) on conflict(tag) do nothing').bind(tag, now()).run();
+      if (!claimed.meta.changes) {
+        notice = '<p class="box">다른 창에서 이미 보내고 있습니다.</p>';
+      } else {
+        const notes = { ko: clean(form.get('notes_ko'), 3000), en: clean(form.get('notes_en'), 3000) };
+        const origin = new URL(request.url).origin;
+        const { results } = await env.DB.prepare('select email, lang from subscribers').all();
+        const mails = await Promise.all(results.map(async (r) => {
+          const unsub = `${await unsubscribeUrl(env, origin, r.email)}&l=${r.lang}`;
+          const mail = noticeMail(env, release, r.lang === 'en' ? notes.en : notes.ko, r.lang, unsub);
+          return { from: env.MAIL_FROM, to: [r.email], reply_to: env.ADMIN_EMAIL, subject: mail.subject, html: mail.html,
+            headers: { 'List-Unsubscribe': `<${unsub}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } };
+        }));
+        const { ok, failed } = await sendBatch(env, mails);
+        if (ok === 0 && failed > 0) {
+          // Nothing went out: release the tag so the operator can try again.
+          await env.DB.prepare('delete from notices where tag = ?1').bind(tag).run();
+          notice = `<p class="box">메일을 보내지 못했습니다(${failed}명). 잠시 후 다시 보내 주세요.</p>`;
+        } else {
+          await env.DB.prepare('update notices set recipients = ?2, failed = ?3 where tag = ?1').bind(tag, ok, failed).run();
+          notice = `<p class="box">보냈습니다: ${ok}명${failed ? ` · 실패 ${failed}명` : ''}</p>`;
+        }
+      }
+    }
+  }
+
+  const after = await env.DB.prepare('select * from notices where tag = ?1').bind(tag).first();
+  const history = (await env.DB.prepare('select * from notices order by sent_at desc limit 20').all()).results
+    .map((n) => `<tr><td>${esc(n.tag)}</td><td>${when(n.sent_at)}</td><td>${n.recipients}${n.failed ? ` · 실패 ${n.failed}` : ''}</td></tr>`).join('');
+  const total = counts?.n || 0;
+  const form = after
+    ? `<p class="box">${esc(tag)} 안내는 ${when(after.sent_at)}에 보냈습니다. 다음 버전이 올라오면 이 화면에서 다시 보낼 수 있습니다.</p>`
+    : `<form method="post"><input type="hidden" name="token" value="${formToken}"><input type="hidden" name="tag" value="${esc(tag)}">
+<label>바뀐 점 (한국어 수신자) · 릴리스 설명에서 가져왔습니다. 고쳐서 보낼 수 있습니다.</label><textarea name="notes_ko" maxlength="3000">${esc(release.notes)}</textarea>
+<label>바뀐 점 (영어 수신자 ${counts?.en || 0}명)</label><textarea name="notes_en" maxlength="3000">${esc(release.notes)}</textarea>
+<p class="muted">메일에는 다운로드 페이지 · 사용 가이드 링크와 수신 거부 링크가 함께 들어갑니다. 같은 버전은 한 번만 보낼 수 있습니다.</p>
+<button ${total ? '' : 'disabled'}>${esc(release.name)} 안내 메일 보내기 (${total}명)</button></form>`;
+  return page(200, '새 버전 안내 메일',
+    `${notice}<p>최신 릴리스: <b>${esc(release.name)}</b> (${esc(tag)}) · 알림 받기 동의: <b>${total}명</b></p>${form}
+<h2>보낸 기록</h2><table><tr><th>버전</th><th>보낸 시각</th><th>받은 사람</th></tr>${history || '<tr><td colspan="3" class="muted">아직 없습니다</td></tr>'}</table>
+<p><a href="/admin">← 신청 · 문의 목록</a></p>`);
 }
 
 // ---------- scheduled cleanup ----------
@@ -586,6 +740,8 @@ export default {
       const review = /^\/admin\/r\/([a-z0-9]{10})$/.exec(path);
       if (review && (request.method === 'GET' || request.method === 'POST')) return await handleReview(request, env, review[1]);
       if (path === '/admin' && request.method === 'GET') return await handleAdminList(request, env);
+      if (path === '/admin/notify' && (request.method === 'GET' || request.method === 'POST')) return await handleNotify(request, env);
+      if (path === '/unsubscribe' && (request.method === 'GET' || request.method === 'POST')) return await handleUnsubscribe(request, env);
       if (path === '/robots.txt') return new Response('User-agent: *\nDisallow: /\n');
       return new Response('Not found', { status: 404 });
     } catch (e) {
