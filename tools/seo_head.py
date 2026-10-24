@@ -30,14 +30,14 @@ PAGES = {
     'en/rf-faq/index.html': ('/en/rf-faq/', 'en', '50 Practical RF & BLE Questions Answered | 31NS-Tech',
                              '50 practical questions and answers on RF, antennas, low-power BLE, reliability, certification and production.',
                              'website', 'rf-faq/index.html'),
-    'pcb-viewer/index.html': ('/pcb-viewer/', 'ko', 'PCB 3D Builder | PADS ASC · 거버 · DXF로 PCB 3D STEP 만들기 — 31NS-Tech',
-                              'PADS ASCII(.asc), 거버 + 좌표 파일, 또는 DXF로 부품이 배치된 PCB 3D STEP 모델을 만드는 무료 Windows 프로그램. 모든 CAD의 거버 입력, KiCad 모델 자동 매칭 · 패키지 자동 생성, 위치번호별 설정 · 3D 자유 배치, 높이 확인과 엑셀 검토 보고서를 지원합니다.',
+    'pcb-viewer/index.html': ('/pcb-viewer/', 'ko', 'PCB 3D Builder | 무료 PCB 3D STEP 변환 프로그램 (PADS ASC · 거버 · DXF) — 31NS-Tech',
+                              'PADS ASC · 거버 + 좌표 · DXF를 끌어다 놓으면 부품까지 붙은 PCB 3D STEP을 만드는 무료 Windows 프로그램. KiCad 3D 모델 자동 매칭, 케이스 높이 확인.',
                               'website', 'en/pcb-viewer/index.html'),
     'pcb-viewer/guide/index.html': ('/pcb-viewer/guide/', 'ko', 'PCB 3D Builder 사용 가이드 | 보드 입력부터 STEP 저장까지 — 31NS-Tech',
                                     'PCB 3D Builder 4.0 사용설명서를 바탕으로 ASC · 거버 · DXF 입력, 3D 자동 채우기와 부품 확인 · 보정, 위치번호별 설정 · 3D 자유 배치, STEP 저장과 문제 해결을 정리한 가이드입니다.',
                                     'article', 'en/pcb-viewer/guide/index.html'),
-    'en/pcb-viewer/index.html': ('/en/pcb-viewer/', 'en', 'PCB 3D Builder | Create PCB 3D STEP Models from PADS ASC, Gerber or DXF — 31NS-Tech',
-                                 'A free Windows program that builds a 3D STEP model of a populated PCB from PADS ASCII (.asc), Gerber with a placement file, or DXF. Includes Gerber input from any CAD, KiCad model matching, automatic package generation, per-reference settings, 3D free placement, height checks and an Excel review report.',
+    'en/pcb-viewer/index.html': ('/en/pcb-viewer/', 'en', 'PCB 3D Builder | Free PCB to 3D STEP Converter (PADS ASC · Gerber · DXF) — 31NS-Tech',
+                                 'A free Windows program that turns PADS ASC, Gerber + placement or DXF files into a 3D STEP of the populated PCB, with automatic KiCad 3D model matching and enclosure height checks.',
                                  'website', 'pcb-viewer/index.html'),
     'en/pcb-viewer/guide/index.html': ('/en/pcb-viewer/guide/', 'en', 'PCB 3D Builder User Guide | From Board Input to STEP Export — 31NS-Tech',
                                        'A step-by-step guide based on the PCB 3D Builder 4.0 user manual: ASC, Gerber and DXF input, 3D auto-fill and part check and adjustment, per-reference settings, 3D free placement, saving the STEP and troubleshooting.',
@@ -88,18 +88,20 @@ STRUCTURED = {
     'en/index.html': {'@context': 'https://schema.org', '@type': 'WebSite', '@id': f'{SITE}/en/#website',
                       'url': f'{SITE}/en/', 'name': '31NS-Tech', 'inLanguage': 'en', 'publisher': {'@id': ORG_ID}},
     'pcb-viewer/index.html': {'@context': 'https://schema.org', '@type': 'SoftwareApplication',
-                              'name': 'PCB 3D Builder', 'softwareVersion': '4.0',
+                              'name': 'PCB 3D Builder', 'softwareVersion': '4.0.1',
                               'applicationCategory': 'DesignApplication',
                               'operatingSystem': 'Windows 10, Windows 11 (64-bit)',
+                              'screenshot': [f'{SITE}/assets/pcb3d/step4-parts-3d.webp', f'{SITE}/assets/pcb3d/step1-drop.webp', f'{SITE}/assets/pcb3d/step5-check.webp'], 'image': f'{SITE}/assets/og-pcb3d.png',
                               'url': f'{SITE}/pcb-viewer/', 'inLanguage': 'ko-KR',
                               'description': 'PADS ASCII(.asc) 또는 DXF(필요하면 좌표 파일)로 부품이 배치된 PCB 3D STEP 모델을 만드는 Windows 프로그램',
                               'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'KRW'},
                               'publisher': {'@type': 'Organization', '@id': ORG_ID, 'name': '31NS-Tech', 'url': f'{SITE}/'}},
     'en/pcb-viewer/index.html': {'@context': 'https://schema.org', '@type': 'SoftwareApplication',
-                                 'name': 'PCB 3D Builder', 'softwareVersion': '4.0',
+                                 'name': 'PCB 3D Builder', 'softwareVersion': '4.0.1',
                                  'applicationCategory': 'DesignApplication',
                                  'operatingSystem': 'Windows 10, Windows 11 (64-bit)',
-                                 'url': f'{SITE}/en/pcb-viewer/', 'inLanguage': 'en',
+                                 'screenshot': [f'{SITE}/assets/pcb3d/step4-parts-3d.webp', f'{SITE}/assets/pcb3d/step1-drop.webp', f'{SITE}/assets/pcb3d/step5-check.webp'], 'image': f'{SITE}/assets/og-pcb3d.png',
+                              'url': f'{SITE}/en/pcb-viewer/', 'inLanguage': 'en',
                                  'description': 'A Windows program that builds a 3D STEP model of a populated PCB from PADS ASCII (.asc), or from DXF with a placement file',
                                  'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'KRW'},
                                  'publisher': {'@type': 'Organization', '@id': ORG_ID, 'name': '31NS-Tech', 'url': f'{SITE}/'}},
@@ -113,9 +115,9 @@ LASTMOD = {
     'en/2.4ghz.html': '2026-10-16',
     'rf-faq/index.html': '2026-10-15',
     'en/rf-faq/index.html': '2026-10-15',
-    'pcb-viewer/index.html': '2026-10-23',
+    'pcb-viewer/index.html': '2026-10-24',
     'pcb-viewer/guide/index.html': '2026-10-23',
-    'en/pcb-viewer/index.html': '2026-10-23',
+    'en/pcb-viewer/index.html': '2026-10-24',
     'en/pcb-viewer/guide/index.html': '2026-10-23',
     'cases/industrial-iot/index.html': '2026-10-19',
     'en/cases/industrial-iot/index.html': '2026-10-19',
@@ -146,6 +148,9 @@ GA = (f'<!-- ga:start --><script async src="https://www.googletagmanager.com/gta
 GOOGLE_SITE_VERIFICATION = 'qu5hGjVkZSDNpjMph6IgMP4_tZRvpLXZIqfIaNYNoDo'
 
 OG_ALT = {'ko': '31NS-Tech — 회로에서 제품까지', 'en': '31NS-Tech — From circuit to product'}
+# Pages with their own share image: path -> (image URL, alt by language)
+PCB_OG = (f'{SITE}/assets/og-pcb3d.png', {'ko': 'PCB 3D Builder — 부품까지 붙은 PCB 3D STEP', 'en': 'PCB 3D Builder — a 3D STEP of the populated PCB'})
+OG_PAGE = {k: PCB_OG for k in ('pcb-viewer/index.html', 'pcb-viewer/guide/index.html', 'en/pcb-viewer/index.html', 'en/pcb-viewer/guide/index.html')}
 
 STRIP = [
     r'<title>.*?</title>',
@@ -181,9 +186,9 @@ def build(path):
     tags += [f'<meta property="og:type" content="{og_type}">', f'<meta property="og:site_name" content="31NS-Tech">',
              f'<meta property="og:locale" content="{LOCALE[lang]}">', f'<meta property="og:url" content="{url}">',
              f'<meta property="og:title" content="{esc(title)}">', f'<meta property="og:description" content="{esc(desc)}">',
-             f'<meta property="og:image" content="{OG_IMAGE}">', '<meta property="og:image:width" content="1200">',
+             f'<meta property="og:image" content="{OG_PAGE.get(path, (OG_IMAGE,))[0]}">', '<meta property="og:image:width" content="1200">',
              '<meta property="og:image:height" content="630">',
-             f'<meta property="og:image:alt" content="{OG_ALT[lang]}">',
+             f'<meta property="og:image:alt" content="{OG_PAGE[path][1][lang] if path in OG_PAGE else OG_ALT[lang]}">',
              '<meta name="twitter:card" content="summary_large_image">']
     if path == 'index.html':
         tags.append(f'<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">')
