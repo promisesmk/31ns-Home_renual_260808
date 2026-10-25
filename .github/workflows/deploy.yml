@@ -58,7 +58,9 @@ jobs:
             echo "3D 사옥 건너뜀 (배포 키 없음 또는 HQ3D_ENABLED=false)" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
           fi
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$HQ3D_KEY" > ~/.ssh/hq3d && chmod 600 ~/.ssh/hq3d
+          # 웹 화면에 붙여넣은 키는 줄바꿈이 CRLF로 바뀌거나 앞뒤 공백이 붙을 수 있어 정리한 뒤 씀
+          printf '%s\n' "$HQ3D_KEY" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed '/^$/d' > ~/.ssh/hq3d && chmod 600 ~/.ssh/hq3d
+          ssh-keygen -y -f ~/.ssh/hq3d > /dev/null || echo "::warning::HQ3D_DEPLOY_KEY 형식을 읽지 못했습니다"
           ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
           if GIT_SSH_COMMAND="ssh -i ~/.ssh/hq3d -o IdentitiesOnly=yes" git clone -q --depth 1 git@github.com:promisesmk/31ns-3d-hq.git /tmp/hq3d \
              && [ -f /tmp/hq3d/index.html ]; then
