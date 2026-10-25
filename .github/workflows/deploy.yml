@@ -46,6 +46,30 @@ jobs:
           package-lock.json
           EOF
 
+      # 3D 사옥 — 별도 저장소 promisesmk/31ns-3d-hq(main)의 파일을 /3d/에 함께 올립니다. 코드는 이 저장소에 들어오지 않습니다.
+      # 읽기 전용 배포 키(비밀값 HQ3D_DEPLOY_KEY)가 없거나, 저장소 변수 HQ3D_ENABLED가 false이거나, 받기에 실패하면
+      # 3D 없이 2D만 배포합니다. 이때 메인의 "3D 사옥 둘러보기" 버튼도 꺼진 채로 나가므로(data-hq3d="off") 없는 페이지로 가지 않습니다.
+      - name: Add 3D HQ (/3d/)
+        env:
+          HQ3D_KEY: ${{ secrets.HQ3D_DEPLOY_KEY }}
+          HQ3D_ENABLED: ${{ vars.HQ3D_ENABLED }}
+        run: |
+          if [ -z "$HQ3D_KEY" ] || [ "$HQ3D_ENABLED" = "false" ]; then
+            echo "3D 사옥 건너뜀 (배포 키 없음 또는 HQ3D_ENABLED=false)" | tee -a "$GITHUB_STEP_SUMMARY"; exit 0
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$HQ3D_KEY" > ~/.ssh/hq3d && chmod 600 ~/.ssh/hq3d
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          if GIT_SSH_COMMAND="ssh -i ~/.ssh/hq3d -o IdentitiesOnly=yes" git clone -q --depth 1 git@github.com:promisesmk/31ns-3d-hq.git /tmp/hq3d \
+             && [ -f /tmp/hq3d/index.html ]; then
+            rsync -a --exclude .git --exclude tools/ --exclude README.md --exclude package.json --exclude .gitignore /tmp/hq3d/ _site/3d/
+            sed -i 's/data-hq3d="off"/data-hq3d="on"/g' _site/index.html
+            echo "3D 사옥 포함: $(git -C /tmp/hq3d log --oneline -1)" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::3D 사옥 저장소를 받지 못해 건너뜁니다(2D는 그대로 배포)"
+          fi
+          rm -f ~/.ssh/hq3d
+
       # 브라우저 캐시 갱신 — 페이지가 부르는 assets/의 .js · .css 주소 끝에 ?v=커밋번호를 붙여, 배포 직후에도 새 파일을 받게 합니다.
       - name: Version Asset URLs
         run: |

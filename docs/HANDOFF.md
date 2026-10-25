@@ -50,6 +50,7 @@ npm test                    # 서버 권한 · 다운로드 규칙 자동 테스
 | 바꿀 것 | 파일 |
 |---|---|
 | 메인 문구 · 기술 역량 카드 · 사례 · 상담 폼 | `index.html` (영어: `en/index.html`) |
+| 3D 사옥 (`/3d/`) | **코드는 별도 비공개 저장소 `promisesmk/31ns-3d-hq`**(로컬 `projects/31ns-3d-hq`). 이 저장소에는 3D 코드가 없고, 배포 워크플로의 `Add 3D HQ (/3d/)` 단계가 그 저장소 main을 받아 `_site/3d/`에 올리며 메인 `index.html`의 `data-hq3d="off"`를 `on`으로 바꿔 입구 버튼(“3D 사옥 둘러보기”, 첫 화면 · 휴대폰 메뉴)을 켬. 받기 실패 · 배포 키(비밀값 `HQ3D_DEPLOY_KEY`) 없음 · 저장소 변수 `HQ3D_ENABLED=false`면 3D와 버튼 모두 빠진 채 2D만 배포. 버튼 수동 끄기: `assets/home.js`의 `HQ3D_ENABLED`. 3D 패널은 메인의 섹션 id · class를 읽으므로 메인을 고치면 3D 저장소에서 `npm test`로 확인 |
 | 메인 영상 · 포스터 | `assets/hero-assembly-v4.mp4`(1920×934, 6.04초, 24fps, H.264, 소리 없음, faststart, 2026-10-19 교체 · 원본은 HEVC라 H.264로 다시 변환), 포스터 · 폴백 `assets/hero-poster-v4.webp`(영상 첫 프레임). 영상 영역 비율은 `assets/site.css`의 `.hero-media{aspect-ratio:1920/934}`, PC(1024px 이상) 표시 폭은 같은 파일의 `.hero .hero-figure`(이전 폭의 95%, 가운데). 한 · 영 메인 HTML의 `#media-hero` 안에 `<video>`가 처음부터 들어 있고(포스터가 스크립트 전에 표시), 재생 규칙은 `assets/home.js`(`SITE_MEDIA`의 파일 이름도 같은 값). 영상을 바꿀 때는 새 이름(예: `-v3`)으로 넣고 두 HTML과 `home.js`의 이름을 함께 바꿈(브라우저 캐시 갱신). 원본 · 이전 영상은 저장소 밖 보관(14장) |
 | 공통 디자인 | `assets/site.css`, 하위 페이지 `assets/resources.css`, 기술 역량 목록 `assets/capabilities.css` |
 | 2.4GHz 페이지 | `2.4ghz.html`, `en/2.4ghz.html` |

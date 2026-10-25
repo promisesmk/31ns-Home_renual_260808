@@ -83,6 +83,24 @@
     image.src = path;
   }
 
+  // "3D 사옥 둘러보기" (/3d/, separate repo 31ns-3d-hq). The deploy turns data-hq3d="off" into "on" only when it
+  // published /3d/, so the entry never points at a missing page. Shown only where WebGL works; HQ3D_ENABLED is
+  // the manual off switch.
+  const HQ3D_ENABLED = true;
+  const webgl = () => {
+    try {
+      const c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl')));
+    } catch { return false; }
+  };
+  const hq3dLinks = [...document.querySelectorAll('[data-hq3d="on"]')];
+  if (HQ3D_ENABLED && hq3dLinks.length && webgl()) {
+    for (const link of hq3dLinks) {
+      link.hidden = false;
+      link.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'hq3d_enter', { place: link.classList.contains('hq3d-entry') ? 'hero' : 'menu' }); });
+    }
+  }
+
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const setMenuOpen = (open) => {

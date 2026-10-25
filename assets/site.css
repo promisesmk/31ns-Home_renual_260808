@@ -401,3 +401,12 @@ html[lang="en"] .hero h1 { letter-spacing: -.045em; }
 .inquiry-again{align-self:flex-start;min-height:44px;padding:0 18px;font-size:13px;border:1px solid #4d4d59;border-radius:8px;background:transparent;color:#d5d5de;cursor:pointer}
 .form-feedback.is-error{color:#ffb4ab}
 .form-note a{color:#e8e8ef;text-decoration:underline;text-underline-offset:3px}
+
+/* "3D 사옥 둘러보기" — secondary to the main CTA: same height, outlined, cube icon + NEW tag */
+.hq3d-entry{gap:10px;background:transparent;color:#f5f5f7;border:1px solid rgba(255,255,255,.34)}
+.hq3d-entry:hover,.hq3d-entry:focus-visible{border-color:#1ca0a0;background:rgba(28,160,160,.12);transform:translateY(-1px)}
+.hq3d-entry[hidden],.hq3d-entry-mobile[hidden]{display:none!important}
+.hq3d-icon{color:#3cc4c4;flex:none}
+.hq3d-new{padding:2px 7px;border-radius:99px;background:#1ca0a0;color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;line-height:1.4}
+@media(prefers-reduced-motion:reduce){.hq3d-entry:hover{transform:none}}
+@media(max-width:767px){.hq3d-entry{gap:8px}.hq3d-new{font-size:9px;padding:1px 6px}}
